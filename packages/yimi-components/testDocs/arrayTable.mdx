@@ -1,0 +1,451 @@
+```jsx
+import Form from "../../yimi-form/src/components/Form/Form";
+import FormItem from "../../yimi-form/src/components/FormItem/FormItem";
+import Core from "../../yimi-form/src/core/core";
+import {
+  Input,
+  Checkbox,
+  Table,
+  Select,
+} from "../../yimi-components-antd-v4/src/";
+import { Button } from "antd";
+import { ArrayTable, ArrayAction } from "../src/";
+import "../../yimi-form/src/index.less";
+import "antd/dist/antd.css";
+import "./index.less";
+import "../../yimi-components-antd-v4/src/index.less";
+
+class FormDemo extends React.Component {
+  constructor(props) {
+    super(props);
+    this.core = new Core({
+      onChange: ([key], val, core) => {
+        console.log(key, val, core);
+      },
+      autoValidate: true,
+    });
+    this.dataSource = [];
+    for (let i = 0; i < 200; i++) {
+      this.dataSource.push({
+        id: "haha" + i,
+        name: "胡彦斌" + i,
+        age: 32 + i,
+        address: "西湖区湖底公园1号",
+        normalItem: "正常数据",
+        innerFormList: {
+          innerFormItem1: "haha",
+          innerInnerForm: {
+            innerInnerFormItem1: "hoho",
+          },
+        },
+      });
+    }
+  }
+  render() {
+    return (
+      <div className="wrapper">
+        <Form core={this.core}>
+          <FormItem
+            name="arrayTable"
+            label="arrayTbale"
+            className="array-table"
+            defaultValue={this.dataSource}
+          >
+            <ArrayTable
+              getTable={(table) => (this.table = table)}
+              rowFormConfig={{
+                globalStatus: "preview",
+              }}
+              rowCoreConfig={{
+                autoValidate: true,
+              }}
+              tableConfig={{
+                pagination: {
+                  pageSize: 10,
+                },
+                rowKey: "id",
+                scroll: { x: 1400 },
+                columns: [
+                  {
+                    dataIndex: "name",
+                    title: "name",
+                    render: (t) => (
+                      <FormItem name="name" validateConfig={{ required: true }}>
+                        <Input />
+                      </FormItem>
+                    ),
+                    width: 100,
+                    fixed: "left",
+                  },
+                  {
+                    dataIndex: "age",
+                    title: "age",
+                    width: 100,
+                    render: (t) => (
+                      <FormItem name="age">
+                        <Input />
+                      </FormItem>
+                    ),
+                  },
+                  {
+                    dataIndex: "address",
+                    title: "address",
+                    width: 200,
+                    render: (t) => (
+                      <FormItem name="address">
+                        <Input />
+                      </FormItem>
+                    ),
+                  },
+                  {
+                    dataIndex: "statusDep",
+                    title: "statusDep",
+                    width: 200,
+                    render: (t) => {
+                      return (
+                        <FormItem name="statusDep" bottom="值为status的状态">
+                          <Input />
+                        </FormItem>
+                      );
+                    },
+                  },
+                  {
+                    dataIndex: "status",
+                    title: "status",
+                    width: 200,
+                    render: (t) => {
+                      return (
+                        <FormItem
+                          name="status"
+                          status={(core, statusDep) => {
+                            return statusDep || "preview";
+                          }}
+                        >
+                          <Input />
+                        </FormItem>
+                      );
+                    },
+                  },
+                  {
+                    dataIndex: "showDep",
+                    title: "showDep",
+                    width: 200,
+                    render: (t) => {
+                      return (
+                        <FormItem name="showDep" bottom="当值为show时展示show">
+                          <Input />
+                        </FormItem>
+                      );
+                    },
+                  },
+                  {
+                    dataIndex: "show",
+                    title: "show",
+                    width: 200,
+                    render: (t) => (
+                      <FormItem
+                        name="show"
+                        show={(core, showDep) => {
+                          return showDep === "show";
+                        }}
+                      >
+                        <Input />
+                      </FormItem>
+                    ),
+                  },
+                  {
+                    dataIndex: "viewDep",
+                    title: "viewDep",
+                    width: 200,
+                    render: (t) => (
+                      <FormItem
+                        name="viewDep"
+                        bottom="当值为input，view的组件为Input，当值为select，view的组件为Select"
+                      >
+                        <Input />
+                      </FormItem>
+                    ),
+                  },
+                  {
+                    dataIndex: "view",
+                    title: "view",
+                    width: 200,
+                    render: (t) => (
+                      <FormItem
+                        name="view"
+                        view={(core, viewDep) => {
+                          if (viewDep === "input") {
+                            return (
+                              <FormItem name="view">
+                                <Input />
+                              </FormItem>
+                            );
+                          } else if (viewDep === "select") {
+                            return (
+                              <FormItem name="view">
+                                <Select />
+                              </FormItem>
+                            );
+                          } else {
+                            return <div>view</div>;
+                          }
+                        }}
+                      />
+                    ),
+                  },
+                  {
+                    dataIndex: "innerFormList",
+                    title: "innerFormList",
+                    width: 200,
+                    render: (t) => (
+                      <FormItem name="innerFormList">
+                        <Form>
+                          <FormItem name="innerFormItem1">
+                            <Input />
+                          </FormItem>
+                          <FormItem name="innerFormItem2">
+                            <Input />
+                          </FormItem>
+                          <FormItem name="innerInnerForm">
+                            <Form>
+                              <FormItem name="innerInnerFormItem1">
+                                <Input />
+                              </FormItem>
+                              <FormItem name="innerInnerFormItem2">
+                                <Input />
+                              </FormItem>
+                            </Form>
+                          </FormItem>
+                        </Form>
+                      </FormItem>
+                    ),
+                  },
+                  {
+                    dataIndex: "innerArrayTable",
+                    title: "innerArrayTable",
+                    width: 500,
+                    render: () => (
+                      <FormItem
+                        name="innerArrayTable"
+                        defaultValue={this.dataSource}
+                      >
+                        <ArrayTable
+                          tableConfig={{
+                            rowKey: "id",
+                            pagination: { pageSize: 2 },
+                            columns: [
+                              {
+                                dataIndex: "name",
+                                title: "name",
+                                render: (t) => (
+                                  <FormItem
+                                    name="name"
+                                    validateConfig={{ required: true }}
+                                  >
+                                    <Input />
+                                  </FormItem>
+                                ),
+                                width: 100,
+                              },
+                              {
+                                dataIndex: "age",
+                                title: "age",
+                                render: (t) => (
+                                  <FormItem name="age">
+                                    <Input />
+                                  </FormItem>
+                                ),
+                                width: 100,
+                              },
+                              {
+                                dataIndex: "address",
+                                title: "address",
+                                render: (t) => (
+                                  <FormItem name="address">
+                                    <Input />
+                                  </FormItem>
+                                ),
+                                width: 200,
+                              },
+                            ],
+                          }}
+                        >
+                          <ArrayAction>
+                            {({ addBottom, addTop }) => {
+                              return (
+                                <div>
+                                  <Button
+                                    onClick={() => {
+                                      addBottom((core) => {
+                                        core.setValues({ name: "吴彦祖" });
+                                        core.setGlobalStatus("edit");
+                                      });
+                                    }}
+                                  >
+                                    底部添加
+                                  </Button>
+                                  <Button
+                                    onClick={() => {
+                                      addTop((core) => {
+                                        core.setValues({ name: "吴彦祖" });
+                                        core.setGlobalStatus("edit");
+                                      });
+                                    }}
+                                  >
+                                    顶部添加
+                                  </Button>
+                                </div>
+                              );
+                            }}
+                          </ArrayAction>
+                        </ArrayTable>
+                      </FormItem>
+                    ),
+                  },
+                  {
+                    dataIndex: "opr",
+                    title: "操作",
+                    width: 400,
+                    render: (t, v) => (
+                      <div>
+                        <FormItem
+                          view={(core) => {
+                            return (
+                              <Button
+                                onClick={() => {
+                                  core.validate();
+                                }}
+                              >
+                                校验
+                              </Button>
+                            );
+                          }}
+                        />
+                        <FormItem
+                          name="editBtn"
+                          view={(core) => {
+                            return core.getGlobalStatus() === "preview" ? (
+                              <Button
+                                onClick={() => {
+                                  core.setGlobalStatus("edit");
+                                  core.forceUpdate(["editBtn"]);
+                                }}
+                              >
+                                编辑
+                              </Button>
+                            ) : null;
+                          }}
+                        />
+                        <FormItem
+                          name="saveBtn"
+                          view={(core) => {
+                            return core.getGlobalStatus() === "edit" ? (
+                              <Button
+                                onClick={() => {
+                                  core.setGlobalStatus("preview");
+                                  core.forceUpdate(["saveBtn"]);
+                                }}
+                              >
+                                保存
+                              </Button>
+                            ) : null;
+                          }}
+                        />
+                        <ArrayAction>
+                          {({ remove, insertAfter, insertBefore }) => {
+                            return (
+                              <>
+                                <Button
+                                  onClick={() => {
+                                    insertAfter(v.id, (core) => {
+                                      core.setGlobalStatus("edit");
+                                      core.forceUpdate(["saveBtn"]);
+                                    });
+                                  }}
+                                >
+                                  底部添加
+                                </Button>
+                                <Button
+                                  onClick={() => {
+                                    insertBefore(v.id, (core) => {
+                                      core.setGlobalStatus("edit");
+                                      core.forceUpdate(["editBtn"]);
+                                    });
+                                  }}
+                                >
+                                  顶部添加
+                                </Button>
+                                <Button
+                                  onClick={() => {
+                                    remove(
+                                      v.id,
+                                      (core, dataSource, coreList) => {
+                                        console.log(
+                                          "remove--------->",
+                                          core,
+                                          dataSource,
+                                          coreList
+                                        );
+                                      }
+                                    );
+                                  }}
+                                >
+                                  删除
+                                </Button>
+                              </>
+                            );
+                          }}
+                        </ArrayAction>
+                      </div>
+                    ),
+                  },
+                ],
+              }}
+              tableBottom={
+                <ArrayAction>
+                  {({ addBottom, addTop }) => {
+                    return (
+                      <div>
+                        <Button
+                          onClick={() => {
+                            addBottom((core) => {
+                              core.setValues({ name: "吴彦祖" });
+                              core.setGlobalStatus("edit");
+                            });
+                          }}
+                        >
+                          底部添加
+                        </Button>
+                        <Button
+                          onClick={() => {
+                            addTop((core) => {
+                              core.setValues({ name: "吴彦祖" });
+                              core.setGlobalStatus("edit");
+                            });
+                          }}
+                        >
+                          顶部添加
+                        </Button>
+                        <Button
+                          onClick={() => {
+                            this.core.validate().then((err) => {
+                              console.log(err);
+                            });
+                          }}
+                        >
+                          校验
+                        </Button>
+                      </div>
+                    );
+                  }}
+                </ArrayAction>
+              }
+            />
+          </FormItem>
+        </Form>
+      </div>
+    );
+  }
+}
+ReactDOM.render(<FormDemo />, mountNode);
+```

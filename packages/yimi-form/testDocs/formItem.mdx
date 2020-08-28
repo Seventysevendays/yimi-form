@@ -1,0 +1,168 @@
+```jsx
+import Form from "../src/components/Form/Form";
+import FormItem from "../src/components/FormItem/FormItem";
+import Core from "../src/core/core";
+import { Button } from "antd";
+import { Input, Checkbox } from "../../yimi-components-antd-v4/";
+import "./index.less";
+
+import "antd/dist/antd.css";
+
+class FormDemo extends React.Component {
+  constructor(props) {
+    super(props);
+    this.core = new Core({
+      onChange: (key, value, core) => {
+        console.log(key, value, core);
+      },
+      values: { validateConfig: "validate" },
+    });
+  }
+  // componentDidMount = () => {
+  //   this.core.setValues({ validateConfig: "validate" });
+  // };
+  render() {
+    return (
+      <div className="wrapper">
+        <Form core={this.core} colon={true} inline>
+          <h2>value</h2>
+          <FormItem name="value" label="value" value="value">
+            <Input />
+          </FormItem>
+          <h2>status</h2>
+          <FormItem name="edit" label="edit">
+            <Input />
+          </FormItem>
+          <FormItem name="disabled" label="disabled" status="disabled">
+            <Input />
+          </FormItem>
+          <FormItem name="preview" label="preview" status="preview">
+            <Input />
+          </FormItem>
+          <FormItem name="hidden" label="hidden" status="hidden">
+            <Input />
+          </FormItem>
+          <h2>dynamic status</h2>
+          <FormItem name="statusDep" label="statusDep" defaultValue="disabled">
+            <Input />
+          </FormItem>
+          <FormItem
+            name="dynamicStatus"
+            label="dynamicStatus"
+            status={(core, statusDep) => {
+              return statusDep;
+            }}
+          >
+            <Input />
+          </FormItem>
+          <h2>around element</h2>
+          <FormItem
+            name="around"
+            label="around"
+            top="top"
+            bottom="bottom"
+            prefix="prefix"
+            suffix="suffix"
+          >
+            <Input />
+          </FormItem>
+          <h2>props</h2>
+          <FormItem name="props" label="props" props={{ placeholder: "props" }}>
+            <Input />
+          </FormItem>
+          <h2>dynamic props & defaultValue</h2>
+          <FormItem
+            name="dprops"
+            label="dprops"
+            defaultValue={true}
+            props={(props) => {
+              return {
+                ...props,
+                checked: !!props.value,
+              };
+            }}
+          >
+            <Checkbox />
+          </FormItem>
+          <FormItem name="placeholder" label="placeholder" value="input">
+            <Input />
+          </FormItem>
+          <FormItem
+            name="dprops1"
+            label="dprops1"
+            props={(core, placeholder) => {
+              return {
+                placeholder,
+              };
+            }}
+          >
+            <Input />
+          </FormItem>
+          <h2>show</h2>
+          <FormItem
+            name="showDep"
+            label="showDep"
+            bottom="FormItem 'show' will show when the value of 'showDep' is 'show'"
+          >
+            <Input />
+          </FormItem>
+          <FormItem
+            name="show"
+            label="show"
+            show={(core, showDep) => showDep === "show"}
+          >
+            <Input />
+          </FormItem>
+          <h2>view</h2>
+          <FormItem
+            name="viewDep"
+            label="viewDep"
+            bottom="FormItem 'input' will show when the value of 'viewDep' is 'show'"
+          >
+            <Input />
+          </FormItem>
+          <FormItem
+            name="view"
+            label="view"
+            view={(core, viewDep) => {
+              if (viewDep === "input") {
+                return (
+                  <FormItem name="view" label="view">
+                    <Input />
+                  </FormItem>
+                );
+              } else {
+                return null;
+              }
+            }}
+          />
+          <h2>validateConfig</h2>
+          <FormItem
+            name="validateConfig"
+            label="validateConfig"
+            validateConfig={{ required: true }}
+          >
+            <Input />
+          </FormItem>
+          <h2>dynamic validateConfig</h2>
+          <FormItem
+            name="dValidateConfig"
+            label="dValidateConfig"
+            validateConfig={(val, core) =>
+              val.validateConfig === "validate" ? { required: true } : {}
+            }
+          >
+            <Input />
+          </FormItem>
+          <h2>colon</h2>
+          <FormItem name="colon" label="colon" colon={false}>
+            <Input />
+          </FormItem>
+        </Form>
+      </div>
+    );
+  }
+}
+
+ReactDOM.render(<FormDemo />, mountNode);
+```

@@ -1,0 +1,17 @@
+pakage-lock.json
+
+test
+
+testDocs
+
+dist
+
+.vscode
+
+node_modules
+
+src
+
+tsconfig.json
+
+nodemon.json

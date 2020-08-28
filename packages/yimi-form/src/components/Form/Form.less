@@ -1,0 +1,44 @@
+.yimi-form {
+  background-color: transparent;
+  &.inline {
+    .yimi-form-item {
+      display: inline-block;
+    }
+  }
+  &.horizontal {
+    .yimi-form-item {
+      vertical-align: top;
+      &-label,
+      &-control {
+        display: inline-block;
+      }
+      &-label {
+        vertical-align: top;
+      }
+    }
+  }
+  // formItem > form
+  .yimi-form-item.vertical {
+    .yimi-form-item-label,
+    .yimi-form-item-control {
+      display: block;
+    }
+  }
+  .yimi-form-item.block {
+    display: block;
+  }
+  .yimi-form-item.inline {
+    display: inline-block;
+    vertical-align: top;
+  }
+  .yimi-form-item.horizontal {
+    vertical-align: top;
+    &-label,
+    &-control {
+      display: inline-block;
+    }
+    &-label {
+      vertical-align: top;
+    }
+  }
+}

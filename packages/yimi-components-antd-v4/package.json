@@ -1,0 +1,39 @@
+{
+  "name": "yimi-components-antd-v4-beta",
+  "version": "1.0.0",
+  "description": "yimi components based on antd",
+  "main": "lib/index.js",
+  "scripts": {
+    "cov": "node ../yimi-builder/scripts/test.js",
+    "test": "node ../yimi-builder/scripts/test.js",
+    "start": "nodemon ../yimi-builder/scripts/dev.js",
+    "build": "node ../yimi-builder/scripts/build.js",
+    "prepare": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Seventysevendays/yimi-form.git"
+  },
+  "keywords": [
+    "yimi form components antd"
+  ],
+  "author": "77days",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Seventysevendays/yimi-form/issues"
+  },
+  "homepage": "https://github.com/Seventysevendays/yimi-form#readme",
+  "devDependencies": {
+    "@types/react": "^16.9.44",
+    "antd": "^4.5.4",
+    "moment": "^2.27.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.11.2"
+  },
+  "peerDependencies": {
+    "antd": "4.x"
+  }
+}

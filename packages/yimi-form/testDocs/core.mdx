@@ -1,0 +1,184 @@
+```jsx
+import Form from "../src/components/Form/Form";
+import FormItem from "../src/components/FormItem/FormItem";
+import Core from "../src/core/core";
+import { Input, Checkbox } from "../../yimi-components-antd-v4/src";
+import { Button } from "antd";
+import "./index.less";
+import "antd/dist/antd.css";
+
+class FormDemo extends React.Component {
+  constructor(props) {
+    super(props);
+    this.core = new Core({
+      onChange: (keys, value, core) => {
+        console.log("onChange:", keys, value, core);
+      },
+      autoValidate: true,
+      initValues: { set1: "init" },
+    });
+  }
+  componentDidMount = () => {
+    this.core.setValues({
+      set1: "set1",
+      set2: "set2",
+    });
+    this.core.setValues(
+      {
+        mutipleSet1: "mutipleSet1",
+        mutipleSet2: "mutipleSet2",
+      },
+      {
+        multiple: true,
+      }
+    );
+    this.core.setValuesSilent({
+      setSilent1: "setSilent1",
+      setSilent2: "setSilent2",
+    });
+    this.core.setStatus({
+      status1: "disabled",
+      status2: "preview",
+    });
+    this.core.setError({
+      error: "error",
+    });
+    const children = Object.keys(this.core.childrenMap);
+    this.setState({
+      children,
+    });
+    this.updateKey = children[0];
+  };
+  render() {
+    return (
+      <div className="wrapper">
+        <Form core={this.core} colon={true}>
+          <h2>setValues</h2>
+          <FormItem name="set1" label="set1">
+            <Input />
+          </FormItem>
+          <FormItem name="set2" label="set2">
+            <Input />
+          </FormItem>
+          <h2>setValues-multiple</h2>
+          <FormItem name="mutipleSet1" label="mutipleSet1">
+            <Input />
+          </FormItem>
+          <FormItem name="mutipleSet2" label="mutipleSet2">
+            <Input />
+          </FormItem>
+          <h2>setValuesSilent</h2>
+          <FormItem name="setSilent1" label="setSilent1">
+            <Input />
+          </FormItem>
+          <FormItem name="setSilent2" label="setSilent2">
+            <Input />
+          </FormItem>
+          <h2>setStatus</h2>
+          <FormItem name="status1" label="status1">
+            <Input />
+          </FormItem>
+          <FormItem name="status2" label="status2">
+            <Input />
+          </FormItem>
+          <h2>setError</h2>
+          <FormItem name="error" label="status1">
+            <Input />
+          </FormItem>
+          <h2>validate</h2>
+          <FormItem
+            name="validate"
+            label="validate"
+            validateConfig={{ required: true }}
+          >
+            <Input />
+          </FormItem>
+          <FormItem
+            name="validate1"
+            label="validate1"
+            validateConfig={{ required: true }}
+          >
+            <Input />
+          </FormItem>
+          <h2>dynamic validate</h2>
+          <FormItem
+            name="dynamicValidate"
+            label="dynamicValidate"
+            bottom="this is required when value of validate is equal to 'validate'"
+            validateConfig={(val) =>
+              val.validate === "validate" ? { required: true } : undefined
+            }
+          >
+            <Input />
+          </FormItem>
+          <h2>validate items</h2>
+          <Button
+            onClick={() => {
+              this.core.validate(["validate1"]);
+            }}
+          >
+            validate
+          </Button>
+          <h2>-------------------------------------------------------</h2>
+          <Button
+            type="primary"
+            onClick={() => {
+              console.log(this.core.getValues());
+              this.core.validate().then((err) => {
+                console.log(err);
+                this.core.scrollToError();
+              });
+            }}
+          >
+            提交
+          </Button>
+          <Button
+            onClick={() => {
+              this.core.reset();
+            }}
+          >
+            重置
+          </Button>
+          <Button
+            onClick={() => {
+              this.core.reset(["set1"]);
+            }}
+          >
+            重置set1
+          </Button>
+          <Button
+            onClick={() => {
+              this.core.setGlobalStatus("preview");
+            }}
+          >
+            预览
+          </Button>
+          <Button
+            onClick={() => {
+              this.core.setGlobalStatus("edit");
+            }}
+          >
+            编辑
+          </Button>
+          <Button
+            onClick={() => {
+              this.core.forceUpdate([this.updateKey]);
+              let curIndex = this.state.children.findIndex(
+                (item) => item === this.updateKey
+              );
+              if (curIndex === this.state.children.length - 1) {
+                curIndex = -1;
+              }
+              this.updateKey = this.state.children[curIndex + 1];
+            }}
+          >
+            依次更新
+          </Button>
+        </Form>
+      </div>
+    );
+  }
+}
+
+ReactDOM.render(<FormDemo />, mountNode);
+```

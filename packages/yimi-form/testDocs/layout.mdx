@@ -1,0 +1,72 @@
+```jsx
+import Form from "../src/components/Form/Form";
+import FormItem from "../src/components/FormItem/FormItem";
+import Core from "../src/core/core";
+import { Input, Checkbox, Button } from "antd";
+import "./index.less";
+
+import "antd/dist/antd.css";
+
+class FormDemo extends React.Component {
+  constructor(props) {
+    super(props);
+    this.core = new Core({});
+  }
+
+  render() {
+    return (
+      <div className="wrapper">
+        <h2>inline</h2>
+        <Form core={this.core} colon={true} inline>
+          <FormItem name="test" label="test">
+            <Input />
+          </FormItem>
+          <FormItem name="test1" label="test1">
+            <Input />
+          </FormItem>
+        </Form>
+        <h2>horizontal</h2>
+        <Form core={this.core} colon={true} direction="horizontal">
+          <FormItem name="test" label="test">
+            <Input />
+          </FormItem>
+          <FormItem name="test1" label="test1">
+            <Input />
+          </FormItem>
+        </Form>
+        <h2>inline-horizontal</h2>
+        <Form core={this.core} colon={true} direction="horizontal" inline>
+          <FormItem name="test" label="test">
+            <Input />
+          </FormItem>
+          <FormItem name="test1" label="test1">
+            <Input />
+          </FormItem>
+        </Form>
+        <h2>single-control</h2>
+        <Form core={this.core} colon={true} direction="horizontal" inline>
+          <FormItem name="test" label="test">
+            <Input />
+          </FormItem>
+          <FormItem
+            name="test1"
+            label="test1"
+            direction="vertical"
+            inline={false}
+          >
+            <Input />
+          </FormItem>
+          <FormItem name="test2" label="test2">
+            <Input />
+          </FormItem>
+          <FormItem name="test3" label="test3">
+            <Input />
+          </FormItem>
+        </Form>
+      </div>
+    );
+  }
+}
+
+ReactDOM.render(<FormDemo />, mountNode);
+```

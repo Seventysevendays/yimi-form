@@ -1,0 +1,149 @@
+```jsx
+import Form from "../src/components/Form/Form";
+import FormItem from "../src/components/FormItem/FormItem";
+import Core from "../src/core/core";
+import { Button, DatePicker } from "antd";
+import { Input, Checkbox } from "../../yimi-components-antd-v4/src/";
+import "./index.less";
+
+import "antd/dist/antd.css";
+
+class FormDemo extends React.Component {
+  constructor(props) {
+    super(props);
+    this.core = new Core({
+      onChange: (key, value, core) => {
+        console.log(key, value, core);
+      },
+      autoValidate: true,
+    });
+  }
+  render() {
+    return (
+      <div className="wrapper">
+        <h2>status</h2>
+        <Form
+          status="disabled"
+          full
+          onMount={(core) => {
+            this.statusCore = core;
+          }}
+        >
+          <FormItem name="status1" label="status">
+            <Input />
+          </FormItem>
+          <FormItem name="status2" label="status">
+            <Input />
+          </FormItem>
+          <Button
+            onClick={() => {
+              console.log(this.statusCore.getStatus());
+            }}
+          >
+            状态
+          </Button>
+        </Form>
+        <h2>globalStatus</h2>
+        <Form globalStatus="disabled" full>
+          <FormItem name="globalStatus1" label="globalStatus">
+            <Input />
+          </FormItem>
+          <FormItem name="globalStatus2" label="globalStatus">
+            <Input />
+          </FormItem>
+        </Form>
+        <h2>colon</h2>
+        <Form colon>
+          <FormItem name="colon" label="colon">
+            <Input />
+          </FormItem>
+        </Form>
+        <Form core={this.core} colon={true} inline>
+          <h2>inner-status</h2>
+          <FormItem name="inner-status" label="inner-status" status="disabled">
+            <Form>
+              <FormItem name="inner-item" label="inner-item">
+                <Input />
+              </FormItem>
+              <FormItem name="inner-inner" label="inner-inner">
+                <Form>
+                  <FormItem
+                    name="inner-inner-item"
+                    label="inner-inner-item"
+                    status="edit"
+                  >
+                    <Input />
+                  </FormItem>
+                  <FormItem name="inner-inner-inner" label="inner-inner-inner">
+                    <Form>
+                      <FormItem
+                        name="inner-inner-inner-item"
+                        label="inner-inner-inner-item"
+                      >
+                        <Input />
+                      </FormItem>
+                    </Form>
+                  </FormItem>
+                </Form>
+              </FormItem>
+            </Form>
+          </FormItem>
+          <h2>inner-validate</h2>
+          <FormItem name="inner-validate" label="inner-validate" inline={false}>
+            <Form>
+              <FormItem
+                name="inner-item"
+                label="inner-item"
+                validateConfig={{ required: true }}
+              >
+                <Input />
+              </FormItem>
+              <FormItem name="inner-inner" label="inner-inner">
+                <Form>
+                  <FormItem
+                    name="inner-inner-item"
+                    label="inner-inner-item"
+                    validateConfig={{ required: true }}
+                  >
+                    <DatePicker />
+                  </FormItem>
+                  <FormItem name="inner-inner-inner" label="inner-inner-inner">
+                    <Form>
+                      <FormItem
+                        name="inner-inner-inner-item1"
+                        label="inner-inner-inner-item1"
+                        validateConfig={{ required: true }}
+                      >
+                        <Input />
+                      </FormItem>
+                      <FormItem
+                        name="inner-inner-inner-item2"
+                        label="inner-inner-inner-item2"
+                        validateConfig={{ required: true }}
+                      >
+                        <Input />
+                      </FormItem>
+                    </Form>
+                  </FormItem>
+                </Form>
+              </FormItem>
+            </Form>
+          </FormItem>
+        </Form>
+        <Button
+          onClick={() => {
+            this.core.validate().then((err) => {
+              console.log(err);
+            });
+            console.log("core values", this.core.getValues());
+          }}
+        >
+          提交
+        </Button>
+      </div>
+    );
+  }
+}
+
+ReactDOM.render(<FormDemo />, mountNode);
+```

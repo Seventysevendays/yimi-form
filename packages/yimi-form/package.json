@@ -1,0 +1,49 @@
+{
+  "name": "yimi-form-beta",
+  "version": "1.0.10",
+  "description": "beautiful form",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "cov": "node ../yimi-builder/scripts/test.js",
+    "test": "node ../yimi-builder/scripts/test.js",
+    "start": "nodemon ../yimi-builder/scripts/dev.js",
+    "build": "node ../yimi-builder/scripts/build.js",
+    "prepare": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Seventysevendays/yimi-form.git"
+  },
+  "keywords": [
+    "react",
+    "form"
+  ],
+  "author": "77days",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Seventysevendays/yimi-form/issues"
+  },
+  "homepage": "https://github.com/Seventysevendays/yimi-form#readme",
+  "devDependencies": {
+    "@types/enzyme": "^3.10.5",
+    "antd": "^4.4.3",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "enzyme": "^3.11.0",
+    "typescript": "^3.9.6",
+    "webpack": "^4.43.0",
+    "webpack-dev-server": "^3.11.0"
+  },
+  "browserslist": [
+    ">1%",
+    "last 4 versions",
+    "Firefox ESR",
+    "not ie < 9"
+  ],
+  "dependencies": {
+    "async-validator": "^3.3.0",
+    "events": "^3.1.0",
+    "lodash": "^4.17.19"
+  }
+}

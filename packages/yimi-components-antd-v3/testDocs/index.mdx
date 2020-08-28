@@ -1,0 +1,444 @@
+```jsx
+import Form from "../../yimi-form/src/components/Form/Form";
+import FormItem from "../../yimi-form/src/components/FormItem/FormItem";
+import Core from "../../yimi-form/src/core/core";
+import { Button, Row, Col } from "antd";
+import {
+  Input,
+  Select,
+  AutoComplete,
+  Checkbox,
+  Cascader,
+  InputNumber,
+  Mentions,
+  Rate,
+  Radio,
+  Switch,
+  Slider,
+  TreeSelect,
+  Transfer,
+  TimePicker,
+  Upload,
+  DatePicker,
+} from "../src/";
+import moment from "moment";
+import "../src/index.less";
+import "antd/dist/antd.css";
+import "../../yimi-form/src/index.less";
+import "./index.less";
+
+const { Option, OptGroup } = Select;
+const { TreeNode } = TreeSelect;
+
+const mockData = [];
+for (let i = 0; i < 20; i++) {
+  mockData.push({
+    key: i.toString(),
+    title: `content${i + 1}`,
+    description: `description of content${i + 1}`,
+    disabled: i % 3 < 1,
+  });
+}
+
+const oriTargetKeys = mockData
+  .filter((item) => +item.key % 3 > 1)
+  .map((item) => item.key);
+
+class FormDemo extends React.Component {
+  constructor(props) {
+    super(props);
+    this.core = new Core({
+      onChange: ([key], val, core) => {
+        console.log(key, val, core);
+      },
+    });
+    this.state = {
+      targetKeys: oriTargetKeys,
+      selectedKeys: [],
+    };
+    this.options = [
+      {
+        value: "zhejiang",
+        label: "Zhejiang",
+        children: [
+          {
+            value: "hangzhou",
+            label: "Hangzhou",
+            children: [
+              {
+                value: "xihu",
+                label: "West Lake",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        value: "jiangsu",
+        label: "Jiangsu",
+        children: [
+          {
+            value: "nanjing",
+            label: "Nanjing",
+            children: [
+              {
+                value: "zhonghuamen",
+                label: "Zhong Hua Men",
+              },
+            ],
+          },
+        ],
+      },
+    ];
+  }
+  handleChange = (core, nextTargetKeys, direction, moveKeys) => {
+    this.setState({ targetKeys: nextTargetKeys });
+    console.log("targetKeys: ", nextTargetKeys);
+    console.log("direction: ", direction);
+    console.log("moveKeys: ", moveKeys);
+  };
+
+  handleSelectChange = (sourceSelectedKeys, targetSelectedKeys) => {
+    this.setState({
+      selectedKeys: [...sourceSelectedKeys, ...targetSelectedKeys],
+    });
+
+    console.log("sourceSelectedKeys: ", sourceSelectedKeys);
+    console.log("targetSelectedKeys: ", targetSelectedKeys);
+  };
+  render() {
+    const { selectedKeys, targetKeys } = this.state;
+    return (
+      <div className="wrapper">
+        <Form core={this.core} inline full>
+          <Row gutter={20}>
+            <Col span={6}>
+              <FormItem name="input" label="input" defaultValue="yimi-form">
+                <Input />
+              </FormItem>
+            </Col>
+            <Col span={6}>
+              <FormItem
+                name="selectSingle"
+                label="select-single"
+                defaultValue="opta"
+              >
+                <Select
+                  style={{ width: "100%" }}
+                  options={[
+                    { label: "opta", value: "opta" },
+                    { label: "optb", value: "optb" },
+                  ]}
+                />
+              </FormItem>
+            </Col>
+            <Col span={6}>
+              <FormItem
+                name="selectTags"
+                label="select-tags"
+                defaultValue={["opta", "optb"]}
+              >
+                <Select
+                  style={{ width: "100%" }}
+                  mode="tags"
+                  options={[
+                    { label: "opta", value: "opta" },
+                    { label: "optb", value: "optb" },
+                  ]}
+                />
+              </FormItem>
+            </Col>
+            <Col span={6}>
+              <FormItem
+                name="selectMultiple"
+                label="select-multiple"
+                defaultValue={["opta"]}
+              >
+                <Select
+                  style={{ width: "100%" }}
+                  mode="multiple"
+                  options={[
+                    { label: "opta", value: "opta" },
+                    { label: "optb", value: "optb" },
+                  ]}
+                />
+              </FormItem>
+            </Col>
+          </Row>
+          <Row gutter={20}>
+            <Col span={6}>
+              <FormItem
+                name="selectOption"
+                label="select-option"
+                defaultValue="opta"
+              >
+                <Select style={{ width: "100%" }}>
+                  <Option value="opta"> opta</Option>
+                  <Option value="optb"> optb</Option>
+                </Select>
+              </FormItem>
+            </Col>
+            <Col span={6}>
+              <FormItem
+                name="selectOptGroup"
+                label="select-optGroup"
+                defaultValue="jack"
+              >
+                <Select defaultValue="lucy" style={{ width: "100%" }}>
+                  <OptGroup label="Manager">
+                    <Option value="jack">Jack</Option>
+                    <Option value="lucy">Lucy</Option>
+                  </OptGroup>
+                  <OptGroup label="Engineer">
+                    <Option value="Yiminghe">yiminghe</Option>
+                  </OptGroup>
+                </Select>
+              </FormItem>
+            </Col>
+            <Col span={6}>
+              <FormItem
+                name="autoComplete"
+                label="autoComplete"
+                defaultValue="opta"
+              >
+                <AutoComplete
+                  style={{ width: "100%" }}
+                  options={[
+                    { label: "opta", value: "opta" },
+                    { label: "optb", value: "optb" },
+                  ]}
+                />
+              </FormItem>
+            </Col>
+            <Col span={6}>
+              <FormItem name="checkbox" label="checkbox" defaultValue={true}>
+                <Checkbox />
+              </FormItem>
+            </Col>
+          </Row>
+          <Row gutter={20}>
+            <Col span={6}>
+              <FormItem
+                name="cascader"
+                label="cascader"
+                defaultValue={["zhejiang"]}
+              >
+                <Cascader options={this.options} style={{ width: "100%" }} />
+              </FormItem>
+            </Col>
+            <Col span={6}>
+              <FormItem
+                name="datePicker"
+                label="datePicker"
+                defaultValue={moment(new Date())}
+              >
+                <DatePicker style={{ width: "100%" }} />
+              </FormItem>
+            </Col>
+            <Col span={6}>
+              <FormItem
+                name="datePickerWeek"
+                label="datePickerWeek"
+                defaultValue={moment(new Date())}
+              >
+                <DatePicker style={{ width: "100%" }} picker="week" />
+              </FormItem>
+            </Col>
+            <Col span={6}>
+              <FormItem
+                name="datePickerMonth"
+                label="datePickerMonth"
+                defaultValue={moment(new Date())}
+              >
+                <DatePicker style={{ width: "100%" }} picker="month" />
+              </FormItem>
+            </Col>
+          </Row>
+          <Row gutter={20}>
+            <Col span={6}>
+              <FormItem
+                name="datePickerQuarter"
+                label="datePickerQuarter"
+                defaultValue={moment(new Date())}
+              >
+                <DatePicker picker="quarter" style={{ width: "100%" }} />
+              </FormItem>
+            </Col>
+            <Col span={6}>
+              <FormItem
+                name="datePickerYear"
+                label="datePickerYear"
+                defaultValue={moment(new Date())}
+              >
+                <DatePicker picker="year" style={{ width: "100%" }} />
+              </FormItem>
+            </Col>
+            <Col span={6}>
+              <FormItem name="inputNumber" label="inputNumber" defaultValue={1}>
+                <InputNumber style={{ width: "100%" }} />
+              </FormItem>
+            </Col>
+            <Col span={6}>
+              <FormItem name="mentions" label="mentions" defaultValue="@afc163">
+                <Mentions>
+                  <Mentions.Option value="afc163">afc163</Mentions.Option>
+                  <Mentions.Option value="zombieJ">zombieJ</Mentions.Option>
+                  <Mentions.Option value="yesmeck">yesmeck</Mentions.Option>
+                </Mentions>
+              </FormItem>
+            </Col>
+          </Row>
+          <Row gutter={20}>
+            <Col span={6}>
+              <FormItem name="rate" label="rate" defaultValue={2.5}>
+                <Rate allowHalf />
+              </FormItem>
+            </Col>
+            <Col span={6}>
+              <FormItem name="radio" label="radio" defaultValue={1}>
+                <Radio.Group>
+                  <Radio value={1}>A</Radio>
+                  <Radio value={2}>B</Radio>
+                  <Radio value={3}>C</Radio>
+                  <Radio value={4}>D</Radio>
+                </Radio.Group>
+              </FormItem>
+            </Col>
+            <Col span={6}>
+              <FormItem name="radioButton" label="radioButton" defaultValue="a">
+                <Radio.Group buttonStyle="solid">
+                  <Radio.Button value="a">Hangzhou</Radio.Button>
+                  <Radio.Button value="b">Shanghai</Radio.Button>
+                  <Radio.Button value="c">Beijing</Radio.Button>
+                  <Radio.Button value="d">Chengdu</Radio.Button>
+                </Radio.Group>
+              </FormItem>
+            </Col>
+            <Col span={6}>
+              <FormItem name="switch" label="switch">
+                <Switch defaultChecked />
+              </FormItem>
+            </Col>
+          </Row>
+          <Row gutter={20}>
+            <Col span={6}>
+              <FormItem name="slider" label="slider" defaultValue={30}>
+                <Slider style={{ width: "100%" }} />
+              </FormItem>
+            </Col>
+            <Col span={6}>
+              <FormItem
+                name="sliderRange"
+                label="sliderRange"
+                defaultValue={30}
+                defaultValue={[20, 50]}
+              >
+                <Slider range style={{ width: "100%" }} />
+              </FormItem>
+            </Col>
+            <Col span={6}>
+              <FormItem
+                name="treeSelect"
+                label="treeSelect"
+                defaultValue="parent 1-1"
+              >
+                <TreeSelect
+                  showSearch
+                  style={{ width: "100%" }}
+                  dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
+                  placeholder="Please select"
+                  allowClear
+                  treeDefaultExpandAll
+                >
+                  <TreeNode value="parent 1" title="parent 1">
+                    <TreeNode value="parent 1-0" title="parent 1-0">
+                      <TreeNode value="leaf1" title="my leaf" />
+                      <TreeNode value="leaf2" title="your leaf" />
+                    </TreeNode>
+                    <TreeNode value="parent 1-1" title="parent 1-1">
+                      <TreeNode
+                        value="sss"
+                        title={<b style={{ color: "#08c" }}>sss</b>}
+                      />
+                    </TreeNode>
+                  </TreeNode>
+                </TreeSelect>
+              </FormItem>
+            </Col>
+            <Col span={6}>
+              <FormItem
+                name="timePicker"
+                label="timePicker"
+                defaultValue={moment(new Date())}
+              >
+                <TimePicker style={{ width: "100%" }} />
+              </FormItem>
+            </Col>
+          </Row>
+          <FormItem name="upload" label="upload">
+            <Upload
+              name="file"
+              action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+              defaultFileList={[
+                {
+                  uid: "-1",
+                  name: "image.png",
+                  status: "done",
+                  url:
+                    "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
+                },
+              ]}
+            >
+              <Button>Click to Upload</Button>
+            </Upload>
+          </FormItem>
+          <FormItem
+            name="transfer"
+            label="transfer"
+            onChange={this.handleChange}
+          >
+            <Transfer
+              dataSource={mockData}
+              titles={["Source", "Target"]}
+              targetKeys={targetKeys}
+              selectedKeys={selectedKeys}
+              onSelectChange={this.handleSelectChange}
+              onScroll={this.handleScroll}
+              render={(item) => item.title}
+            />
+          </FormItem>
+        </Form>
+        <Button
+          onClick={() => {
+            this.core.setGlobalStatus("edit");
+          }}
+        >
+          编辑
+        </Button>
+        <Button
+          onClick={() => {
+            this.core.setGlobalStatus("disabled");
+          }}
+        >
+          禁用
+        </Button>
+        <Button
+          onClick={() => {
+            this.core.setGlobalStatus("preview");
+          }}
+        >
+          预览
+        </Button>
+        <Button
+          onClick={() => {
+            this.core.setGlobalStatus("hidden");
+          }}
+        >
+          隐藏
+        </Button>
+      </div>
+    );
+  }
+}
+ReactDOM.render(<FormDemo />, mountNode);
+```
