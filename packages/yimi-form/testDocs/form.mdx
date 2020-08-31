@@ -16,8 +16,32 @@ class FormDemo extends React.Component {
         console.log(key, value, core);
       },
       autoValidate: true,
+      // values: {
+      //   "inner-status": {
+      //     "inner-item": "init",
+      //     "inner-inner": {
+      //       "inner-inner-item": "init",
+      //     },
+      //   },
+      // },
     });
   }
+  componentDidMount = () => {
+    this.core.setValues({
+      "inner-status": {
+        "inner-item": "init",
+        "inner-inner": {
+          "inner-inner-item": "init",
+          "inner-inner-inner": {
+            "inner-inner-inner-item": "init",
+          },
+        },
+      },
+    });
+    setTimeout(() => {
+      console.log(this.innerInnerInnerCore.getValues());
+    });
+  };
   render() {
     return (
       <div className="wrapper">
@@ -75,7 +99,10 @@ class FormDemo extends React.Component {
                     <Input />
                   </FormItem>
                   <FormItem name="inner-inner-inner" label="inner-inner-inner">
-                    <Form>
+                    <Form
+                      onMount={(c) => (this.innerInnerInnerCore = c)}
+                      className="innerInnerInner"
+                    >
                       <FormItem
                         name="inner-inner-inner-item"
                         label="inner-inner-inner-item"
@@ -139,6 +166,20 @@ class FormDemo extends React.Component {
           }}
         >
           提交
+        </Button>
+        <Button
+          onClick={() => {
+            this.core.reset();
+          }}
+        >
+          嵌套重置
+        </Button>
+        <Button
+          onClick={() => {
+            console.log(this.innerInnerInnerCore.getValues());
+          }}
+        >
+          嵌套内部值
         </Button>
       </div>
     );

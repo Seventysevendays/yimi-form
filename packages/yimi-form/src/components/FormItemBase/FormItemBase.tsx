@@ -52,21 +52,21 @@ class FormItemBase extends React.PureComponent<FormItemBaseProps> {
     if (name === this.name && this.itemCore.innerFormList.length === 0) {
       this.forceUpdate();
     } else if (typeof status === "function") {
-      if (
+      if (this.props.statusListenKeys === false) {
+        this.forceUpdate();
+      } else if (
         Array.isArray(this.statusListenKeys) &&
         this.statusListenKeys.includes(name)
       ) {
         this.forceUpdate();
-      } else if (this.props.statusListenKeys === false) {
-        this.forceUpdate();
       }
     } else if (typeof props === "function") {
-      if (
+      if (this.props.propsListenKeys === false) {
+        this.forceUpdate();
+      } else if (
         Array.isArray(this.propsListenKeys) &&
         this.propsListenKeys.includes(name)
       ) {
-        this.forceUpdate();
-      } else if (this.props.propsListenKeys === false) {
         this.forceUpdate();
       }
     }

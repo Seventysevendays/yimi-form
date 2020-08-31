@@ -3,7 +3,7 @@
  * @description: description
  * @Date: 2020-07-22 14:55:28
  * @LastEditors: xuxiang
- * @LastEditTime: 2020-08-21 14:03:13
+ * @LastEditTime: 2020-08-29 07:11:58
  */
 
 import { ACTIONS } from "./core";
@@ -37,8 +37,8 @@ class ItemCore {
   public error: any;
   public id: string;
   public funcStatus: (core: Core, ...args: any[]) => Status;
-  public statusListenKeys: string[];
-  public showListenKeys: string[];
+  public statusListenKeys: string[] | false;
+  public showListenKeys: string[] | false;
   public show: any;
   public propStatus: Status;
 
@@ -64,7 +64,8 @@ class ItemCore {
     this.showListenKeys = showListenKeys;
     if (typeof status === "function") {
       this.funcStatus = status;
-      this.statusListenKeys = getFuncArgs(status);
+      this.statusListenKeys =
+        statusListenKeys === false ? false : getFuncArgs(status);
     } else if (status) {
       this.propStatus = status;
     }
@@ -173,15 +174,14 @@ class ItemCore {
     }
   };
   public selfConsist = (name) => {
-    if (
+    if (this.statusListenKeys === false) {
+      this.consistStatus();
+    } else if (
       Array.isArray(this.statusListenKeys) &&
       this.statusListenKeys.includes(name)
     ) {
       this.consistStatus();
-    } else if (!this.statusListenKeys) {
-      this.consistStatus();
     }
   };
 }
-
 export default ItemCore;

@@ -128,18 +128,56 @@ describe("Basic component Form", () => {
   it("Form should support innerForm", () => {
     let core: Core;
     let innerCore: Core;
+    let innerInnerCore: Core;
     const form = mount(
-      <Form onMount={(c) => (core = c)}>
+      <Form onMount={(c) => (core = c)} inline>
         <FormItem name="inner">
           <Form onMount={(c) => (innerCore = c)}>
             <FormItem name="inner-item">
               <Input />
             </FormItem>
+            <FormItem name="inner-inner">
+              <Form
+                onMount={(c) => (innerInnerCore = c)}
+                className="innerInner"
+              >
+                <FormItem
+                  name="inner-inner-item"
+                  className="innerInnerItem"
+                  validateConfig={{ required: true }}
+                >
+                  <Input />
+                </FormItem>
+              </Form>
+            </FormItem>
           </Form>
         </FormItem>
       </Form>
     );
+    // 内部Form全局状态
     core.setGlobalStatus("disabled");
     expect(innerCore.getStatus("inner-item")).toEqual("disabled");
+    // 设置值
+    core.setValues({
+      inner: { "inner-inner": { "inner-inner-item": "init" } },
+    });
+    // 内部Form core获取值
+    setTimeout(() => {
+      expect(innerInnerCore.getValues("inner-inner-item")).toEqual("init");
+    });
+    // 内部Form继承外部Form属性
+    expect(
+      form.find("Form .yimi-form .innerInner").hostNodes().prop("className")
+    ).toContain("inline");
+    // 内部Form校验
+    core.validate();
+    form.update();
+    expect(
+      form.find(".innerInnerItem").hostNodes().find(".yimi-form-item-error")
+        .length
+    ).toBe(1);
+    // 外部重置，内部清空
+    core.reset();
+    expect(innerInnerCore.getValues("inner-inner-item")).toEqual(null);
   });
 });

@@ -3,7 +3,7 @@
  * @description: description
  * @Date: 2020-07-15 16:31:58
  * @LastEditors: xuxiang
- * @LastEditTime: 2020-08-21 14:03:25
+ * @LastEditTime: 2020-08-29 07:41:16
  */
 
 import { FormItemProps } from "./../components/FormItem/FormItem";
@@ -111,7 +111,9 @@ class Core {
   private handleValueChange = (key: string | string[], value: any) => {
     let validateKeys: string[];
     if (Array.isArray(key)) {
-      this.onChange(key, { ...this.values }, this);
+      if (!this.silent) {
+        this.onChange(key, { ...this.values }, this);
+      }
       validateKeys = key;
     } else {
       this.values[key] = value;
@@ -283,10 +285,29 @@ class Core {
   };
   /** 静默设置值 */
   public setValuesSilent = (values: { [key: string]: any }) => {
-    this.values = {
-      ...this.values,
-      ...values,
-    };
+    if (values) {
+      this.values = {
+        ...this.values,
+        ...values,
+      };
+      const setKeys = Object.keys(values);
+      setKeys.forEach((key) => {
+        if (this.childrenMap[key]) {
+          this.silent = true;
+          this.childrenMap[key].set("value", values[key]);
+          // 嵌套Form设置值
+          const { innerFormList } = this.childrenMap[key];
+          if (innerFormList.length > 0) {
+            innerFormList.forEach((core) => {
+              core.setValuesSilent(values[key]);
+            });
+          }
+          this.silent = false;
+        } else {
+          this.values[key] = values[key];
+        }
+      });
+    }
   };
   /** remove unmount formItem */
   public removeChild = (name: string) => {
@@ -348,9 +369,14 @@ class Core {
     resetKeys.forEach((key) => {
       const value = key in this.initValues ? this.initValues[key] : null;
       if (this.childrenMap[key]) {
+        // 不触发onChange
         this.silent = true;
         this.childrenMap[key].set("value", value);
         this.silent = false;
+        const innerFormList = this.childrenMap[key].innerFormList;
+        if (innerFormList.length > 0) {
+          innerFormList.forEach((core) => core.reset());
+        }
       } else {
         this.values[key] = value;
       }

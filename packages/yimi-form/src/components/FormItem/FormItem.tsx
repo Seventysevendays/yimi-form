@@ -123,21 +123,21 @@ class FormItem extends React.Component<FormItemProps> {
     // view 和 show 不应该同时出现
     if (typeof show === "function") {
       // 处理show的渲染时机
-      if (
+      if (this.props.viewListenKeys === false) {
+        this.handleShowUpdate();
+      } else if (
         Array.isArray(this.showListenKeys) &&
         this.showListenKeys.includes(name)
       ) {
         this.handleShowUpdate();
-      } else if (this.props.viewListenKeys === false) {
-        this.handleShowUpdate();
       }
     } else if (typeof view === "function") {
-      if (
+      if (this.props.viewListenKeys === false) {
+        this.forceUpdate();
+      } else if (
         Array.isArray(this.viewListenKeys) &&
         this.viewListenKeys.includes(name)
       ) {
-        this.forceUpdate();
-      } else if (this.props.viewListenKeys === false) {
         this.forceUpdate();
       }
     }
