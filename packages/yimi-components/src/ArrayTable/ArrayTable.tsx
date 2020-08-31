@@ -2,7 +2,6 @@ import React, { ReactNode } from "react";
 import { Form, Core } from "../../../yimi-form/src";
 import Table, { TableProps } from "antd/lib/table";
 import isEqual from "lodash/isEqual";
-import cloneDeep from "lodash/cloneDeep";
 import ArrayTableContext, {
   ArrayTableActionValue,
 } from "../context/arrayTable";
@@ -13,7 +12,6 @@ import { Status } from "../types";
 import { CoreProps } from "../../../yimi-form/src/core/core";
 
 interface ArrayTableProps<T> {
-  getTable?: (table: ArrayTable) => void;
   tableConfig?: TableProps<any>;
   onChange?: (data: T[]) => void;
   onRowChange?: (val: T, core: Core) => void;
@@ -29,7 +27,10 @@ type ArrayTableCallback = (
   dataSource: any[],
   coreList: Core[]
 ) => void;
-interface ArrayTableState {}
+interface ArrayTableState {
+  current: number;
+  pageSize: number;
+}
 const getId = () => Math.random().toString(36).slice(2);
 
 class ArrayTable extends React.Component<
@@ -41,25 +42,31 @@ class ArrayTable extends React.Component<
   protected coreList: Core[];
   public rowKey: string;
   protected actionValue: ArrayTableActionValue;
+  private coreValue: any;
 
   constructor(props: ArrayTableProps<any>) {
     super(props);
-    const { dataSource, rowKey } = props.tableConfig || {};
-    const { rowFormConfig, value } = this.props;
-    this.rowKey = typeof rowKey === "string" ? rowKey : "key";
+    const { dataSource, rowKey, pagination } = props.tableConfig || {};
+    const { rowFormConfig, value, rowCoreConfig } = this.props;
+    const { values } = rowCoreConfig || {};
+    this.coreValue = values;
     this.dataSource = dataSource || [];
+    this.rowKey = typeof rowKey === "string" ? rowKey : "key";
+    const { pageSize, current } = pagination || {};
+    this.state = {
+      current: current || 1,
+      pageSize: pageSize || 10,
+    };
     this.components = {
       body: {
         row: (props) => {
           /** IMP: antd table data-row-key */
           const key = props["data-row-key"];
           const core = this.coreList.find((core) => core.id === key);
-          const value = this.dataSource.find((row) => row[this.rowKey] === key);
           return (
             <Form
               {...rowFormConfig}
               {...props}
-              value={value}
               Com="tr"
               onChange={this.onRowChange}
               core={core}
@@ -77,25 +84,24 @@ class ArrayTable extends React.Component<
       insertBefore: this.insertBefore,
     };
     if (Array.isArray(value)) {
-      this.dataSource = cloneDeep(value);
+      this.dataSource = value.map((data) => ({ ...values, ...data }));
     } else if (Array.isArray(dataSource)) {
-      this.dataSource = cloneDeep(dataSource);
+      this.dataSource = dataSource.map((data) => ({ ...values, ...data }));
     }
-    this.updateCoreList();
+    this.coreList = this.dataSource.map(
+      (values) =>
+        new Core({ ...rowCoreConfig, values, id: values[this.rowKey] })
+    );
   }
-  public componentDidMount = () => {
-    const { getTable } = this.props;
-    if (getTable) {
-      getTable(this);
-    }
-    this.forceUpdate();
-  };
   public componentDidUpdate = (prevProps: ArrayTableProps<any>) => {
-    const { tableConfig, value } = this.props;
+    const { tableConfig, value, rowCoreConfig } = this.props;
     if (Array.isArray(value)) {
       if (!isEqual(value, prevProps.value)) {
-        this.dataSource = cloneDeep(value);
-        this.updateCoreList();
+        this.coreList = value.map(
+          (values) =>
+            new Core({ ...rowCoreConfig, values, id: values[this.rowKey] })
+        );
+        this.dataSource = value.map((data) => data);
         this.forceUpdate();
       }
     } else if (tableConfig) {
@@ -104,8 +110,11 @@ class ArrayTable extends React.Component<
         prevProps.tableConfig &&
         !isEqual(dataSource, prevProps.tableConfig.dataSource)
       ) {
-        this.dataSource = cloneDeep(dataSource);
-        this.updateCoreList();
+        this.coreList = dataSource.map(
+          (values) =>
+            new Core({ ...rowCoreConfig, values, id: values[this.rowKey] })
+        );
+        this.dataSource = dataSource.map((data) => data);
         this.forceUpdate();
       }
     }
@@ -126,6 +135,7 @@ class ArrayTable extends React.Component<
   };
   private updateCoreList = () => {
     const { rowCoreConfig } = this.props;
+    this.dataSource = this.coreList.map((core) => core.getValues());
     this.coreList = this.dataSource.map(
       (values) =>
         new Core({ ...rowCoreConfig, values, id: values[this.rowKey] })
@@ -133,7 +143,7 @@ class ArrayTable extends React.Component<
   };
   private handleCallback = (callback: ArrayTableCallback, id: string) => {
     if (callback) {
-      // TODO: make sure core funtions work
+      //  make sure core funtions work
       setTimeout(() => {
         const core = this.coreList.find((core) => core.id === id);
         callback(core, this.dataSource, this.coreList);
@@ -146,25 +156,32 @@ class ArrayTable extends React.Component<
   };
   public addBottom = (callback?: ArrayTableCallback) => {
     const id = getId();
-    this.dataSource = cloneDeep(this.dataSource);
-    this.dataSource.push({ [this.rowKey]: id });
+    this.coreList.push(
+      new Core({ values: { [this.rowKey]: id, ...this.coreValue } })
+    );
     this.updateCoreList();
     this.changeAndUpdate();
     this.handleCallback(callback, id);
+    const current = Math.ceil(this.dataSource.length / this.state.pageSize);
+    this.setState({
+      current,
+    });
   };
   public addTop = (callback?: ArrayTableCallback) => {
     const id = getId();
-    this.dataSource = cloneDeep(this.dataSource);
-    this.dataSource.unshift({ [this.rowKey]: id });
+    this.coreList.unshift(
+      new Core({ values: { [this.rowKey]: id, ...this.coreValue } })
+    );
     this.updateCoreList();
     this.changeAndUpdate();
     this.handleCallback(callback, id);
+    this.setState({
+      current: 1,
+    });
   };
   public remove = (id: string, callback?: ArrayTableCallback) => {
     const core = this.coreList.find((core) => core.id === id);
-    this.dataSource = this.dataSource.filter(
-      (item) => item[this.rowKey] !== id
-    );
+    this.coreList = this.coreList.filter((core) => core.id !== id);
     this.updateCoreList();
     if (callback) {
       callback(core, this.dataSource, this.coreList);
@@ -173,30 +190,84 @@ class ArrayTable extends React.Component<
   };
   public insertAfter = (id: string, callback?: ArrayTableCallback) => {
     const rowId = getId();
-    const index = this.dataSource.findIndex((item) => item[this.rowKey] === id);
-    this.dataSource = cloneDeep(this.dataSource);
-    this.dataSource.splice(index + 1, 0, { [this.rowKey]: rowId });
+    const index = this.coreList.findIndex((core) => core.id === id);
+    this.coreList.splice(
+      index + 1,
+      0,
+      new Core({
+        values: {
+          [this.rowKey]: rowId,
+          ...this.coreValue,
+        },
+      })
+    );
     this.updateCoreList();
     this.changeAndUpdate();
     this.handleCallback(callback, rowId);
+    if ((index + 1) % this.state.pageSize === 0) {
+      this.setState((prev) => {
+        return {
+          current: prev.current + 1,
+        };
+      });
+    }
   };
   public insertBefore = (id: string, callback?: ArrayTableCallback) => {
     const rowId = getId();
-    const index = this.dataSource.findIndex((item) => item[this.rowKey] === id);
-    this.dataSource = cloneDeep(this.dataSource);
-    this.dataSource.splice(index, 0, { [this.rowKey]: rowId });
+    const index = this.coreList.findIndex((core) => core.id === id);
+    this.coreList.splice(
+      index,
+      0,
+      new Core({
+        values: {
+          [this.rowKey]: rowId,
+          ...this.coreValue,
+        },
+      })
+    );
     this.updateCoreList();
     this.changeAndUpdate();
     this.handleCallback(callback, rowId);
   };
+  public onShowSizeChange = (current, size) => {
+    const { tableConfig } = this.props;
+    const { pagination } = tableConfig || {};
+    const { onShowSizeChange } = pagination || {};
+    if (typeof onShowSizeChange === "function") {
+      onShowSizeChange(current, size);
+    }
+    this.setState({
+      pageSize: size,
+    });
+  };
+  public onPageChange = (page, size) => {
+    const { tableConfig } = this.props;
+    const { pagination } = tableConfig || {};
+    const { onChange } = pagination || {};
+    this.updateCoreList();
+    if (typeof onChange === "function") {
+      onChange(page, size);
+    }
+    this.setState({
+      current: page,
+    });
+  };
   public render() {
-    const { tableTop, tableBottom } = this.props;
+    const { tableTop, tableBottom, tableConfig } = this.props;
+    const { current, pageSize } = this.state;
     return (
       <ArrayTableContext.Provider value={this.actionValue}>
         <div className="yimi-array-table">
           {tableTop && <div className="yimi-array-table-top">{tableTop}</div>}
           <Table
             {...this.props.tableConfig}
+            pagination={{
+              ...tableConfig.pagination,
+              current,
+              pageSize,
+              onChange: this.onPageChange,
+              onShowSizeChange: this.onShowSizeChange,
+            }}
             components={this.components}
             dataSource={this.dataSource.map((item) => item)}
           />

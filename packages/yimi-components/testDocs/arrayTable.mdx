@@ -11,9 +11,9 @@ import {
 import { Button } from "antd";
 import { ArrayTable, ArrayAction } from "../src/";
 import "../../yimi-form/src/index.less";
-import "antd/dist/antd.css";
 import "./index.less";
 import "../../yimi-components-antd-v4/src/index.less";
+import "antd/dist/antd.css";
 
 class FormDemo extends React.Component {
   constructor(props) {
@@ -58,10 +58,14 @@ class FormDemo extends React.Component {
               }}
               rowCoreConfig={{
                 autoValidate: true,
+                // 默认值
+                values: { defaultValue: "test" },
+                // 重置后初始值
+                initValues: { name: "张学友" },
               }}
               tableConfig={{
                 pagination: {
-                  pageSize: 10,
+                  pageSize: 5,
                 },
                 rowKey: "id",
                 scroll: { x: 1400 },
@@ -86,6 +90,7 @@ class FormDemo extends React.Component {
                         <Input />
                       </FormItem>
                     ),
+                    fixed: "left",
                   },
                   {
                     dataIndex: "address",
@@ -93,6 +98,16 @@ class FormDemo extends React.Component {
                     width: 200,
                     render: (t) => (
                       <FormItem name="address">
+                        <Input />
+                      </FormItem>
+                    ),
+                  },
+                  {
+                    dataIndex: "defaultValue",
+                    title: "defaultValue",
+                    width: 200,
+                    render: (t) => (
+                      <FormItem name="defaultValue">
                         <Input />
                       </FormItem>
                     ),
@@ -221,91 +236,10 @@ class FormDemo extends React.Component {
                     ),
                   },
                   {
-                    dataIndex: "innerArrayTable",
-                    title: "innerArrayTable",
-                    width: 500,
-                    render: () => (
-                      <FormItem
-                        name="innerArrayTable"
-                        defaultValue={this.dataSource}
-                      >
-                        <ArrayTable
-                          tableConfig={{
-                            rowKey: "id",
-                            pagination: { pageSize: 2 },
-                            columns: [
-                              {
-                                dataIndex: "name",
-                                title: "name",
-                                render: (t) => (
-                                  <FormItem
-                                    name="name"
-                                    validateConfig={{ required: true }}
-                                  >
-                                    <Input />
-                                  </FormItem>
-                                ),
-                                width: 100,
-                              },
-                              {
-                                dataIndex: "age",
-                                title: "age",
-                                render: (t) => (
-                                  <FormItem name="age">
-                                    <Input />
-                                  </FormItem>
-                                ),
-                                width: 100,
-                              },
-                              {
-                                dataIndex: "address",
-                                title: "address",
-                                render: (t) => (
-                                  <FormItem name="address">
-                                    <Input />
-                                  </FormItem>
-                                ),
-                                width: 200,
-                              },
-                            ],
-                          }}
-                        >
-                          <ArrayAction>
-                            {({ addBottom, addTop }) => {
-                              return (
-                                <div>
-                                  <Button
-                                    onClick={() => {
-                                      addBottom((core) => {
-                                        core.setValues({ name: "吴彦祖" });
-                                        core.setGlobalStatus("edit");
-                                      });
-                                    }}
-                                  >
-                                    底部添加
-                                  </Button>
-                                  <Button
-                                    onClick={() => {
-                                      addTop((core) => {
-                                        core.setValues({ name: "吴彦祖" });
-                                        core.setGlobalStatus("edit");
-                                      });
-                                    }}
-                                  >
-                                    顶部添加
-                                  </Button>
-                                </div>
-                              );
-                            }}
-                          </ArrayAction>
-                        </ArrayTable>
-                      </FormItem>
-                    ),
-                  },
-                  {
                     dataIndex: "opr",
                     title: "操作",
                     width: 400,
+                    fixed: "right",
                     render: (t, v) => (
                       <div>
                         <FormItem
@@ -351,6 +285,25 @@ class FormDemo extends React.Component {
                             ) : null;
                           }}
                         />
+                        <FormItem
+                          name="reset"
+                          view={(core) => {
+                            return (
+                              <Button
+                                onClick={() => {
+                                  // 不能把rowKey重置
+                                  core.reset(
+                                    Object.keys(core.getValues()).filter(
+                                      (key) => key !== "id"
+                                    )
+                                  );
+                                }}
+                              >
+                                重置
+                              </Button>
+                            );
+                          }}
+                        />
                         <ArrayAction>
                           {({ remove, insertAfter, insertBefore }) => {
                             return (
@@ -359,6 +312,7 @@ class FormDemo extends React.Component {
                                   onClick={() => {
                                     insertAfter(v.id, (core) => {
                                       core.setGlobalStatus("edit");
+                                      core.setValues({ name: "刘德华" });
                                       core.forceUpdate(["saveBtn"]);
                                     });
                                   }}

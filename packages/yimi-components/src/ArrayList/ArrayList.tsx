@@ -1,5 +1,4 @@
 import React, { ReactNode } from "react";
-import cloneDeep from "lodash/cloneDeep";
 import isEqual from "lodash/isEqual";
 import { Form, Core } from "../../../yimi-form/src";
 import ArrayTableContext, {
@@ -35,11 +34,17 @@ class ArrayList extends React.Component<Props> {
   protected actionValue: ArrayTableActionValue;
   private rowKey: string;
   protected coreList: Core[];
+  private coreValue: any;
   constructor(props: Props) {
     super(props);
-    const { rowKey, defaultValue } = props;
+    const { rowKey, defaultValue, value, rowCoreConfig } = props;
+    const { values } = rowCoreConfig || {};
+    this.coreValue = values;
     this.rowKey = rowKey || "key";
-    this.dataSource = defaultValue || [];
+    this.dataSource = (value || defaultValue || []).map((data) => ({
+      ...values,
+      ...data,
+    }));
     this.actionValue = {
       addBottom: this.addBottom,
       addTop: this.addTop,
@@ -47,20 +52,20 @@ class ArrayList extends React.Component<Props> {
       insertAfter: this.insertAfter,
       insertBefore: this.insertBefore,
     };
-    this.updateCoreList();
+    this.coreList = this.dataSource.map(
+      (values) =>
+        new Core({ ...rowCoreConfig, values, id: values[this.rowKey] })
+    );
   }
-  public componentDidMount = () => {
-    const { value } = this.props;
-    if (Array.isArray(value)) {
-      this.dataSource = cloneDeep(value);
-    }
-    this.updateCoreList();
-    this.forceUpdate();
-  };
   public componentDidUpdate = (prevProps: Props) => {
-    const { value } = this.props;
+    const { value, rowCoreConfig } = this.props;
     if (!isEqual(value, prevProps.value)) {
-      this.dataSource = Array.isArray(value) ? cloneDeep(value) : [];
+      if (Array.isArray(value)) {
+        this.coreList = value.map(
+          (values) =>
+            new Core({ ...rowCoreConfig, values, id: values[this.rowKey] })
+        );
+      }
       this.updateCoreList();
     }
   };
@@ -84,6 +89,7 @@ class ArrayList extends React.Component<Props> {
   };
   private updateCoreList = () => {
     const { rowCoreConfig } = this.props;
+    this.dataSource = this.coreList.map((core) => core.getValues());
     this.coreList = this.dataSource.map(
       (values) =>
         new Core({ ...rowCoreConfig, values, id: values[this.rowKey] })
@@ -100,25 +106,25 @@ class ArrayList extends React.Component<Props> {
   };
   public addBottom = (callback?: ArrayTableCallback) => {
     const id = getId();
-    this.dataSource = cloneDeep(this.dataSource);
-    this.dataSource.push({ [this.rowKey]: id });
+    this.coreList.push(
+      new Core({ values: { [this.rowKey]: id, ...this.coreValue } })
+    );
     this.updateCoreList();
     this.changeAndUpdate();
     this.handleCallback(callback, id);
   };
   public addTop = (callback?: ArrayTableCallback) => {
     const id = getId();
-    this.dataSource = cloneDeep(this.dataSource);
-    this.dataSource.unshift({ [this.rowKey]: id });
+    this.coreList.unshift(
+      new Core({ values: { [this.rowKey]: id, ...this.coreValue } })
+    );
     this.updateCoreList();
     this.changeAndUpdate();
     this.handleCallback(callback, id);
   };
   public remove = (id: string, callback?: ArrayTableCallback) => {
     const core = this.coreList.find((core) => core.id === id);
-    this.dataSource = this.dataSource.filter(
-      (item) => item[this.rowKey] !== id
-    );
+    this.coreList = this.coreList.filter((core) => core.id !== id);
     this.updateCoreList();
     if (callback) {
       callback(core, this.dataSource, this.coreList);
@@ -127,18 +133,34 @@ class ArrayList extends React.Component<Props> {
   };
   public insertAfter = (id: string, callback?: ArrayTableCallback) => {
     const rowId = getId();
-    const index = this.dataSource.findIndex((item) => item[this.rowKey] === id);
-    this.dataSource = cloneDeep(this.dataSource);
-    this.dataSource.splice(index + 1, 0, { [this.rowKey]: rowId });
+    const index = this.coreList.findIndex((core) => core.id === id);
+    this.coreList.splice(
+      index + 1,
+      0,
+      new Core({
+        values: {
+          [this.rowKey]: rowId,
+          ...this.coreValue,
+        },
+      })
+    );
     this.updateCoreList();
     this.changeAndUpdate();
     this.handleCallback(callback, rowId);
   };
   public insertBefore = (id: string, callback?: ArrayTableCallback) => {
     const rowId = getId();
-    const index = this.dataSource.findIndex((item) => item[this.rowKey] === id);
-    this.dataSource = cloneDeep(this.dataSource);
-    this.dataSource.splice(index, 0, { [this.rowKey]: rowId });
+    const index = this.coreList.findIndex((core) => core.id === id);
+    this.coreList.splice(
+      index,
+      0,
+      new Core({
+        values: {
+          [this.rowKey]: rowId,
+          ...this.coreValue,
+        },
+      })
+    );
     this.updateCoreList();
     this.changeAndUpdate();
     this.handleCallback(callback, rowId);
@@ -158,7 +180,6 @@ class ArrayList extends React.Component<Props> {
                 <Form
                   {...rowFormConfig}
                   core={core}
-                  value={row}
                   onChange={this.onRowChange}
                   status={status}
                 >

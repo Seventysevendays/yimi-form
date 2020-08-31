@@ -26,12 +26,6 @@ class FormDemo extends React.Component {
         age: 32 + i,
         address: "西湖区湖底公园1号",
         normalItem: "正常数据",
-        innerFormList: {
-          innerFormItem1: "haha",
-          innerInnerForm: {
-            innerInnerFormItem1: "hoho",
-          },
-        },
       });
     }
   }
@@ -46,6 +40,9 @@ class FormDemo extends React.Component {
           >
             <ArrayList
               rowKey="id"
+              rowCoreConfig={{
+                values: { defaultValue: "init" },
+              }}
               listBottom={
                 <ArrayAction>
                   {({ addBottom, addTop }) => (
@@ -90,6 +87,13 @@ class FormDemo extends React.Component {
               <FormItem
                 name="name"
                 label="name"
+                validateConfig={{ required: true }}
+              >
+                <Input />
+              </FormItem>
+              <FormItem
+                name="defaultValue"
+                label="defaultValue"
                 validateConfig={{ required: true }}
               >
                 <Input />
@@ -167,6 +171,23 @@ class FormDemo extends React.Component {
                                   }}
                                 >
                                   保存
+                                </Button>
+                              );
+                            }}
+                          />
+                          <FormItem
+                            view={(core) => {
+                              return (
+                                <Button
+                                  onClick={() => {
+                                    core.reset(
+                                      Object.keys(core.getValues()).filter(
+                                        (key) => key !== "id"
+                                      )
+                                    );
+                                  }}
+                                >
+                                  重置
                                 </Button>
                               );
                             }}
