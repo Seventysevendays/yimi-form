@@ -1,0 +1,170 @@
+---
+name: 3-2.Components
+menu: 3.Usage
+route: /usage/components
+edit: false
+---
+
+# Yimi Form
+
+组件
+
+```
+npm install yimi-form-components --save
+```
+
+```jsx
+import { ArrayList, ArrayTable, ArrayAction } from "yimi-form-components";
+```
+
+> ArrayList
+
+```jsx
+<Form>
+  <FormItem name="arrayList" label="arrayList">
+    <ArrayList
+      rowKey="id"
+      bottom={
+        <ArrayAction>
+          {({ addBottom, addTop }) => (
+            <div>
+              <Button type="primary" onClick={() => addBottom()}>
+                底部添加
+              </Button>
+              <Button type="primary" onClick={() => addTop()}>
+                顶部添加
+              </Button>
+            </div>
+          )}
+        </ArrayAction>
+      }
+    >
+      <h3>任何内容</h3>
+      <FormItem name="name" label="姓名">
+        <Input />
+      </FormItem>
+      <FormItem
+        view={(core, id) => (
+          <ArrayAction>
+            {({ insertBefore, insertAfter, remove }) => {
+              return (
+                <div>
+                  <Button
+                    onClick={() => {
+                      insertBefore(id);
+                    }}
+                  >
+                    顶部增加
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      insertAfter(id);
+                    }}
+                  >
+                    底部增加
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      remove(id);
+                    }}
+                  >
+                    删除
+                  </Button>
+                </div>
+              );
+            }}
+          </ArrayAction>
+        )}
+      />
+    </ArrayList>
+  </FormItem>
+</Form>
+```
+
+> ArrayTable
+
+```jsx
+<Form>
+  <FormItem name="arrayTable" label="arrayTable">
+    <ArrayTable
+      bottom={
+        <ArrayAction>
+          {({ addBottom, addTop }) => {
+            return (
+              <div>
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    addBottom();
+                  }}
+                >
+                  底部添加
+                </Button>
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    addTop();
+                  }}
+                >
+                  顶部添加
+                </Button>
+              </div>
+            );
+          }}
+        </ArrayAction>
+      }
+      tableConfig={{
+        rowKey: "id",
+        columns: [
+          {
+            dataIndex: "name",
+            title: "姓名",
+            render: () => {
+              return (
+                <FormItem name="name">
+                  <Input />
+                </FormItem>
+              );
+            },
+          },
+          {
+            dataIndex: "opr",
+            title: "操作",
+            render: (t, v) => (
+              <ArrayAction>
+                {({ remove, insertAfter, insertBefore }) => {
+                  return (
+                    <div>
+                      <Button
+                        onClick={() => {
+                          insertAfter(v.id);
+                        }}
+                      >
+                        底部增加
+                      </Button>
+                      <Button
+                        onClick={() => {
+                          insertBefore(v.id);
+                        }}
+                      >
+                        顶部增加
+                      </Button>
+                      <Button
+                        onClick={() => {
+                          remove(v.id);
+                        }}
+                      >
+                        删除
+                      </Button>
+                    </div>
+                  );
+                }}
+              </ArrayAction>
+            ),
+          },
+        ],
+      }}
+    />
+  </FormItem>
+</Form>
+```

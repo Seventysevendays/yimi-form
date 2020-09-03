@@ -1,0 +1,530 @@
+---
+name: 2-1.Graceful
+menu: 2.Overview
+route: /overview/graceful
+edit: false
+---
+
+import { Form, FormItem, Core } from "yimi-form-beta";
+import { ArrayTable, ArrayList, ArrayAction } from "yimi-components-beta";
+import { Input, Radio } from "yimi-components-antd-v4-beta";
+import { Button } from "antd";
+import "yimi-components-antd-v4-beta/lib/index.css";
+import "yimi-form-beta/lib/index.css";
+import "antd/dist/antd.css";
+
+# Yimi Form
+
+优雅应对复杂业务场景
+
+> 显示与隐藏
+
+```jsx
+<Form>
+  <FormItem name="showDep" label="showDep" defaultValue={true}>
+    <Radio.Group>
+      <Radio value={true}>显示</Radio>
+      <Radio value={false}>隐藏</Radio>
+    </Radio.Group>
+  </FormItem>
+  <FormItem name="show" label="show" show={(core, showDep) => !!showDep}>
+    <Input />
+  </FormItem>
+  <FormItem name="other" label="other">
+    <Input />
+  </FormItem>
+</Form>
+```
+
+<Form>
+  <FormItem name="showDep" label="showDep" defaultValue={true}>
+    <Radio.Group
+      options={[
+        { label: "显示", value: true },
+        { label: "隐藏", value: false },
+      ]}
+    />
+  </FormItem>
+  <FormItem name="show" label="show" show={(core, showDep) => !!showDep}>
+    <Input />
+  </FormItem>
+  <FormItem name="other" label="other">
+    <Input />
+  </FormItem>
+</Form>
+
+> 视图控制
+
+```jsx
+<Form>
+  <FormItem name="viewDep" label="viewDep">
+    <Input />
+  </FormItem>
+  <FormItem
+    name="view"
+    label="view"
+    view={(core, viewDep) => {
+      if (viewDep === "input") {
+        return (
+          <FormItem name="view">
+            <Input />
+          </FormItem>
+        );
+      } else {
+        return '当viewDep的值为"Input"时，为Input';
+      }
+    }}
+  />
+  <FormItem name="other" label="other">
+    <Input />
+  </FormItem>
+</Form>
+```
+
+<Form>
+  <FormItem name="viewDep" label="viewDep">
+    <Input />
+  </FormItem>
+  <FormItem
+    name="view"
+    label="view"
+    view={(core, viewDep) => {
+      if (viewDep === "input") {
+        return (
+          <FormItem name="view" label="view">
+            <Input />
+          </FormItem>
+        );
+      } else {
+        return '当viewDep的值为"input"时，为Input';
+      }
+    }}
+  />
+  <FormItem name="other" label="other">
+    <Input />
+  </FormItem>
+</Form>
+
+> 动态状态
+
+```jsx
+<Form>
+  <FormItem name="statusDep" label="statusDep" defaultValue="edit">
+    <Radio.Group
+      options={[
+        { label: "编辑", value: "edit" },
+        { label: "禁用", value: "disabled" },
+        { label: "预览", value: "preview" },
+        { label: "隐藏", value: "hidden" },
+      ]}
+    />
+  </FormItem>
+  <FormItem
+    name="status"
+    label="status"
+    status={(core, statusDep) => statusDep}
+  >
+    <Input />
+  </FormItem>
+  <FormItem name="other" label="other">
+    <Input />
+  </FormItem>
+</Form>
+```
+
+<Form>
+  <FormItem name="statusDep" label="statusDep" defaultValue="edit">
+    <Radio.Group
+      options={[
+        { label: "编辑", value: "edit" },
+        { label: "禁用", value: "disabled" },
+        { label: "预览", value: "preview" },
+        { label: "隐藏", value: "hidden" },
+      ]}
+    />
+  </FormItem>
+  <FormItem
+    name="status"
+    label="status"
+    defaultValue="init"
+    status={(core, statusDep) => statusDep}
+  >
+    <Input />
+  </FormItem>
+  <FormItem name="other" label="other">
+    <Input />
+  </FormItem>
+</Form>
+
+> 动态校验
+
+```jsx
+<Form>
+  <FormItem name="validateDep" label="validateDep" defaultValue={true}>
+    <Radio.Group
+      options={[
+        { label: "校验", value: true },
+        { label: "不校验", value: false },
+      ]}
+    />
+  </FormItem>
+  <FormItem
+    name="validate"
+    label="validate"
+    validateConfig={(val, core) => ({ required: val.validateDep })}
+  >
+    <Input />
+  </FormItem>
+  <FormItem name="other" label="other">
+    <Input />
+  </FormItem>
+  <FormItem
+    view={(core) => <Button onClick={() => core.validate()}>校验</Button>}
+  />
+</Form>
+```
+
+<Form>
+  <FormItem name="validateDep" label="validateDep" defaultValue={true}>
+    <Radio.Group
+      options={[
+        { label: "校验", value: true },
+        { label: "不校验", value: false },
+      ]}
+    />
+  </FormItem>
+  <FormItem
+    name="validate"
+    label="validate"
+    validateConfig={(val, core) => ({ required: val.validateDep })}
+  >
+    <Input />
+  </FormItem>
+  <FormItem name="other" label="other">
+    <Input />
+  </FormItem>
+  <FormItem
+    view={(core) => <Button onClick={() => core.validate()}>校验</Button>}
+  />
+</Form>
+
+> 嵌套数据
+
+```jsx
+<Form>
+  <FormItem name="inner" label="inner">
+    <Form>
+      <FormItem name="inner-item" label="inner-item">
+        <Input />
+      </FormItem>
+    </Form>
+  </FormItem>
+</Form>
+```
+
+<Form>
+  <FormItem name="inner" label="inner">
+    <Form>
+      <FormItem name="inner-item" label="inner-item">
+        <Input />
+      </FormItem>
+    </Form>
+  </FormItem>
+</Form>
+
+> 自增 List
+
+```jsx
+<Form>
+  <FormItem name="arrayList" label="arrayList">
+    <ArrayList
+      rowKey="id"
+      bottom={
+        <ArrayAction>
+          {({ addBottom, addTop }) => (
+            <div>
+              <Button type="primary" onClick={() => addBottom()}>
+                底部添加
+              </Button>
+              <Button type="primary" onClick={() => addTop()}>
+                顶部添加
+              </Button>
+            </div>
+          )}
+        </ArrayAction>
+      }
+    >
+      <h3>任何内容</h3>
+      <FormItem name="name" label="姓名">
+        <Input />
+      </FormItem>
+      <FormItem
+        view={(core, id) => (
+          <ArrayAction>
+            {({ insertBefore, insertAfter, remove }) => {
+              return (
+                <div>
+                  <Button
+                    onClick={() => {
+                      insertBefore(id);
+                    }}
+                  >
+                    顶部增加
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      insertAfter(id);
+                    }}
+                  >
+                    底部增加
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      remove(id);
+                    }}
+                  >
+                    删除
+                  </Button>
+                </div>
+              );
+            }}
+          </ArrayAction>
+        )}
+      />
+    </ArrayList>
+  </FormItem>
+</Form>
+```
+
+<Form>
+  <FormItem name="arrayList" label="arrayList">
+    <ArrayList
+      rowKey="id"
+      bottom={
+        <ArrayAction>
+          {({ addBottom, addTop }) => (
+            <div>
+              <Button type="primary" onClick={() => addBottom()}>
+                底部添加
+              </Button>
+              <Button type="primary" onClick={() => addTop()}>
+                顶部添加
+              </Button>
+            </div>
+          )}
+        </ArrayAction>
+      }
+    >
+      <h3>任何内容</h3>
+      <FormItem name="name" label="姓名">
+        <Input />
+      </FormItem>
+      <FormItem
+        view={(core, id) => (
+          <ArrayAction>
+            {({ insertBefore, insertAfter, remove }) => {
+              return (
+                <div>
+                  <Button
+                    onClick={() => {
+                      insertBefore(id);
+                    }}
+                  >
+                    顶部增加
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      insertAfter(id);
+                    }}
+                  >
+                    底部增加
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      remove(id);
+                    }}
+                  >
+                    删除
+                  </Button>
+                </div>
+              );
+            }}
+          </ArrayAction>
+        )}
+      />
+    </ArrayList>
+  </FormItem>
+</Form>
+
+> 自增 Table
+
+```jsx
+<Form>
+  <FormItem name="arrayTable" label="arrayTable">
+    <ArrayTable
+      bottom={
+        <ArrayAction>
+          {({ addBottom, addTop }) => {
+            return (
+              <div>
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    addBottom();
+                  }}
+                >
+                  底部添加
+                </Button>
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    addTop();
+                  }}
+                >
+                  顶部添加
+                </Button>
+              </div>
+            );
+          }}
+        </ArrayAction>
+      }
+      tableConfig={{
+        rowKey: "id",
+        columns: [
+          {
+            dataIndex: "name",
+            title: "姓名",
+            render: () => {
+              return (
+                <FormItem name="name">
+                  <Input />
+                </FormItem>
+              );
+            },
+          },
+          {
+            dataIndex: "opr",
+            title: "操作",
+            render: (t, v) => (
+              <ArrayAction>
+                {({ remove, insertAfter, insertBefore }) => {
+                  return (
+                    <div>
+                      <Button
+                        onClick={() => {
+                          insertAfter(v.id);
+                        }}
+                      >
+                        底部增加
+                      </Button>
+                      <Button
+                        onClick={() => {
+                          insertBefore(v.id);
+                        }}
+                      >
+                        顶部增加
+                      </Button>
+                      <Button
+                        onClick={() => {
+                          remove(v.id);
+                        }}
+                      >
+                        删除
+                      </Button>
+                    </div>
+                  );
+                }}
+              </ArrayAction>
+            ),
+          },
+        ],
+      }}
+    />
+  </FormItem>
+</Form>
+```
+
+<Form>
+  <FormItem name="arrayTable" label="arrayTable">
+    <ArrayTable
+      bottom={
+        <ArrayAction>
+          {({ addBottom, addTop }) => {
+            return (
+              <div>
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    addBottom();
+                  }}
+                >
+                  底部添加
+                </Button>
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    addTop();
+                  }}
+                >
+                  顶部添加
+                </Button>
+              </div>
+            );
+          }}
+        </ArrayAction>
+      }
+      tableConfig={{
+        rowKey: "id",
+        columns: [
+          {
+            dataIndex: "name",
+            title: "姓名",
+            render: () => {
+              return (
+                <FormItem name="name">
+                  <Input />
+                </FormItem>
+              );
+            },
+          },
+          {
+            dataIndex: "opr",
+            title: "操作",
+            render: (t, v) => (
+              <ArrayAction>
+                {({ remove, insertAfter, insertBefore }) => {
+                  return (
+                    <div>
+                      <Button
+                        onClick={() => {
+                          insertAfter(v.id);
+                        }}
+                      >
+                        底部增加
+                      </Button>
+                      <Button
+                        onClick={() => {
+                          insertBefore(v.id);
+                        }}
+                      >
+                        顶部增加
+                      </Button>
+                      <Button
+                        onClick={() => {
+                          remove(v.id);
+                        }}
+                      >
+                        删除
+                      </Button>
+                    </div>
+                  );
+                }}
+              </ArrayAction>
+            ),
+          },
+        ],
+      }}
+    />
+
+  </FormItem>
+</Form>

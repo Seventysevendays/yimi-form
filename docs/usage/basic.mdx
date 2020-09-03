@@ -1,0 +1,63 @@
+---
+name: 3-1.Basic
+menu: 3.Usage
+route: /usage/basic
+edit: false
+---
+
+# Yimi Form
+
+基本使用
+
+```
+npm install yimi-form yimi-components-antd-v3 or yimi-components-antd-v4(与项目中的antd版本保持一致)
+```
+
+```jsx
+import React from 'react'
+import { Form, FormItem, Core } from "yimi-form";
+import { Input } from "yimi-components-antd-v3"; // or
+import { Input } from "yimi-components-antd-v4";
+// 样式
+import "antd/dist/antd.css";
+import "yimi-form/lib/index.css";
+import "yimi-components-antd-v3/lib/index.css"; // or
+import "yimi-components-antd-v4/lib/index.css";
+
+class Form extends React.Components<{}> {
+  public core:Core
+  constructor(props) {
+    super(props)
+    this.core = new Core({
+      onChange: (keys, values, core) => {}
+    })
+  }
+  public render() {
+    return (
+      <Form core={this.core}>
+        <FormItem name="name" label="name">
+          <Input/>
+        </FormItem>
+      </Form>
+    )
+  }
+}
+
+```
+
+```jsx
+import React, { useState } from "React";
+import { Form, FormItem, Core } from "yimi-form";
+import { Input } from "yimi-components-antd-v4";
+
+function Form(props: {}) {
+  const [core] = useState < Core > new Core({});
+  return (
+    <Form core={core}>
+      <FormItem name="name" label="name">
+        <Input />
+      </FormItem>
+    </Form>
+  );
+}
+```

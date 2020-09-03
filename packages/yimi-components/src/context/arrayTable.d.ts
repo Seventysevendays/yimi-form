@@ -7,6 +7,7 @@ export interface ArrayTableActionValue {
     remove: (id: string, callback?: ArrayTableCallback) => void;
     insertAfter: (id: string, callback?: ArrayTableCallback) => void;
     insertBefore: (id: string, callback?: ArrayTableCallback) => void;
+    dataSource: any[];
 }
 declare const ArrayTableContext: import("react").Context<ArrayTableActionValue>;
 export default ArrayTableContext;

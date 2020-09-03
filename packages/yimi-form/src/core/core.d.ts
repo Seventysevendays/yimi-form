@@ -74,6 +74,7 @@ declare class Core {
     on: EventEmitter["on"];
     emit: EventEmitter["emit"];
     removeListener: EventEmitter["removeListener"];
+    removeAllListeners: EventEmitter["removeAllListeners"];
     private handleValueChange;
     private handleStatusChange;
     private handleErrorChange;

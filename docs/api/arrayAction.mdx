@@ -1,0 +1,95 @@
+---
+name: 4-6.ArrayAction
+menu: 4.Api
+route: /api/arrayAction
+edit: false
+---
+
+# Yimi Form
+
+ArrayAction 介绍：适用于 ArrayTable 和 ArrayList 的操作按钮组件
+
+## 方法
+
+```ts
+type ArrayTableCallback = (
+  core: Core,
+  dataSource: any[],
+  coreList: Core[]
+) => void;
+// core 为对应操作之后增加或删除的行的core，dataSource为操作后的列表的值，coreList为操作后的coreList
+```
+
+| 名字                                                       | 说明                   |
+| ---------------------------------------------------------- | ---------------------- |
+| addBottom: (callback?: ArrayTableCallback) => void         | 底部添加的方法         |
+| addTop: (callback?: ArrayTableCallback) => void            | 顶部添加的方法         |
+| remove:(id: string, callback?: ArrayTableCallback) => void | 删除的方法             |
+| insertAfter: (callback?: ArrayTableCallback) => void       | 在当前项之后添加的方法 |
+| insertBefore: (callback?: ArrayTableCallback) => void      | 在当前项之前添加的方法 |
+| dataSource: any[]                                          | 当前数据               |
+
+## 使用
+
+```jsx
+<FormItem
+  view={(core, id) => {
+    // id对应rowKey属性
+    return (
+      <ArrayAction>
+        {({ addBottom, addTop, insertAfter, insertBefore, remove }) => {
+          return (
+            <div>
+              <Button
+                onClick={() => {
+                  addBottom((core) => {
+                    console.log(core);
+                  });
+                }}
+              >
+                列表底部添加项
+              </Button>
+              <Button
+                onClick={() => {
+                  addTop((core) => {
+                    console.log(core);
+                  });
+                }}
+              >
+                列表顶部添加项
+              </Button>
+              <Button
+                onClick={() => {
+                  insertAfter(id, (core) => {
+                    console.log(core);
+                  });
+                }}
+              >
+                当前行底部增加
+              </Button>
+              <Button
+                onClick={() => {
+                  insertBefore(id, (core) => {
+                    console.log(core);
+                  });
+                }}
+              >
+                当前行顶部增加
+              </Button>
+              <Button
+                onClick={() => {
+                  remove(id, (core) => {
+                    console.log(core);
+                  });
+                }}
+              >
+                删除
+              </Button>
+            </div>
+          );
+        }}
+      </ArrayAction>
+    );
+  }}
+/>
+```
