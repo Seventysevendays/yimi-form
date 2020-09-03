@@ -9,7 +9,8 @@ declare class FormItemBase extends React.PureComponent<FormItemBaseProps> {
     core: Core;
     name: string;
     itemCore: ItemCore;
-    statusListenKeys: string[];
+    statusListenKeys: string[] | false;
+    propsListenKeys: string[] | false;
     constructor(props: FormItemBaseProps);
     componentWillUnmount: () => void;
     componentDidMount: () => void;
@@ -17,6 +18,7 @@ declare class FormItemBase extends React.PureComponent<FormItemBaseProps> {
     onChange: (...args: any[]) => void;
     getChildProps: () => any;
     handleStatusUpdate: (name: any) => void;
+    private handleForceUpdate;
     render(): JSX.Element;
 }
 export default FormItemBase;

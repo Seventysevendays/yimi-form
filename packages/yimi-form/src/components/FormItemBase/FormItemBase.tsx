@@ -38,10 +38,12 @@ class FormItemBase extends React.PureComponent<FormItemBaseProps> {
     }
     this.core.on(ACTIONS.value, this.handleValueUpdate);
     this.core.on(ACTIONS.status, this.handleStatusUpdate);
+    this.core.on(ACTIONS.forceUpdate, this.handleForceUpdate);
   }
   public componentWillUnmount = () => {
     this.core.removeListener(ACTIONS.value, this.handleValueUpdate);
     this.core.removeListener(ACTIONS.status, this.handleStatusUpdate);
+    this.core.removeListener(ACTIONS.forceUpdate, this.handleForceUpdate);
   };
   public componentDidMount = () => {
     this.forceUpdate();
@@ -113,6 +115,13 @@ class FormItemBase extends React.PureComponent<FormItemBaseProps> {
   };
   public handleStatusUpdate = (name) => {
     if (name === this.name) {
+      this.forceUpdate();
+    }
+  };
+  private handleForceUpdate = (keys: string[]) => {
+    if (Array.isArray(keys) && keys.includes(this.name)) {
+      this.forceUpdate();
+    } else if (!keys) {
       this.forceUpdate();
     }
   };

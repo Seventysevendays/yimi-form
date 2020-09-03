@@ -3,7 +3,7 @@
  * @description: description
  * @Date: 2020-07-15 16:31:58
  * @LastEditors: xuxiang
- * @LastEditTime: 2020-08-29 07:41:16
+ * @LastEditTime: 2020-09-02 18:44:19
  */
 
 import { FormItemProps } from "./../components/FormItem/FormItem";
@@ -107,6 +107,9 @@ class Core {
   };
   public removeListener: EventEmitter["removeListener"] = (event, listener) => {
     return this.eventCenter.removeListener(event, listener);
+  };
+  public removeAllListeners: EventEmitter["removeAllListeners"] = () => {
+    return this.eventCenter.removeAllListeners();
   };
   private handleValueChange = (key: string | string[], value: any) => {
     let validateKeys: string[];

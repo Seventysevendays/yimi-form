@@ -26,6 +26,7 @@ class FormItemLabel extends React.PureComponent<FormItemLabelProps> {
     }
     this.required = !!this.validateConfig["required"];
     this.core.on(ACTIONS.value, this.handleRequired);
+    this.core.on(ACTIONS.forceUpdate, this.handleForceUpdate);
   }
   private handleForceUpdate = (keys: string[]) => {
     if (Array.isArray(keys) && keys.includes(this.name)) {

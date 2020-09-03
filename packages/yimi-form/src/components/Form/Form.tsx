@@ -3,7 +3,7 @@
  * @description: description
  * @Date: 2020-07-15 16:39:01
  * @LastEditors: xuxiang
- * @LastEditTime: 2020-08-29 07:31:06
+ * @LastEditTime: 2020-09-02 18:44:08
  */
 
 import React from "react";
@@ -78,7 +78,7 @@ export class Form extends React.Component<FormProps> {
   };
   public componentWillUnmount = () => {
     this.core.removeListener("change", this.onChange);
-    this.core.eventCenter.removeAllListeners();
+    this.core.removeAllListeners();
   };
   public componentDidUpdate = (prevProps: FormProps) => {
     const { value, status } = this.props;

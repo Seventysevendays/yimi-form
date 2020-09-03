@@ -24,8 +24,8 @@ declare class ItemCore {
     error: any;
     id: string;
     funcStatus: (core: Core, ...args: any[]) => Status;
-    statusListenKeys: string[];
-    showListenKeys: string[];
+    statusListenKeys: string[] | false;
+    showListenKeys: string[] | false;
     show: any;
     propStatus: Status;
     constructor(props: ItemCoreProps);

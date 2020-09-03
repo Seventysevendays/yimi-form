@@ -19,6 +19,7 @@ class FormItemError extends React.PureComponent<FormItemErrorProps> {
     this.error =
       typeof this.errorRender === "function" ? this.errorRender(error) : error;
     this.core.on(ACTIONS.error, this.handleUpdate);
+    this.core.on(ACTIONS.forceUpdate, this.handleForceUpdate);
   }
   private handleForceUpdate = (keys: string[]) => {
     if (Array.isArray(keys) && keys.includes(this.name)) {
