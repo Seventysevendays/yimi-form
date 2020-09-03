@@ -1,10 +1,12 @@
 /// <reference types="react" />
+import { Core } from "../../../yimi-form/src";
+declare type ArrayTableCallback = (core: Core, dataSource: any[], coreList: Core[]) => void;
 export interface ArrayTableActionValue {
-    addBottom: () => void;
-    addTop: () => void;
-    remove: (id: string) => void;
-    insertAfter: (id: string) => void;
-    insertBefore: (id: string) => void;
+    addBottom: (callback?: ArrayTableCallback) => void;
+    addTop: (callback?: ArrayTableCallback) => void;
+    remove: (id: string, callback?: ArrayTableCallback) => void;
+    insertAfter: (id: string, callback?: ArrayTableCallback) => void;
+    insertBefore: (id: string, callback?: ArrayTableCallback) => void;
 }
 declare const ArrayTableContext: import("react").Context<ArrayTableActionValue>;
 export default ArrayTableContext;

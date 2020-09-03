@@ -52,7 +52,6 @@ class FormDemo extends React.Component {
             defaultValue={this.dataSource}
           >
             <ArrayTable
-              getTable={(table) => (this.table = table)}
               rowFormConfig={{
                 globalStatus: "preview",
               }}
@@ -70,6 +69,22 @@ class FormDemo extends React.Component {
                 rowKey: "id",
                 scroll: { x: 1400 },
                 columns: [
+                  {
+                    dataIndex: "id",
+                    title: "rowNum",
+                    render: (t) => (
+                      <ArrayAction>
+                        {({ dataSource }) => {
+                          const index = dataSource.findIndex(
+                            (data) => data.id === t
+                          );
+                          return index + 1;
+                        }}
+                      </ArrayAction>
+                    ),
+                    width: 100,
+                    fixed: "left",
+                  },
                   {
                     dataIndex: "name",
                     title: "name",
@@ -209,33 +224,6 @@ class FormDemo extends React.Component {
                     ),
                   },
                   {
-                    dataIndex: "innerFormList",
-                    title: "innerFormList",
-                    width: 200,
-                    render: (t) => (
-                      <FormItem name="innerFormList">
-                        <Form>
-                          <FormItem name="innerFormItem1">
-                            <Input />
-                          </FormItem>
-                          <FormItem name="innerFormItem2">
-                            <Input />
-                          </FormItem>
-                          <FormItem name="innerInnerForm">
-                            <Form>
-                              <FormItem name="innerInnerFormItem1">
-                                <Input />
-                              </FormItem>
-                              <FormItem name="innerInnerFormItem2">
-                                <Input />
-                              </FormItem>
-                            </Form>
-                          </FormItem>
-                        </Form>
-                      </FormItem>
-                    ),
-                  },
-                  {
                     dataIndex: "opr",
                     title: "操作",
                     width: 400,
@@ -355,7 +343,7 @@ class FormDemo extends React.Component {
                   },
                 ],
               }}
-              tableBottom={
+              bottom={
                 <ArrayAction>
                   {({ addBottom, addTop }) => {
                     return (

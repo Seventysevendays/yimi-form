@@ -15,7 +15,7 @@ describe("ArrayTable", () => {
             rowCoreConfig={{
               values: { name: "xiaoming" },
             }}
-            tableBottom={
+            bottom={
               <ArrayAction>
                 {({ addBottom, addTop }) => {
                   return (

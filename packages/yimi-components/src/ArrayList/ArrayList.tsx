@@ -14,11 +14,13 @@ interface ArrayListProps<T> {
   onChange?: (data: T[]) => void;
   rowKey?: string;
   onRowChange?: (val: any, core: Core) => void;
-  listBottom?: ReactNode;
-  listTop?: ReactNode;
+  bottom?: ReactNode;
+  top?: ReactNode;
   rowFormConfig?: FormProps;
   rowCoreConfig?: CoreProps;
   status?: Status;
+  className?: string;
+  style?: React.CSSProperties;
 }
 type ArrayTableCallback = (
   core: Core,
@@ -27,7 +29,10 @@ type ArrayTableCallback = (
 ) => void;
 type Props = ArrayListProps<any>;
 
-const getId = () => Math.random().toString(36).slice(2);
+const getId = () =>
+  Math.random()
+    .toString(36)
+    .slice(2);
 
 class ArrayList extends React.Component<Props> {
   protected dataSource: any[];
@@ -40,22 +45,24 @@ class ArrayList extends React.Component<Props> {
     const { rowKey, defaultValue, value, rowCoreConfig } = props;
     const { values } = rowCoreConfig || {};
     this.coreValue = values;
-    this.rowKey = rowKey || "key";
+    this.rowKey = rowKey || "id";
     this.dataSource = (value || defaultValue || []).map((data) => ({
       ...values,
       ...data,
     }));
+
+    this.coreList = this.dataSource.map(
+      (values) =>
+        new Core({ ...rowCoreConfig, values, id: values[this.rowKey] })
+    );
     this.actionValue = {
       addBottom: this.addBottom,
       addTop: this.addTop,
       remove: this.remove,
       insertAfter: this.insertAfter,
       insertBefore: this.insertBefore,
+      dataSource: this.dataSource,
     };
-    this.coreList = this.dataSource.map(
-      (values) =>
-        new Core({ ...rowCoreConfig, values, id: values[this.rowKey] })
-    );
   }
   public componentDidUpdate = (prevProps: Props) => {
     const { value, rowCoreConfig } = this.props;
@@ -166,11 +173,16 @@ class ArrayList extends React.Component<Props> {
     this.handleCallback(callback, rowId);
   };
   public render() {
-    const { listBottom, listTop, rowFormConfig, status } = this.props;
+    const { bottom, top, rowFormConfig, status, className, style } = this.props;
     return (
-      <ArrayTableContext.Provider value={this.actionValue}>
-        {listTop && <div className="yimi-array-list-top">{listTop}</div>}
-        <div className="yimi-array-list">
+      <ArrayTableContext.Provider
+        value={{ ...this.actionValue, dataSource: this.dataSource }}
+      >
+        {top && <div className="yimi-array-list-top">{top}</div>}
+        <div
+          className={`yimi-array-list ${className ? className : ""}`}
+          style={style}
+        >
           {this.dataSource.map((row) => {
             const core = this.coreList.find(
               (core) => core.id === row[this.rowKey]
@@ -188,9 +200,7 @@ class ArrayList extends React.Component<Props> {
               </div>
             );
           })}
-          {listBottom && (
-            <div className="yimi-array-list-bottom">{listBottom}</div>
-          )}
+          {bottom && <div className="yimi-array-list-bottom">{bottom}</div>}
         </div>
       </ArrayTableContext.Provider>
     );

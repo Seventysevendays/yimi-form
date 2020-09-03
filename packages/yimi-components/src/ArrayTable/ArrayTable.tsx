@@ -15,12 +15,14 @@ interface ArrayTableProps<T> {
   tableConfig?: TableProps<any>;
   onChange?: (data: T[]) => void;
   onRowChange?: (val: T, core: Core) => void;
-  tableTop?: ReactNode;
-  tableBottom?: ReactNode;
+  top?: ReactNode;
+  bottom?: ReactNode;
   rowFormConfig?: FormProps;
   rowCoreConfig?: CoreProps;
   value?: T[];
   status?: Status;
+  className?: string;
+  style?: React.CSSProperties;
 }
 type ArrayTableCallback = (
   core: Core,
@@ -31,7 +33,10 @@ interface ArrayTableState {
   current: number;
   pageSize: number;
 }
-const getId = () => Math.random().toString(36).slice(2);
+const getId = () =>
+  Math.random()
+    .toString(36)
+    .slice(2);
 
 class ArrayTable extends React.Component<
   ArrayTableProps<any>,
@@ -76,13 +81,7 @@ class ArrayTable extends React.Component<
         },
       },
     };
-    this.actionValue = {
-      addBottom: this.addBottom,
-      addTop: this.addTop,
-      remove: this.remove,
-      insertAfter: this.insertAfter,
-      insertBefore: this.insertBefore,
-    };
+
     if (Array.isArray(value)) {
       this.dataSource = value.map((data) => ({ ...values, ...data }));
     } else if (Array.isArray(dataSource)) {
@@ -92,6 +91,14 @@ class ArrayTable extends React.Component<
       (values) =>
         new Core({ ...rowCoreConfig, values, id: values[this.rowKey] })
     );
+    this.actionValue = {
+      addBottom: this.addBottom,
+      addTop: this.addTop,
+      remove: this.remove,
+      insertAfter: this.insertAfter,
+      insertBefore: this.insertBefore,
+      dataSource: this.dataSource,
+    };
   }
   public componentDidUpdate = (prevProps: ArrayTableProps<any>) => {
     const { tableConfig, value, rowCoreConfig } = this.props;
@@ -253,12 +260,17 @@ class ArrayTable extends React.Component<
     });
   };
   public render() {
-    const { tableTop, tableBottom, tableConfig } = this.props;
+    const { top, bottom, tableConfig, className, style } = this.props;
     const { current, pageSize } = this.state;
     return (
-      <ArrayTableContext.Provider value={this.actionValue}>
-        <div className="yimi-array-table">
-          {tableTop && <div className="yimi-array-table-top">{tableTop}</div>}
+      <ArrayTableContext.Provider
+        value={{ ...this.actionValue, dataSource: this.dataSource }}
+      >
+        <div
+          className={`yimi-array-table ${className ? className : ""}`}
+          style={style}
+        >
+          {top && <div className="yimi-array-table-top">{top}</div>}
           <Table
             {...this.props.tableConfig}
             pagination={{
@@ -271,9 +283,7 @@ class ArrayTable extends React.Component<
             components={this.components}
             dataSource={this.dataSource.map((item) => item)}
           />
-          {tableBottom && (
-            <div className="yimi-array-table-bottom">{tableBottom}</div>
-          )}
+          {bottom && <div className="yimi-array-table-bottom">{bottom}</div>}
         </div>
       </ArrayTableContext.Provider>
     );
