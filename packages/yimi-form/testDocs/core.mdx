@@ -6,9 +6,15 @@ import { Input, Checkbox, Radio } from "../../yimi-components-antd-v4/src";
 import { Button } from "antd";
 import "./index.less";
 import "antd/dist/antd.css";
+import get from "../src/utils/getFuncArgs";
 
 class FormDemo extends React.Component {
   constructor(props) {
+    console.log(
+      get((core, showDep) => {
+        return !!showDep;
+      })
+    );
     super(props);
     this.core = new Core({
       onChange: (keys, value, core) => {
