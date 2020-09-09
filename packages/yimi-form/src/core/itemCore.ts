@@ -3,7 +3,7 @@
  * @description: description
  * @Date: 2020-07-22 14:55:28
  * @LastEditors: xuxiang
- * @LastEditTime: 2020-09-09 10:55:06
+ * @LastEditTime: 2020-09-09 12:41:13
  */
 
 import { ACTIONS } from "./core";
@@ -36,7 +36,7 @@ class ItemCore {
   public status: Status;
   public error: any;
   public id: string;
-  public funcStatus: (core: Core, ...args: any[]) => Status;
+  public funcStatus: (core: Core, val: any) => Status;
   public statusListenKeys: string[] | false;
   public showListenKeys: string[] | false;
   public show: any;

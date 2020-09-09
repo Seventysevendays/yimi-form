@@ -2,7 +2,7 @@ import React, { ReactNode } from "react";
 import Core, { Status } from "../../core/core";
 import { RuleItem } from "async-validator";
 export declare type ItemValidateConfig = RuleItem | RuleItem[] | ((val: any, core: Core) => RuleItem | RuleItem[]);
-export declare type ItemStatus = Status | ((core: Core, ...args: any[]) => Status);
+export declare type ItemStatus = Status | ((core: Core, val: any) => Status);
 export interface FormItemProps {
     name?: string;
     label?: ReactNode;
@@ -15,9 +15,9 @@ export interface FormItemProps {
     status?: ItemStatus;
     props?: {
         [key: string]: any;
-    } | ((core: Core, ...args: any[]) => any);
-    show?: (core: Core, ...args: any[]) => boolean;
-    view?: (core: Core, ...args: any[]) => ReactNode;
+    } | ((core: Core, val: any) => any);
+    show?: (core: Core, val: any) => boolean;
+    view?: (core: Core, val: any) => ReactNode;
     validateConfig?: ItemValidateConfig;
     error?: string;
     errorRender?: (error: string | {

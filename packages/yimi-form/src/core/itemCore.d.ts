@@ -23,7 +23,7 @@ declare class ItemCore {
     status: Status;
     error: any;
     id: string;
-    funcStatus: (core: Core, ...args: any[]) => Status;
+    funcStatus: (core: Core, val: any) => Status;
     statusListenKeys: string[] | false;
     showListenKeys: string[] | false;
     show: any;
@@ -37,7 +37,6 @@ declare class ItemCore {
         onlySelf?: boolean;
     }) => Promise<unknown>;
     removeListener: () => void;
-    transformKeysToArgs: (keys: string[]) => any[];
     consistStatus: () => void;
     selfConsist: (name: any) => void;
 }

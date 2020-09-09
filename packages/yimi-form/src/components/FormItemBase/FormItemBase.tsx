@@ -33,6 +33,7 @@ class FormItemBase extends React.PureComponent<FormItemBaseProps> {
     if (typeof status === "function" && !this.statusListenKeys) {
       this.statusListenKeys = getFuncArgs(status);
     }
+    console.log(this.statusListenKeys);
     if (typeof propProps === "function") {
       this.propsListenKeys = getFuncArgs(propProps as any);
     }

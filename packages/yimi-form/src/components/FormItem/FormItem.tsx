@@ -15,7 +15,7 @@ export type ItemValidateConfig =
   | RuleItem[]
   | ((val: any, core: Core) => RuleItem | RuleItem[]);
 
-export type ItemStatus = Status | ((core: Core, ...args: any[]) => Status);
+export type ItemStatus = Status | ((core: Core, val: any) => Status);
 
 export interface FormItemProps {
   name?: string;
@@ -29,11 +29,11 @@ export interface FormItemProps {
   value?: any;
   status?: ItemStatus;
   /** insert props or deal with form inserted props */
-  props?: { [key: string]: any } | ((core: Core, ...args: any[]) => any);
+  props?: { [key: string]: any } | ((core: Core, val: any) => any);
   /** show control: when not show, core status will be hidden and value will not be removed from core value */
-  show?: (core: Core, ...args: any[]) => boolean;
+  show?: (core: Core, val: any) => boolean;
   /** view control */
-  view?: (core: Core, ...args: any[]) => ReactNode;
+  view?: (core: Core, val: any) => ReactNode;
   validateConfig?: ItemValidateConfig;
   error?: string;
   errorRender?: (
