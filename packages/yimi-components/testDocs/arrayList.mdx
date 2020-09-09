@@ -105,14 +105,14 @@ class FormDemo extends React.Component {
                 <Input />
               </FormItem>
               <FormItem
-                view={(core, id) => (
+                view={(core, { $id }) => (
                   <ArrayAction>
                     {({ insertBefore, insertAfter, remove }) => {
                       return (
                         <div>
                           <Button
                             onClick={() => {
-                              insertBefore(id, (core) => {
+                              insertBefore($id, (core) => {
                                 core.setValues({
                                   name: "吴彦祖",
                                 });
@@ -124,7 +124,7 @@ class FormDemo extends React.Component {
                           </Button>
                           <Button
                             onClick={() => {
-                              insertAfter(id, (core) => {
+                              insertAfter($id, (core) => {
                                 core.setValues({
                                   name: "吴彦祖",
                                 });
@@ -135,7 +135,7 @@ class FormDemo extends React.Component {
                           </Button>
                           <Button
                             onClick={() => {
-                              remove(id, (core) => {
+                              remove($id, (core) => {
                                 console.log(core.getValues());
                               });
                             }}

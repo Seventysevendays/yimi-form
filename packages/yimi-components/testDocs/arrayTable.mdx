@@ -147,8 +147,8 @@ class FormDemo extends React.Component {
                       return (
                         <FormItem
                           name="status"
-                          status={(core, statusDep) => {
-                            return statusDep || "preview";
+                          status={(core, { $statusDep }) => {
+                            return $statusDep || "preview";
                           }}
                         >
                           <Input />
@@ -175,8 +175,8 @@ class FormDemo extends React.Component {
                     render: (t) => (
                       <FormItem
                         name="show"
-                        show={(core, showDep) => {
-                          return showDep === "show";
+                        show={(core, { $showDep }) => {
+                          return $showDep === "show";
                         }}
                       >
                         <Input />
@@ -203,14 +203,14 @@ class FormDemo extends React.Component {
                     render: (t) => (
                       <FormItem
                         name="view"
-                        view={(core, viewDep) => {
-                          if (viewDep === "input") {
+                        view={(core, { $viewDep }) => {
+                          if ($viewDep === "input") {
                             return (
                               <FormItem name="view">
                                 <Input />
                               </FormItem>
                             );
-                          } else if (viewDep === "select") {
+                          } else if ($viewDep === "select") {
                             return (
                               <FormItem name="view">
                                 <Select />
