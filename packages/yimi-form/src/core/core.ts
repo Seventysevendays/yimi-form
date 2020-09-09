@@ -3,7 +3,7 @@
  * @description: description
  * @Date: 2020-07-15 16:31:58
  * @LastEditors: xuxiang
- * @LastEditTime: 2020-09-02 18:44:19
+ * @LastEditTime: 2020-09-09 12:23:44
  */
 
 import { FormItemProps } from "./../components/FormItem/FormItem";
@@ -12,7 +12,7 @@ import ItemCore from "./itemCore";
 import { Form } from "../components/Form/Form";
 import { ItemValidateConfig } from "./../components/FormItem/FormItem";
 import getId from "../utils/getId";
-import getFuncArgs from "../utils/getFuncArgs";
+import { mapValues } from "../utils/dealListenkeys";
 
 export type CoreOnChange = (
   key: string[],
@@ -173,16 +173,16 @@ class Core {
       validateConfig,
       defaultValue,
     } = options;
+
+    // value > defaultValue > core value
+    this.values[name] = value || defaultValue || this.values[name] || null;
     let funcStatus;
     if (typeof status === "function") {
-      const keys = getFuncArgs(status);
-      funcStatus = status(this, ...keys.map((key) => this.values[key]));
+      funcStatus = status(this, mapValues(this.values));
     }
     this.status[name] = funcStatus
       ? funcStatus
       : status || this.status[name] || this.globalStatus;
-    // value > defaultValue > core value
-    this.values[name] = value || defaultValue || this.values[name] || null;
     this.error[name] = error;
     this.validateConfig[name] = validateConfig;
 

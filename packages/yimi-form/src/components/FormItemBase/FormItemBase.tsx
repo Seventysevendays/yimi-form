@@ -2,7 +2,7 @@ import React from "react";
 import { FormItemProps } from "../FormItem/FormItem";
 import Core, { ACTIONS } from "../../core/core";
 import ItemCore from "../../core/itemCore";
-import getFuncArgs from "../../utils/getFuncArgs";
+import { getFuncArgs, mapValues } from "../../utils/dealListenkeys";
 
 interface FormItemBaseProps extends FormItemProps {
   itemCore: ItemCore;
@@ -30,7 +30,7 @@ class FormItemBase extends React.PureComponent<FormItemBaseProps> {
     this.itemCore = itemCore;
     this.statusListenKeys = statusListenKeys;
     this.propsListenKeys = propsListenKeys;
-    if (typeof status === "function") {
+    if (typeof status === "function" && !this.statusListenKeys) {
       this.statusListenKeys = getFuncArgs(status);
     }
     if (typeof propProps === "function") {
@@ -101,10 +101,7 @@ class FormItemBase extends React.PureComponent<FormItemBaseProps> {
     };
     if (typeof props === "function") {
       const values = this.core.getValues();
-      const args = this.propsListenKeys
-        ? this.propsListenKeys.map((key) => values[key])
-        : [];
-      return { ...baseProps, ...props(this.core, ...args) };
+      return { ...baseProps, ...props(this.core, mapValues(values)) };
     } else if (props) {
       return {
         ...baseProps,

@@ -81,8 +81,8 @@ describe("Basic component FormItem", () => {
         </FormItem>
         <FormItem
           name="age"
-          props={(core, placeholder) => ({
-            placeholder: placeholder,
+          props={(core, { $placeholder }) => ({
+            placeholder: $placeholder,
           })}
         >
           <Input />
@@ -110,8 +110,8 @@ describe("Basic component FormItem", () => {
         </FormItem>
         <FormItem
           name="show"
-          show={(core, showDep) => showDep === "show"}
-          status={(core, statusDep) => statusDep || "disabled"}
+          show={(core, { $showDep }) => $showDep === "show"}
+          status={(core, { $statusDep }) => $statusDep || "disabled"}
         >
           <Input />
         </FormItem>
@@ -138,8 +138,8 @@ describe("Basic component FormItem", () => {
         </FormItem>
         <FormItem
           name="view"
-          view={(core, viewDep) => {
-            if (viewDep === "input") {
+          view={(core, { $viewDep }) => {
+            if ($viewDep === "input") {
               return (
                 <FormItem name="view">
                   <Input />

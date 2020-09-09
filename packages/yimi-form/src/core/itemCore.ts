@@ -3,7 +3,7 @@
  * @description: description
  * @Date: 2020-07-22 14:55:28
  * @LastEditors: xuxiang
- * @LastEditTime: 2020-08-29 07:11:58
+ * @LastEditTime: 2020-09-09 10:55:06
  */
 
 import { ACTIONS } from "./core";
@@ -15,7 +15,7 @@ import { ItemValidateConfig } from "./../components/FormItem/FormItem";
 import getId from "../utils/getId";
 import { Status } from "./core";
 import isEqual from "lodash/isEqual";
-import getFuncArgs from "../utils/getFuncArgs";
+import { getFuncArgs, mapValues } from "../utils/dealListenkeys";
 
 export type SetType = "value" | "status" | "error";
 
@@ -86,10 +86,7 @@ class ItemCore {
     if (!isEqual(this[type], value)) {
       // 如果有show的，stutus为hidden时，一切状态设置无效
       if (type === "status" && typeof this.show === "function") {
-        const canshow = this.show(
-          this.form,
-          ...this.transformKeysToArgs(this.showListenKeys || [])
-        );
+        const canshow = this.show(this.form, mapValues(this.form.getValues()));
         if (!canshow && value !== "hidden") {
           return;
         }
@@ -154,22 +151,11 @@ class ItemCore {
   public removeListener = () => {
     this.form.removeListener(ACTIONS.value, this.selfConsist);
   };
-  public transformKeysToArgs = (keys: string[]) => {
-    if (!Array.isArray(keys)) {
-      return [];
-    }
-    const values = this.form.getValues();
-    const args = keys.map((key) => values[key]);
-    return args;
-  };
   public consistStatus = () => {
     if (this.funcStatus) {
       this.set(
         "status",
-        this.funcStatus(
-          this.form,
-          ...this.transformKeysToArgs(this.statusListenKeys || [])
-        )
+        this.funcStatus(this.form, mapValues(this.form.getValues()))
       );
     }
   };

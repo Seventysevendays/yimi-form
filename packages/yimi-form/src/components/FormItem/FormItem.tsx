@@ -5,7 +5,7 @@ import ItemCore from "../../core/itemCore";
 import FormItemContext from "../../context/formItem";
 import isEqual from "lodash/isEqual";
 import { RuleItem } from "async-validator";
-import getFuncArgs from "../../utils/getFuncArgs";
+import { getFuncArgs, mapValues } from "../../utils/dealListenkeys";
 import FormItemLabel from "../FormItemLabel/FormItemLabel";
 import FormItemError from "../FormItemError/FormItemError";
 import FormItemBase from "../FormItemBase/FormItemBase";
@@ -87,7 +87,7 @@ class FormItem extends React.Component<FormItemProps> {
     this.viewListenKeys = viewListenKeys;
     this.validateConfig = validateConfig;
     this.errorRender = errorRender;
-    if (typeof show === "function") {
+    if (typeof show === "function" && !this.showListenKeys) {
       this.showListenKeys = getFuncArgs(show);
     }
     if (typeof view === "function") {
@@ -160,19 +160,9 @@ class FormItem extends React.Component<FormItemProps> {
     }
     this.form.removeListener(ACTIONS.forceUpdate, this.handleForceUpdate);
   };
-  private transformKeysToArgs = (keys: string[]) => {
-    if (!Array.isArray(keys)) {
-      return [];
-    }
-    const values = this.form.getValues();
-    return keys.map((key) => values[key]);
-  };
   private handleShowUpdate = () => {
     const { show, status } = this.props;
-    const canShow = show(
-      this.form,
-      ...this.transformKeysToArgs(this.showListenKeys || [])
-    );
+    const canShow = show(this.form, mapValues(this.form.getValues()));
     if (!canShow && this.form.getStatus(this.name) !== "hidden") {
       this.itemCore.set("status", "hidden");
     } else if (canShow && this.form.getStatus(this.name) === "hidden") {
@@ -197,10 +187,7 @@ class FormItem extends React.Component<FormItemProps> {
   render() {
     const { view } = this.props;
     if (typeof view === "function") {
-      return view(
-        this.form,
-        ...this.transformKeysToArgs(this.viewListenKeys || [])
-      );
+      return view(this.form, mapValues(this.form.getValues()));
     }
     const {
       inline,

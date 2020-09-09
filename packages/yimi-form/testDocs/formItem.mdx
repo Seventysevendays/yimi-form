@@ -18,9 +18,9 @@ class FormDemo extends React.Component {
       values: { validateConfig: "validate" },
     });
   }
-  // componentDidMount = () => {
-  //   this.core.setValues({ validateConfig: "validate" });
-  // };
+  componentDidMount = () => {
+    // this.core.setValues({ validateConfig: "validate" });
+  };
   render() {
     return (
       <div className="wrapper">
@@ -49,8 +49,9 @@ class FormDemo extends React.Component {
           <FormItem
             name="dynamicStatus"
             label="dynamicStatus"
-            status={(core, statusDep) => {
-              return statusDep;
+            status={(core, { $statusDep }) => {
+              console.log($statusDep);
+              return $statusDep;
             }}
           >
             <Input />
@@ -90,9 +91,9 @@ class FormDemo extends React.Component {
           <FormItem
             name="dprops1"
             label="dprops1"
-            props={(core, placeholder) => {
+            props={(core, { $placeholder }) => {
               return {
-                placeholder,
+                placeholder: $placeholder,
               };
             }}
           >
@@ -109,7 +110,7 @@ class FormDemo extends React.Component {
           <FormItem
             name="show"
             label="show"
-            show={(core, showDep) => showDep === "show"}
+            show={(core, { $showDep }) => $showDep === "show"}
           >
             <Input />
           </FormItem>
@@ -124,8 +125,8 @@ class FormDemo extends React.Component {
           <FormItem
             name="view"
             label="view"
-            view={(core, viewDep) => {
-              if (viewDep === "input") {
+            view={(core, { $viewDep }) => {
+              if ($viewDep === "input") {
                 return (
                   <FormItem name="view" label="view">
                     <Input />
