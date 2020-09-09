@@ -1,0 +1,38 @@
+---
+id: core
+title: Core
+---
+
+## Core 介绍
+
+### 构建属性
+
+| 属性                                                                         | 说明                             | 默认值        |
+| ---------------------------------------------------------------------------- | -------------------------------- | ------------- |
+| onChange?: (key: string[], values: {[key: string]: any}, core: Core) => void | 表单内 FormItem onChange 触发    |               |
+| initValues?: {[key: string]: any}                                            | reset 后置为的值                 |               |
+| values?: {[key: string]: any}                                                | 初始值                           |               |
+| status?: {[key: string]: 'edit' \| 'disabled' \| 'preview' \| 'hidden'}      | 初始状态                         |               |
+| error?: {[key: string]: string}                                              | 初始错误                         |               |
+| validateConfig?: ItemValidateConfig                                          | 初始校验规则                     |               |
+| autoValidate?: boolean                                                       | 是否自动触发校验                 | false         |
+| disableChildForm?: boolean                                                   | 是否禁止和外层 FormItem 通信     | false         |
+| globalStatus?: Status                                                        | 全局状态                         | 'edit'        |
+| id?: string                                                                  | core 的唯一 id，不传入会自动生成 | random string |
+
+### 方法
+
+| 名字                                                                                                 | 说明                                                                                     |
+| ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| setValues: (values: { [key: string]: any; }, opts?: { multiple: boolean; }) => void                  | 设置值的方法，multiple 为 true，onChange 一次触发，keys 是多个，否则会依次触发，每次一个 |
+| setGlobalStatus: (status: Status) => void                                                            | 设置全局 status                                                                          |
+| setError: (error: { [key: string]: string; }) => void                                                | 设置错误                                                                                 |
+| setValuesSilent: (values: { [key: string]: any}) => void                                             | 不触发 onChange 设置值                                                                   |
+| getValues: (key?: string) => any                                                                     | 获取值，不传 key 为所有的值                                                              |
+| getStatus: (key?: string) => "preview" \| "disabled" \| "edit" \| "hidden" \| { [x: string]: Status} | 获取 status，不传 key 为所有 status                                                      |
+| getGlobalStatus: () => Status                                                                        | 获取全局状态                                                                             |
+| getError: (key?: string) => any \| { [key: string]: any}                                             | 获取错误，不传 key 为所有错误                                                            |
+| validate: (keys?: string[]) => Promise<null \| {[key: string]: any}>                                 | 校验，keys 可以指定校验的范围                                                            |
+| scrollToError: () => void                                                                            | 滚动到第一个错误的位置                                                                   |
+| reset : (keys?: string[]) => void                                                                    | 重置值，keys 可以指定重置的范围                                                          |
+| forceUpdate : (keys?: string[]) => void                                                              | 手动刷新视图，指定 keys 可以设置触发渲染的范围                                           |

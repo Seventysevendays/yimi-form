@@ -1,0 +1,678 @@
+---
+id: arrayTable
+title: ArrayTable
+---
+
+import { Form, FormItem, Core } from "yimi-form-beta";
+import { ArrayTable, ArrayList, ArrayAction } from "yimi-components-beta";
+import { Input, Radio, Select } from "yimi-components-antd-v4-beta";
+import { Button } from "antd";
+import "yimi-components-antd-v4-beta/lib/index.css";
+import "yimi-form-beta/lib/index.css";
+import "antd/dist/antd.css";
+
+## ArrayTable 介绍：优雅实现表格自增等功能组件
+
+### 属性
+
+| 属性                                         | 说明                                                                                        | 默认值 |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------- | ------ |
+| tableConfig?: TableProps                     | table 的配置，即 antd 的 Table 的配置，当 render 中有 FormItem 时，将自动添加数据监听和映射 |        |
+| value?: any[]                                | 值                                                                                          |        |
+| onChange?: (data: any[]) => void             | 内部 FormItem 的 onChange 触发时触发                                                        |        |
+| rowKey?: string                              | 数据唯一的标识                                                                              | 'key'  |
+| onRowChange?: (val: any, core: Core) => void | 每行的 onChange                                                                             |        |
+| bottom?: ReactNode                           | 列表底部内容                                                                                |        |
+| top?: ReactNode                              | 列表顶部内容                                                                                |        |
+| rowFormConfig?: FormProps                    | 每行 Form 的 props 配置                                                                     |        |
+| rowCoreConfig?: CoreProps                    | 每行 Core 的构建参数                                                                        |        |
+| className?: string                           | 根节点类名                                                                                  |        |
+| style?: React.CSSProperties                  | 根节点 style                                                                                |        |
+
+### 300 行代码的自增表格
+
+```jsx
+<Form
+  onChange={function (val) {
+    console.log(val);
+  }}
+>
+  <FormItem name="arrayTable" label="arrayTbale">
+    <ArrayTable
+      style={{ width: "800px" }}
+      rowFormConfig={{
+        globalStatus: "preview",
+      }}
+      rowCoreConfig={{
+        // 默认值
+        values: { defaultValue: "test" },
+        // 重置后初始值
+        initValues: { name: "张学友" },
+      }}
+      tableConfig={{
+        columns: [
+          {
+            dataIndex: "key",
+            title: "index",
+            render: (t) => {
+              return (
+                <ArrayAction>
+                  {({ dataSource }) => {
+                    const index = dataSource.findIndex((data) => {
+                      return data.key === t;
+                    });
+                    return index + 1;
+                  }}
+                </ArrayAction>
+              );
+            },
+          },
+          {
+            dataIndex: "name",
+            title: "name",
+            render: (t) => {
+              return (
+                <FormItem name="name" validateConfig={{ required: true }}>
+                  <Input />
+                </FormItem>
+              );
+            },
+          },
+          {
+            dataIndex: "defaultValue",
+            title: "defaultValue",
+            render: () => {
+              return (
+                <FormItem name="defaultValue">
+                  <Input />
+                </FormItem>
+              );
+            },
+          },
+          {
+            dataIndex: "statusDep",
+            title: "statusDep",
+            render: () => {
+              return (
+                <FormItem name="statusDep" bottom="值为status的状态">
+                  <Input />
+                </FormItem>
+              );
+            },
+          },
+          {
+            dataIndex: "status",
+            title: "status",
+            render: () => {
+              return (
+                <FormItem
+                  name="status"
+                  status={function (core, { $statusDep }) {
+                    return $statusDep || "preview";
+                  }}
+                >
+                  <Input />
+                </FormItem>
+              );
+            },
+          },
+          {
+            dataIndex: "showDep",
+            title: "showDep",
+            render: () => {
+              return (
+                <FormItem name="showDep" bottom="当值为show时展示show">
+                  <Input />
+                </FormItem>
+              );
+            },
+          },
+          {
+            dataIndex: "show",
+            title: "show",
+            render: () => {
+              return (
+                <FormItem
+                  name="show"
+                  show={function (core, { $showDep }) {
+                    return $showDep === "show";
+                  }}
+                >
+                  <Input />
+                </FormItem>
+              );
+            },
+          },
+          {
+            dataIndex: "viewDep",
+            title: "viewDep",
+            render: () => {
+              return (
+                <FormItem
+                  name="viewDep"
+                  bottom="当值为input，view的组件为Input，当值为select，view的组件为Select"
+                >
+                  <Input />
+                </FormItem>
+              );
+            },
+          },
+          {
+            dataIndex: "view",
+            title: "view",
+            render: () => {
+              return (
+                <FormItem
+                  name="view"
+                  view={(core, { $viewDep }) => {
+                    if ($viewDep === "input") {
+                      return (
+                        <FormItem name="view">
+                          <Input />
+                        </FormItem>
+                      );
+                    } else if ($viewDep === "select") {
+                      return (
+                        <FormItem name="view">
+                          <Select />
+                        </FormItem>
+                      );
+                    } else {
+                      return <div>view</div>;
+                    }
+                  }}
+                />
+              );
+            },
+          },
+          {
+            dataIndex: "innerFormList",
+            title: "innerFormList",
+            render: () => {
+              return (
+                <FormItem name="innerFormList" bottom="嵌套数据">
+                  <Form>
+                    <FormItem name="innerFormItem1">
+                      <Input />
+                    </FormItem>
+                    <FormItem name="innerFormItem2">
+                      <Input />
+                    </FormItem>
+                    <FormItem name="innerInnerForm">
+                      <Form>
+                        <FormItem name="innerInnerFormItem1">
+                          <Input />
+                        </FormItem>
+                        <FormItem name="innerInnerFormItem2">
+                          <Input />
+                        </FormItem>
+                      </Form>
+                    </FormItem>
+                  </Form>
+                </FormItem>
+              );
+            },
+          },
+          {
+            dataIndex: "opr",
+            title: "操作",
+            render: (t, v) => {
+              return (
+                <div>
+                  <FormItem
+                    view={(core) => {
+                      return (
+                        <Button
+                          onClick={() => {
+                            core.validate();
+                          }}
+                        >
+                          校验
+                        </Button>
+                      );
+                    }}
+                  />
+                  <FormItem
+                    name="editBtn"
+                    view={function (core) {
+                      return core.getGlobalStatus() === "preview" ? (
+                        <Button
+                          onClick={function () {
+                            core.setGlobalStatus("edit");
+                            core.forceUpdate(["editBtn"]);
+                          }}
+                        >
+                          编辑
+                        </Button>
+                      ) : (
+                        <Button
+                          onClick={function () {
+                            core.setGlobalStatus("preview");
+                            core.forceUpdate(["editBtn"]);
+                          }}
+                        >
+                          保存
+                        </Button>
+                      );
+                    }}
+                  />
+                  <FormItem
+                    name="reset"
+                    view={function (core) {
+                      return (
+                        <Button
+                          onClick={function () {
+                            // 不能把rowKey重置
+                            core.reset(
+                              Object.keys(core.getValues()).filter(function (
+                                key
+                              ) {
+                                return key !== "key";
+                              })
+                            );
+                          }}
+                        >
+                          重置
+                        </Button>
+                      );
+                    }}
+                  />
+                  <ArrayAction>
+                    {function ({ remove, insertAfter, insertBefore }) {
+                      return (
+                        <>
+                          <Button
+                            onClick={function () {
+                              insertAfter(v.key, function (core) {
+                                core.setGlobalStatus("edit");
+                                core.setValues({ name: "刘德华" });
+                                core.forceUpdate(["saveBtn"]);
+                              });
+                            }}
+                          >
+                            底部添加
+                          </Button>
+                          <Button
+                            onClick={function () {
+                              insertBefore(v.key, function (core) {
+                                core.setGlobalStatus("edit");
+                                core.setValues({ name: "郭富城" });
+                                core.forceUpdate(["editBtn"]);
+                              });
+                            }}
+                          >
+                            顶部添加
+                          </Button>
+                          <Button
+                            onClick={function () {
+                              remove(v.key);
+                            }}
+                          >
+                            删除
+                          </Button>
+                        </>
+                      );
+                    }}
+                  </ArrayAction>
+                </div>
+              );
+            },
+          },
+        ],
+      }}
+      bottom={
+        <ArrayAction>
+          {function ({ addBottom, addTop }) {
+            return (
+              <div>
+                <Button
+                  onClick={function () {
+                    addBottom(function (core) {
+                      core.setValues({ name: "吴彦祖" });
+                      core.setGlobalStatus("edit");
+                    });
+                  }}
+                >
+                  底部添加
+                </Button>
+                <Button
+                  onClick={function () {
+                    addTop(function (core) {
+                      core.setValues({ name: "金城武" });
+                      core.setGlobalStatus("edit");
+                    });
+                  }}
+                >
+                  顶部添加
+                </Button>
+              </div>
+            );
+          }}
+        </ArrayAction>
+      }
+    />
+  </FormItem>
+</Form>
+```
+
+<Form
+  onChange={function (val) {
+    console.log(val);
+  }}
+>
+  <FormItem name="arrayTable" label="arrayTbale">
+    <ArrayTable
+      style={{ width: "800px" }}
+      rowFormConfig={{
+        globalStatus: "preview",
+      }}
+      rowCoreConfig={{
+        // 默认值
+        values: { defaultValue: "test" },
+        // 重置后初始值
+        initValues: { name: "张学友" },
+      }}
+      tableConfig={{
+        columns: [
+          {
+            dataIndex: "key",
+            title: "index",
+            render: function (t) {
+              return (
+                <ArrayAction>
+                  {function ({ dataSource }) {
+                    const index = dataSource.findIndex(function (data) {
+                      return data.key === t;
+                    });
+                    return index + 1;
+                  }}
+                </ArrayAction>
+              );
+            },
+          },
+          {
+            dataIndex: "name",
+            title: "name",
+            render: function (t) {
+              return (
+                <FormItem name="name" validateConfig={{ required: true }}>
+                  <Input />
+                </FormItem>
+              );
+            },
+          },
+          {
+            dataIndex: "defaultValue",
+            title: "defaultValue",
+            render: function () {
+              return (
+                <FormItem name="defaultValue">
+                  <Input />
+                </FormItem>
+              );
+            },
+          },
+          {
+            dataIndex: "statusDep",
+            title: "statusDep",
+            render: function () {
+              return (
+                <FormItem name="statusDep" bottom="值为status的状态">
+                  <Input />
+                </FormItem>
+              );
+            },
+          },
+          {
+            dataIndex: "status",
+            title: "status",
+            render: function () {
+              return (
+                <FormItem
+                  name="status"
+                  status={function (core, { $statusDep }) {
+                    return $statusDep || "preview";
+                  }}
+                >
+                  <Input />
+                </FormItem>
+              );
+            },
+          },
+          {
+            dataIndex: "showDep",
+            title: "showDep",
+            render: function () {
+              return (
+                <FormItem name="showDep" bottom="当值为show时展示show">
+                  <Input />
+                </FormItem>
+              );
+            },
+          },
+          {
+            dataIndex: "show",
+            title: "show",
+            render: function () {
+              return (
+                <FormItem
+                  name="show"
+                  show={function (core, { $showDep }) {
+                    return $showDep === "show";
+                  }}
+                >
+                  <Input />
+                </FormItem>
+              );
+            },
+          },
+          {
+            dataIndex: "viewDep",
+            title: "viewDep",
+            render: function () {
+              return (
+                <FormItem
+                  name="viewDep"
+                  bottom="当值为input，view的组件为Input，当值为select，view的组件为Select"
+                >
+                  <Input />
+                </FormItem>
+              );
+            },
+          },
+          {
+            dataIndex: "view",
+            title: "view",
+            render: function () {
+              return (
+                <FormItem
+                  name="view"
+                  view={function (core, { $viewDep }) {
+                    if ($viewDep === "input") {
+                      return (
+                        <FormItem name="view">
+                          <Input />
+                        </FormItem>
+                      );
+                    } else if ($viewDep === "select") {
+                      return (
+                        <FormItem name="view">
+                          <Select />
+                        </FormItem>
+                      );
+                    } else {
+                      return <div>view</div>;
+                    }
+                  }}
+                />
+              );
+            },
+          },
+          {
+            dataIndex: "innerFormList",
+            title: "innerFormList",
+            render: function () {
+              return (
+                <FormItem name="innerFormList" bottom="嵌套数据">
+                  <Form>
+                    <FormItem name="innerFormItem1">
+                      <Input />
+                    </FormItem>
+                    <FormItem name="innerFormItem2">
+                      <Input />
+                    </FormItem>
+                    <FormItem name="innerInnerForm">
+                      <Form>
+                        <FormItem name="innerInnerFormItem1">
+                          <Input />
+                        </FormItem>
+                        <FormItem name="innerInnerFormItem2">
+                          <Input />
+                        </FormItem>
+                      </Form>
+                    </FormItem>
+                  </Form>
+                </FormItem>
+              );
+            },
+          },
+          {
+            dataIndex: "opr",
+            title: "操作",
+            render: function (t, v) {
+              return (
+                <div>
+                  <FormItem
+                    view={function (core) {
+                      return (
+                        <Button
+                          onClick={() => {
+                            core.validate();
+                          }}
+                        >
+                          校验
+                        </Button>
+                      );
+                    }}
+                  />
+                  <FormItem
+                    name="editBtn"
+                    view={function (core) {
+                      return core.getGlobalStatus() === "preview" ? (
+                        <Button
+                          onClick={function () {
+                            core.setGlobalStatus("edit");
+                            core.forceUpdate(["editBtn"]);
+                          }}
+                        >
+                          编辑
+                        </Button>
+                      ) : (
+                        <Button
+                          onClick={function () {
+                            core.setGlobalStatus("preview");
+                            core.forceUpdate(["editBtn"]);
+                          }}
+                        >
+                          保存
+                        </Button>
+                      );
+                    }}
+                  />
+                  <FormItem
+                    name="reset"
+                    view={function (core) {
+                      return (
+                        <Button
+                          onClick={function () {
+                            // 不能把rowKey重置
+                            core.reset(
+                              Object.keys(core.getValues()).filter(function (
+                                key
+                              ) {
+                                return key !== "key";
+                              })
+                            );
+                          }}
+                        >
+                          重置
+                        </Button>
+                      );
+                    }}
+                  />
+                  <ArrayAction>
+                    {function ({ remove, insertAfter, insertBefore }) {
+                      return (
+                        <>
+                          <Button
+                            onClick={function () {
+                              insertAfter(v.key, function (core) {
+                                core.setGlobalStatus("edit");
+                                core.setValues({ name: "刘德华" });
+                                core.forceUpdate(["saveBtn"]);
+                              });
+                            }}
+                          >
+                            底部添加
+                          </Button>
+                          <Button
+                            onClick={function () {
+                              insertBefore(v.key, function (core) {
+                                core.setGlobalStatus("edit");
+                                core.setValues({ name: "郭富城" });
+                                core.forceUpdate(["editBtn"]);
+                              });
+                            }}
+                          >
+                            顶部添加
+                          </Button>
+                          <Button
+                            onClick={function () {
+                              remove(v.key);
+                            }}
+                          >
+                            删除
+                          </Button>
+                        </>
+                      );
+                    }}
+                  </ArrayAction>
+                </div>
+              );
+            },
+          },
+        ],
+      }}
+      bottom={
+        <ArrayAction>
+          {function ({ addBottom, addTop }) {
+            return (
+              <div>
+                <Button
+                  onClick={function () {
+                    addBottom(function (core) {
+                      core.setValues({ name: "吴彦祖" });
+                      core.setGlobalStatus("edit");
+                    });
+                  }}
+                >
+                  底部添加
+                </Button>
+                <Button
+                  onClick={function () {
+                    addTop(function (core) {
+                      core.setValues({ name: "金城武" });
+                      core.setGlobalStatus("edit");
+                    });
+                  }}
+                >
+                  顶部添加
+                </Button>
+              </div>
+            );
+          }}
+        </ArrayAction>
+      }
+    />
+  </FormItem>
+</Form>
