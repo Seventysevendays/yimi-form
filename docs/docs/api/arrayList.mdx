@@ -49,13 +49,13 @@ import "antd/dist/antd.css";
     >
       <FormItem view={(core, { $id }) => $id} />
       <FormItem
-        view={(core, id) => (
+        view={(core, $id) => (
           <ArrayAction>
             {({ remove, insertAfter, insertBefore }) => (
               <div>
-                <Button onClick={() => insertAfter(id)}>底部插入</Button>
-                <Button onClick={() => insertBefore(id)}>顶部插入</Button>
-                <Button onClick={() => remove(id)}>删除</Button>
+                <Button onClick={() => insertAfter($id)}>底部插入</Button>
+                <Button onClick={() => insertBefore($id)}>顶部插入</Button>
+                <Button onClick={() => remove($id)}>删除</Button>
               </div>
             )}
           </ArrayAction>
