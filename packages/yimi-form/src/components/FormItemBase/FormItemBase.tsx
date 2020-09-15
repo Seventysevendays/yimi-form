@@ -33,7 +33,6 @@ class FormItemBase extends React.PureComponent<FormItemBaseProps> {
     if (typeof status === "function" && !this.statusListenKeys) {
       this.statusListenKeys = getFuncArgs(status);
     }
-    console.log(this.statusListenKeys);
     if (typeof propProps === "function") {
       this.propsListenKeys = getFuncArgs(propProps as any);
     }
@@ -52,7 +51,8 @@ class FormItemBase extends React.PureComponent<FormItemBaseProps> {
   public handleValueUpdate = (name) => {
     const { status, props } = this.props;
     // 内部Form内的FormItem触发就好了
-    if (name === this.name && this.itemCore.innerFormList.length === 0) {
+    const currentLength = this.itemCore.innerFormList.length;
+    if (name === this.name && currentLength === 0) {
       this.forceUpdate();
     } else if (typeof status === "function") {
       if (this.props.statusListenKeys === false) {

@@ -3,7 +3,7 @@
  * @description: description
  * @Date: 2020-07-22 14:55:28
  * @LastEditors: xuxiang
- * @LastEditTime: 2020-09-09 12:41:13
+ * @LastEditTime: 2020-09-11 17:53:05
  */
 
 import { ACTIONS } from "./core";
@@ -22,6 +22,7 @@ export type SetType = "value" | "status" | "error";
 interface ItemCoreProps extends FormItemProps {
   on: EventEmitter["on"];
   emit: EventEmitter["emit"];
+  displayName: string;
 }
 
 class ItemCore {
@@ -41,6 +42,7 @@ class ItemCore {
   public showListenKeys: string[] | false;
   public show: any;
   public propStatus: Status;
+  public displayName: string;
 
   constructor(props: ItemCoreProps) {
     const {
@@ -52,6 +54,7 @@ class ItemCore {
       statusListenKeys,
       show,
       showListenKeys,
+      displayName,
     } = props;
     this.name = name;
     this.on = on;
@@ -62,6 +65,7 @@ class ItemCore {
     this.show = show;
     this.statusListenKeys = statusListenKeys;
     this.showListenKeys = showListenKeys;
+    this.displayName = displayName;
     if (typeof status === "function") {
       this.funcStatus = status;
       this.statusListenKeys =
@@ -101,6 +105,10 @@ class ItemCore {
   // 内部有Form时，存储内部Form的core
   public addInnerForm = (core: Core) => {
     this.innerFormList.push(core);
+  };
+  // 重置innerFormList
+  public resetInnerFormList = () => {
+    this.innerFormList = [];
   };
   public validate = async (opts?: { onlySelf?: boolean }) => {
     const { onlySelf } = opts || {};

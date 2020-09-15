@@ -1,6 +1,6 @@
 {
   "name": "yimi-form-beta",
-  "version": "1.0.17",
+  "version": "1.0.20",
   "description": "beautiful react form",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",

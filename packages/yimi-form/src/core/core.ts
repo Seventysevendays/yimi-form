@@ -3,7 +3,7 @@
  * @description: description
  * @Date: 2020-07-15 16:31:58
  * @LastEditors: xuxiang
- * @LastEditTime: 2020-09-09 12:23:44
+ * @LastEditTime: 2020-09-11 18:54:56
  */
 
 import { FormItemProps } from "./../components/FormItem/FormItem";
@@ -164,7 +164,7 @@ class Core {
     }
   };
   /** init FormItem core */
-  public addChild = (options: FormItemProps) => {
+  public addChild = (options: FormItemProps & { displayName?: string }) => {
     const {
       name,
       status,
@@ -172,6 +172,7 @@ class Core {
       error,
       validateConfig,
       defaultValue,
+      displayName,
     } = options;
 
     // value > defaultValue > core value
@@ -190,6 +191,7 @@ class Core {
       ...options,
       on: this.on,
       emit: this.emit,
+      displayName,
     });
     this.childrenMap[name] = childCore;
     return childCore;
@@ -372,14 +374,20 @@ class Core {
     resetKeys.forEach((key) => {
       const value = key in this.initValues ? this.initValues[key] : null;
       if (this.childrenMap[key]) {
+        const innerFormList = this.childrenMap[key].innerFormList;
+        // 这端代码必须在set前执行，确保innerFormList先被更新，再触发FormItemBase里的handleValueUpdate
+        if (innerFormList.length > 0) {
+          // 内部只有一个Form
+          if (this.childrenMap[key].displayName === "yimiForm") {
+            innerFormList.forEach((core) => core.reset());
+          } else {
+            this.childrenMap[key].resetInnerFormList();
+          }
+        }
         // 不触发onChange
         this.silent = true;
         this.childrenMap[key].set("value", value);
         this.silent = false;
-        const innerFormList = this.childrenMap[key].innerFormList;
-        if (innerFormList.length > 0) {
-          innerFormList.forEach((core) => core.reset());
-        }
       } else {
         this.values[key] = value;
       }

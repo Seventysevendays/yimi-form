@@ -95,10 +95,12 @@ class FormItem extends React.Component<FormItemProps> {
     }
     // 有name的才需要监听
     if (this.name) {
+      const { type } = this.props.children || ({} as any);
       this.itemCore = this.form.addChild({
         ...props,
         form: this.form,
         showListenKeys: this.showListenKeys,
+        displayName: type ? type.displayName : "",
       });
       this.id = this.itemCore.id;
       this.form.on(ACTIONS.value, this.handleUpdate);

@@ -78,7 +78,9 @@ declare class Core {
     private handleValueChange;
     private handleStatusChange;
     private handleErrorChange;
-    addChild: (options: FormItemProps) => ItemCore;
+    addChild: (options: FormItemProps & {
+        displayName?: string;
+    }) => ItemCore;
     setValues: (values: {
         [key: string]: any;
     }, opts?: {

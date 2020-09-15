@@ -10,6 +10,7 @@ export declare type SetType = "value" | "status" | "error";
 interface ItemCoreProps extends FormItemProps {
     on: EventEmitter["on"];
     emit: EventEmitter["emit"];
+    displayName: string;
 }
 declare class ItemCore {
     name: string;
@@ -28,11 +29,13 @@ declare class ItemCore {
     showListenKeys: string[] | false;
     show: any;
     propStatus: Status;
+    displayName: string;
     constructor(props: ItemCoreProps);
     set: (type: keyof typeof ACTIONS, value: any, opts?: {
         silent?: boolean;
     }) => void;
     addInnerForm: (core: Core) => void;
+    resetInnerFormList: () => void;
     validate: (opts?: {
         onlySelf?: boolean;
     }) => Promise<unknown>;
