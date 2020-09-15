@@ -82,4 +82,40 @@ describe("ArrayTable", () => {
     form.find("Button .addTop").simulate("click");
     expect(core.getValues("table").length).toEqual(2);
   });
+  it("ArrayTable should support setValues", () => {
+    let core: Core;
+    const form = mount(
+      <Form onMount={(c) => (core = c)}>
+        <FormItem name="table">
+          <ArrayTable
+            tableConfig={{
+              columns: [
+                {
+                  dataIndex: "name",
+                  title: "name",
+                  render: () => {
+                    return (
+                      <FormItem name="name">
+                        <Input />
+                      </FormItem>
+                    );
+                  },
+                },
+              ],
+            }}
+          />
+        </FormItem>
+      </Form>
+    );
+    core.setValues({
+      table: [{ name: "xiaoming", key: "xiaoming" }],
+    });
+    form.update();
+    expect(form.find(".ant-input").prop("value")).toBe("xiaoming");
+    core.setValues({
+      table: [],
+    });
+    form.update();
+    expect(form.find(".ant-input").length).toBe(0);
+  });
 });

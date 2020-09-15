@@ -43,6 +43,16 @@ class FormDemo extends React.Component {
     this.core.setValues({
       viewTable: [{ key: "1", input: "哈哈" }],
     });
+    setTimeout(() => {
+      this.core.setValues({
+        viewTable: [{ key: "1", input: "hoho" }],
+      });
+    }, 1000);
+    setTimeout(() => {
+      this.core.setValues({
+        viewTable: [],
+      });
+    }, 2000);
   }
 
   render() {
@@ -398,48 +408,41 @@ class FormDemo extends React.Component {
               }
             />
           </FormItem>
-          <FormItem
-            name="viewTable"
-            label="viewTable"
-            view={(core) => {
-              return (
-                <FormItem name="viewTable">
-                  <ArrayTable
-                    tableConfig={{
-                      columns: [
-                        {
-                          dataIndex: "input",
-                          title: "input",
-                          render: () => {
-                            return (
-                              <FormItem name="input">
-                                <Input />
-                              </FormItem>
-                            );
-                          },
-                        },
-                      ],
-                    }}
-                    bottom={
-                      <ArrayAction>
-                        {({ addBottom }) => {
-                          return (
-                            <Button
-                              onClick={() => {
-                                addBottom();
-                              }}
-                            >
-                              添加
-                            </Button>
-                          );
+
+          <FormItem name="viewTable">
+            <ArrayTable
+              tableConfig={{
+                columns: [
+                  {
+                    dataIndex: "input",
+                    title: "input",
+                    render: () => {
+                      return (
+                        <FormItem name="input">
+                          <Input />
+                        </FormItem>
+                      );
+                    },
+                  },
+                ],
+              }}
+              bottom={
+                <ArrayAction>
+                  {({ addBottom }) => {
+                    return (
+                      <Button
+                        onClick={() => {
+                          addBottom();
                         }}
-                      </ArrayAction>
-                    }
-                  />
-                </FormItem>
-              );
-            }}
-          />
+                      >
+                        添加
+                      </Button>
+                    );
+                  }}
+                </ArrayAction>
+              }
+            />
+          </FormItem>
         </Form>
       </div>
     );

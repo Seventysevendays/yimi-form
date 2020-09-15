@@ -65,7 +65,9 @@ class ArrayTable extends React.Component<
         row: (props) => {
           /** IMP: antd table data-row-key */
           const key = props["data-row-key"];
-          const core = this.coreList.find((core) => core.id === key);
+          const core =
+            this.coreList.find((core) => core.id === key) ||
+            new Core({ disableChildForm: true });
           return (
             <Form
               {...rowFormConfig}
@@ -73,7 +75,8 @@ class ArrayTable extends React.Component<
               Com={"tr"}
               onChange={this.onRowChange}
               // 没有 key 的禁止将自己上报给FormItem，如empty data
-              core={core || new Core({ disableChildForm: true })}
+              core={core}
+              value={core.getValues()}
               status={this.props.status}
             />
           );
@@ -98,6 +101,8 @@ class ArrayTable extends React.Component<
   public componentDidUpdate = (prevProps: ArrayTableProps<any>) => {
     const { value, rowCoreConfig } = this.props;
     if (!isEqual(value, prevProps.value)) {
+      console.log(value);
+
       this.coreList = (value || []).map(
         (values) =>
           new Core({ ...rowCoreConfig, values, id: values[this.rowKey] })
