@@ -3,7 +3,7 @@
  * @description: description
  * @Date: 2020-07-22 14:55:28
  * @LastEditors: xuxiang
- * @LastEditTime: 2020-09-11 17:53:05
+ * @LastEditTime: 2020-09-15 18:06:18
  */
 
 import { ACTIONS } from "./core";
@@ -85,7 +85,12 @@ class ItemCore {
   public set = (
     type: keyof typeof ACTIONS,
     value: any,
-    opts?: { silent?: boolean }
+    opts?: {
+      /** 是否触发 onChange  */
+      silent?: boolean;
+      /** 是否手动设置 */
+      manual?: boolean;
+    }
   ) => {
     if (!isEqual(this[type], value)) {
       // 如果有show的，stutus为hidden时，一切状态设置无效
@@ -98,7 +103,7 @@ class ItemCore {
       const { silent } = opts || {};
       this[type] = value;
       if (!silent) {
-        this.emit(type, this.name, value);
+        this.emit(type, this.name, value, opts);
       }
     }
   };

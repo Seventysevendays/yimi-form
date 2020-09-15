@@ -3,7 +3,7 @@
  * @description: description
  * @Date: 2020-07-15 16:31:58
  * @LastEditors: xuxiang
- * @LastEditTime: 2020-09-11 18:54:56
+ * @LastEditTime: 2020-09-15 18:03:50
  */
 
 import { FormItemProps } from "./../components/FormItem/FormItem";
@@ -213,13 +213,14 @@ class Core {
         if (this.childrenMap[key]) {
           this.childrenMap[key].set("value", values[key], {
             silent: true,
+            manual: true,
           });
         }
       });
     } else {
       setKeys.forEach((key) => {
         if (this.childrenMap[key]) {
-          this.childrenMap[key].set("value", values[key]);
+          this.childrenMap[key].set("value", values[key], { manual: true });
         } else {
           this.emit("value", key, values[key]);
         }

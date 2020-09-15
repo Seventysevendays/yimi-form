@@ -3,6 +3,7 @@ import { FormItemProps } from "../FormItem/FormItem";
 import Core, { ACTIONS } from "../../core/core";
 import ItemCore from "../../core/itemCore";
 import { getFuncArgs, mapValues } from "../../utils/dealListenkeys";
+import isEqual from "lodash/isEqual";
 
 interface FormItemBaseProps extends FormItemProps {
   itemCore: ItemCore;
@@ -14,6 +15,7 @@ class FormItemBase extends React.PureComponent<FormItemBaseProps> {
   public itemCore: ItemCore;
   public statusListenKeys: string[] | false;
   public propsListenKeys: string[] | false;
+  private cacheValue: any;
   constructor(props: FormItemBaseProps) {
     super(props);
     const {
@@ -46,13 +48,21 @@ class FormItemBase extends React.PureComponent<FormItemBaseProps> {
     this.core.removeListener(ACTIONS.forceUpdate, this.handleForceUpdate);
   };
   public componentDidMount = () => {
+    this.cacheValue = this.core.getValues(this.name);
     this.forceUpdate();
   };
-  public handleValueUpdate = (name) => {
+  public handleValueUpdate = (name, value, opts) => {
     const { status, props } = this.props;
-    // 内部Form内的FormItem触发就好了
+    const { manual } = opts || {};
     const currentLength = this.itemCore.innerFormList.length;
-    if (name === this.name && currentLength === 0) {
+    if (
+      name === this.name &&
+      // 内部Form内的FormItem触发就好了
+      (currentLength === 0 ||
+        // Array data 手动设置的值
+        (Array.isArray(value) && !isEqual(this.cacheValue, value) && manual))
+    ) {
+      this.cacheValue = value;
       this.forceUpdate();
     } else if (typeof status === "function") {
       if (this.props.statusListenKeys === false) {
