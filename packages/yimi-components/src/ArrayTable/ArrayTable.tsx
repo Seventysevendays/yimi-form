@@ -33,15 +33,13 @@ interface ArrayTableState {
   current: number;
   pageSize: number;
 }
-const getId = () =>
-  Math.random()
-    .toString(36)
-    .slice(2);
+const getId = () => Math.random().toString(36).slice(2);
 
 class ArrayTable extends React.Component<
   ArrayTableProps<any>,
   ArrayTableState
 > {
+  static displayName = "yimiArrayTable";
   protected components;
   protected dataSource: any[];
   protected coreList: Core[];
@@ -51,11 +49,11 @@ class ArrayTable extends React.Component<
 
   constructor(props: ArrayTableProps<any>) {
     super(props);
-    const { dataSource, rowKey, pagination } = props.tableConfig || {};
+    const { rowKey, pagination } = props.tableConfig || {};
     const { rowFormConfig, value, rowCoreConfig } = this.props;
     const { values } = rowCoreConfig || {};
     this.coreValue = values;
-    this.dataSource = dataSource || [];
+    this.dataSource = value || [];
     this.rowKey = typeof rowKey === "string" ? rowKey : "key";
     const { pageSize, current } = pagination || {};
     this.state = {
@@ -72,9 +70,10 @@ class ArrayTable extends React.Component<
             <Form
               {...rowFormConfig}
               {...props}
-              Com="tr"
+              Com={"tr"}
               onChange={this.onRowChange}
-              core={core}
+              // 没有 key 的禁止将自己上报给FormItem，如empty data
+              core={core || new Core({ disableChildForm: true })}
               status={this.props.status}
             />
           );
@@ -82,11 +81,7 @@ class ArrayTable extends React.Component<
       },
     };
 
-    if (Array.isArray(value)) {
-      this.dataSource = value.map((data) => ({ ...values, ...data }));
-    } else if (Array.isArray(dataSource)) {
-      this.dataSource = dataSource.map((data) => ({ ...values, ...data }));
-    }
+    this.dataSource = (value || []).map((data) => ({ ...values, ...data }));
     this.coreList = this.dataSource.map(
       (values) =>
         new Core({ ...rowCoreConfig, values, id: values[this.rowKey] })
@@ -101,34 +96,24 @@ class ArrayTable extends React.Component<
     };
   }
   public componentDidUpdate = (prevProps: ArrayTableProps<any>) => {
-    const { tableConfig, value, rowCoreConfig } = this.props;
-    if (Array.isArray(value)) {
-      if (!isEqual(value, prevProps.value)) {
-        this.coreList = value.map(
-          (values) =>
-            new Core({ ...rowCoreConfig, values, id: values[this.rowKey] })
-        );
-        this.dataSource = value.map((data) => data);
-        this.forceUpdate();
-      }
-    } else if (tableConfig) {
-      const { dataSource } = tableConfig;
-      if (
-        prevProps.tableConfig &&
-        !isEqual(dataSource, prevProps.tableConfig.dataSource)
-      ) {
-        this.coreList = dataSource.map(
-          (values) =>
-            new Core({ ...rowCoreConfig, values, id: values[this.rowKey] })
-        );
-        this.dataSource = dataSource.map((data) => data);
-        this.forceUpdate();
-      }
+    const { value, rowCoreConfig } = this.props;
+    if (!isEqual(value, prevProps.value)) {
+      this.coreList = (value || []).map(
+        (values) =>
+          new Core({ ...rowCoreConfig, values, id: values[this.rowKey] })
+      );
+      this.dataSource = (value || []).map((data) => data);
+      this.forceUpdate();
     }
   };
   private onRowChange = (val: any, core: Core) => {
-    this.dataSource = this.dataSource.map((item) =>
-      item[this.rowKey] === val[this.rowKey] ? { ...val } : item
+    const { rowCoreConfig } = this.props;
+    this.dataSource = this.coreList.map((item) =>
+      item.id === core.id ? val : item.getValues()
+    );
+    this.coreList = this.dataSource.map(
+      (values) =>
+        new Core({ ...rowCoreConfig, values, id: values[this.rowKey] })
     );
     if (this.props.onRowChange) {
       this.props.onRowChange(val, core);

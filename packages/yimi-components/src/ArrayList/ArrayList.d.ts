@@ -21,6 +21,7 @@ interface ArrayListProps<T> {
 declare type ArrayTableCallback = (core: Core, dataSource: any[], coreList: Core[]) => void;
 declare type Props = ArrayListProps<any>;
 declare class ArrayList extends React.Component<Props> {
+    static displayName: string;
     protected dataSource: any[];
     protected actionValue: ArrayTableActionValue;
     private rowKey;

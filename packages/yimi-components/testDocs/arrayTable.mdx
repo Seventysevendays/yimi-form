@@ -13,7 +13,7 @@ import { ArrayTable, ArrayAction } from "../src/";
 import "../../yimi-form/src/index.less";
 import "./index.less";
 import "../../yimi-components-antd-v4/src/index.less";
-import "antd/dist/antd.css";
+import "../src/index.less";
 
 class FormDemo extends React.Component {
   constructor(props) {
@@ -40,11 +40,18 @@ class FormDemo extends React.Component {
         },
       });
     }
+    this.core.setValues({
+      viewTable: [{ key: "1", input: "哈哈" }],
+    });
   }
+
   render() {
     return (
       <div className="wrapper">
         <Form core={this.core}>
+          <FormItem name="input">
+            <Input />
+          </FormItem>
           <FormItem
             name="arrayTable"
             label="arrayTbale"
@@ -377,6 +384,13 @@ class FormDemo extends React.Component {
                         >
                           校验
                         </Button>
+                        <Button
+                          onClick={() => {
+                            this.core.reset();
+                          }}
+                        >
+                          重置
+                        </Button>
                       </div>
                     );
                   }}
@@ -384,6 +398,48 @@ class FormDemo extends React.Component {
               }
             />
           </FormItem>
+          <FormItem
+            name="viewTable"
+            label="viewTable"
+            view={(core) => {
+              return (
+                <FormItem name="viewTable">
+                  <ArrayTable
+                    tableConfig={{
+                      columns: [
+                        {
+                          dataIndex: "input",
+                          title: "input",
+                          render: () => {
+                            return (
+                              <FormItem name="input">
+                                <Input />
+                              </FormItem>
+                            );
+                          },
+                        },
+                      ],
+                    }}
+                    bottom={
+                      <ArrayAction>
+                        {({ addBottom }) => {
+                          return (
+                            <Button
+                              onClick={() => {
+                                addBottom();
+                              }}
+                            >
+                              添加
+                            </Button>
+                          );
+                        }}
+                      </ArrayAction>
+                    }
+                  />
+                </FormItem>
+              );
+            }}
+          />
         </Form>
       </div>
     );

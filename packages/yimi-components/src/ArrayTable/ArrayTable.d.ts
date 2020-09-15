@@ -26,6 +26,7 @@ interface ArrayTableState {
     pageSize: number;
 }
 declare class ArrayTable extends React.Component<ArrayTableProps<any>, ArrayTableState> {
+    static displayName: string;
     protected components: any;
     protected dataSource: any[];
     protected coreList: Core[];

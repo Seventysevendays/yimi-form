@@ -29,12 +29,10 @@ type ArrayTableCallback = (
 ) => void;
 type Props = ArrayListProps<any>;
 
-const getId = () =>
-  Math.random()
-    .toString(36)
-    .slice(2);
+const getId = () => Math.random().toString(36).slice(2);
 
 class ArrayList extends React.Component<Props> {
+  static displayName = "yimiArrayList";
   protected dataSource: any[];
   protected actionValue: ArrayTableActionValue;
   private rowKey: string;
@@ -67,18 +65,21 @@ class ArrayList extends React.Component<Props> {
   public componentDidUpdate = (prevProps: Props) => {
     const { value, rowCoreConfig } = this.props;
     if (!isEqual(value, prevProps.value)) {
-      if (Array.isArray(value)) {
-        this.coreList = value.map(
-          (values) =>
-            new Core({ ...rowCoreConfig, values, id: values[this.rowKey] })
-        );
-      }
+      this.coreList = (value || []).map(
+        (values) =>
+          new Core({ ...rowCoreConfig, values, id: values[this.rowKey] })
+      );
       this.updateCoreList();
     }
   };
   private onRowChange = (val: any, core: Core) => {
+    const { rowCoreConfig } = this.props;
     this.dataSource = this.dataSource.map((item) =>
       item[this.rowKey] === val[this.rowKey] ? { ...val } : item
+    );
+    this.coreList = this.dataSource.map(
+      (values) =>
+        new Core({ ...rowCoreConfig, values, id: values[this.rowKey] })
     );
     if (this.props.onRowChange) {
       this.props.onRowChange(val, core);
