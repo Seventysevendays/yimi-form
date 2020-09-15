@@ -11,10 +11,11 @@ declare class FormItemBase extends React.PureComponent<FormItemBaseProps> {
     itemCore: ItemCore;
     statusListenKeys: string[] | false;
     propsListenKeys: string[] | false;
+    private cacheValue;
     constructor(props: FormItemBaseProps);
     componentWillUnmount: () => void;
     componentDidMount: () => void;
-    handleValueUpdate: (name: any) => void;
+    handleValueUpdate: (name: any, value: any, opts: any) => void;
     onChange: (...args: any[]) => void;
     getChildProps: () => any;
     handleStatusUpdate: (name: any) => void;

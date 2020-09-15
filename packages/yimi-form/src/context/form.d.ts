@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import Core from "../core/core";
 declare const context: import("react").Context<{
     core?: Core;

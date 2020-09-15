@@ -5,6 +5,7 @@ export const getFuncArgs = (func: (...args: any[]) => void) => {
 export const mapValues = (values: { [key: string]: any }) => {
   return Object.keys(values).reduce((map, key) => {
     map[`$${key}`] = values[key];
+    map[key] = values[key];
     return map;
   }, {} as any);
 };

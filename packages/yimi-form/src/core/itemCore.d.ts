@@ -33,6 +33,7 @@ declare class ItemCore {
     constructor(props: ItemCoreProps);
     set: (type: keyof typeof ACTIONS, value: any, opts?: {
         silent?: boolean;
+        manual?: boolean;
     }) => void;
     addInnerForm: (core: Core) => void;
     resetInnerFormList: () => void;
