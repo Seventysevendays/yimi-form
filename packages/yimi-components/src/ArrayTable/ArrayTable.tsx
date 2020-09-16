@@ -101,8 +101,6 @@ class ArrayTable extends React.Component<
   public componentDidUpdate = (prevProps: ArrayTableProps<any>) => {
     const { value, rowCoreConfig } = this.props;
     if (!isEqual(value, prevProps.value)) {
-      console.log(value);
-
       this.coreList = (value || []).map(
         (values) =>
           new Core({ ...rowCoreConfig, values, id: values[this.rowKey] })

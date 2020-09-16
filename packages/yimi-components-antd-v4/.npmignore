@@ -15,3 +15,5 @@ src
 tsconfig.json
 
 nodemon.json
+
+coverage

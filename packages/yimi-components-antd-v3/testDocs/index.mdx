@@ -29,6 +29,7 @@ import "./index.less";
 
 const { Option, OptGroup } = Select;
 const { TreeNode } = TreeSelect;
+const { Group, TextArea, Search, Password } = Input;
 
 const mockData = [];
 for (let i = 0; i < 20; i++) {
@@ -111,6 +112,27 @@ class FormDemo extends React.Component {
     return (
       <div className="wrapper">
         <Form core={this.core} inline full>
+          <Row gutter={20}>
+            <Col span={6}>
+              <FormItem
+                name="textarea"
+                label="textarea"
+                defaultValue="哈哈哈哈哈哈哈哈哈哈啊哈哈哈哈哈哈哈哈啊哈哈"
+              >
+                <TextArea />
+              </FormItem>
+            </Col>
+            <Col span={6}>
+              <FormItem name="search" label="search" defaultValue="search">
+                <Search />
+              </FormItem>
+            </Col>
+            <Col span={6}>
+              <FormItem name="password" label="password">
+                <Password />
+              </FormItem>
+            </Col>
+          </Row>
           <Row gutter={20}>
             <Col span={6}>
               <FormItem name="input" label="input" defaultValue="yimi-form">

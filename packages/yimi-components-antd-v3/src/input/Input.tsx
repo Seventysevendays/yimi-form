@@ -1,8 +1,59 @@
 import React from "react";
-import AInput, { InputProps as AInputProps } from "antd/lib/input";
+import AInput, {
+  InputProps as AInputProps,
+  TextAreaProps,
+  GroupProps,
+  SearchProps,
+  PasswordProps,
+} from "antd/lib/input";
 import { Status } from "../types";
 
-const { Group, Search, TextArea, Password } = AInput;
+const {
+  Group: AGroup,
+  Search: ASearch,
+  TextArea: ATextArea,
+  Password: APassword,
+} = AInput;
+
+function TextArea(props: TextAreaProps & { status?: Status }) {
+  const { status, className } = props;
+  return (
+    <ATextArea
+      {...props}
+      className={`is-${status} ${className ? className : ""}`}
+    />
+  );
+}
+
+function Group(props: GroupProps & { status?: Status }) {
+  const { status, className } = props;
+  return (
+    <AGroup
+      {...props}
+      className={`is-${status} ${className ? className : ""}`}
+    />
+  );
+}
+
+function Search(props: PasswordProps & { status?: Status }) {
+  const { status, className } = props;
+  return (
+    <ASearch
+      {...props}
+      className={`is-${status} ${className ? className : ""}`}
+    />
+  );
+}
+
+function Password(props: SearchProps & { status?: Status }) {
+  const { status, className } = props;
+  return (
+    <APassword
+      {...props}
+      className={`is-${status} ${className ? className : ""}`}
+    />
+  );
+}
 
 interface InputProps extends AInputProps {
   status?: Status;
