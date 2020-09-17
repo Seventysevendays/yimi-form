@@ -3,7 +3,7 @@
  * @description: description
  * @Date: 2020-07-15 16:31:58
  * @LastEditors: xuxiang
- * @LastEditTime: 2020-09-16 15:11:48
+ * @LastEditTime: 2020-09-17 18:43:49
  */
 
 import { FormItemProps } from "./../components/FormItem/FormItem";
@@ -356,18 +356,9 @@ class Core {
     });
   };
   public scrollToError = () => {
-    const errorKeys = Object.keys(this.error).filter(
-      (key) => !!this.error[key]
-    );
-    const first = errorKeys[0];
-    if (first) {
-      const firstCore = this.childrenMap[first];
-      if (firstCore && firstCore.id) {
-        const firstDom = document.getElementById(firstCore.id);
-        if (firstDom && firstDom.scrollIntoView) {
-          firstDom.scrollIntoView({ behavior: "smooth" });
-        }
-      }
+    const firstDom = document.querySelector(".yimi-form-item-error");
+    if (firstDom && firstDom.parentElement) {
+      firstDom.parentElement.scrollIntoView({ behavior: "smooth" });
     }
   };
   // 控制子元素的更新
