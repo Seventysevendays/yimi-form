@@ -55,8 +55,9 @@ class FormItemBase extends React.PureComponent<FormItemBaseProps> {
     const { status, props } = this.props;
     const { manual } = opts || {};
     const currentLength = this.itemCore.innerFormList.length;
+    const keys = Array.isArray(name) ? name : [name];
     if (
-      name === this.name &&
+      keys.includes(this.name) &&
       // 内部Form内的FormItem触发就好了
       (currentLength === 0 ||
         // Array data 手动设置的值

@@ -63,8 +63,8 @@ class FormItem extends React.Component<FormItemProps> {
   public name: string;
   public className: string;
   public id: string;
-  public viewListenKeys: string[] | false;
-  public showListenKeys: string[] | false;
+  public viewListenKeys: string[];
+  public showListenKeys: string[];
   public validateConfig: ItemValidateConfig;
   public errorRender: any;
   public constructor(props: FormItemProps) {
@@ -122,6 +122,7 @@ class FormItem extends React.Component<FormItemProps> {
   };
   private handleUpdate = (name) => {
     const { show, view } = this.props;
+    const keys = Array.isArray(name) ? name : [name];
     // view 和 show 不应该同时出现
     if (typeof show === "function") {
       // 处理show的渲染时机
@@ -129,7 +130,7 @@ class FormItem extends React.Component<FormItemProps> {
         this.handleShowUpdate();
       } else if (
         Array.isArray(this.showListenKeys) &&
-        this.showListenKeys.includes(name)
+        keys.some((item) => this.showListenKeys.includes(item))
       ) {
         this.handleShowUpdate();
       }
@@ -138,7 +139,7 @@ class FormItem extends React.Component<FormItemProps> {
         this.forceUpdate();
       } else if (
         Array.isArray(this.viewListenKeys) &&
-        this.viewListenKeys.includes(name)
+        keys.some((item) => this.viewListenKeys.includes(item))
       ) {
         this.forceUpdate();
       }
