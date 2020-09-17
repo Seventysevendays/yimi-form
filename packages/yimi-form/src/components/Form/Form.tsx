@@ -3,12 +3,12 @@
  * @description: description
  * @Date: 2020-07-15 16:39:01
  * @LastEditors: xuxiang
- * @LastEditTime: 2020-09-02 18:44:08
+ * @LastEditTime: 2020-09-16 14:12:55
  */
 
 import React from "react";
 import FormContext from "../../context/form";
-import Core, { Status } from "../../core/core";
+import Core, { Status, ACTIONS } from "../../core/core";
 import FormItemContext from "../../context/formItem";
 import ItemCore from "../../core/itemCore";
 import isEqual from "lodash/isEqual";
@@ -16,7 +16,7 @@ import isEqual from "lodash/isEqual";
 export interface FormProps {
   core?: Core;
   colon?: boolean;
-  onChange?: (val: any, core: Core) => void;
+  onChange?: (val: any, core: Core, key: string[]) => void;
   itemCore?: ItemCore;
   value?: { [key: string]: any };
   inline?: boolean;
@@ -51,7 +51,7 @@ export class Form extends React.Component<FormProps> {
       });
     this.core.jsx = this;
     if (!this.core.disableChildForm) {
-      this.core.on("change", this.onChange);
+      this.core.on(ACTIONS.change, this.onChange);
     }
   }
   public componentDidMount = () => {
@@ -91,9 +91,9 @@ export class Form extends React.Component<FormProps> {
       this.forceUpdate();
     }
   };
-  public onChange = (val) => {
+  public onChange = (val, key) => {
     if (this.props.onChange) {
-      this.props.onChange(val, this.core);
+      this.props.onChange(val, this.core, key);
     }
   };
   public render() {

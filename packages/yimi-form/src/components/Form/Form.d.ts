@@ -4,7 +4,7 @@ import ItemCore from "../../core/itemCore";
 export interface FormProps {
     core?: Core;
     colon?: boolean;
-    onChange?: (val: any, core: Core) => void;
+    onChange?: (val: any, core: Core, key: string[]) => void;
     itemCore?: ItemCore;
     value?: {
         [key: string]: any;
@@ -26,7 +26,7 @@ export declare class Form extends React.Component<FormProps> {
     componentDidMount: () => void;
     componentWillUnmount: () => void;
     componentDidUpdate: (prevProps: FormProps) => void;
-    onChange: (val: any) => void;
+    onChange: (val: any, key: any) => void;
     render(): JSX.Element;
 }
 declare const ConnectForm: {

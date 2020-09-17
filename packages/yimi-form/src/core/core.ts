@@ -3,7 +3,7 @@
  * @description: description
  * @Date: 2020-07-15 16:31:58
  * @LastEditors: xuxiang
- * @LastEditTime: 2020-09-15 18:03:50
+ * @LastEditTime: 2020-09-16 15:11:48
  */
 
 import { FormItemProps } from "./../components/FormItem/FormItem";
@@ -126,7 +126,11 @@ class Core {
       validateKeys = [key];
     }
     if (!this.silent) {
-      this.emit(ACTIONS.change, { ...this.values });
+      this.emit(
+        ACTIONS.change,
+        { ...this.values },
+        Array.isArray(key) ? key : [key]
+      );
       if (this.autoValidate) {
         validateKeys.forEach((key) => {
           if (this.childrenMap[key]) {
