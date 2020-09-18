@@ -9,7 +9,7 @@ interface ArrayListProps<T> {
     value?: T[];
     onChange?: (data: T[]) => void;
     rowKey?: string;
-    onRowChange?: (val: any, core: Core) => void;
+    onRowChange?: (val: any, core: Core, key: string[]) => void;
     bottom?: ReactNode;
     top?: ReactNode;
     rowFormConfig?: FormProps;

@@ -10,7 +10,7 @@ import { CoreProps } from "../../../yimi-form/src/core/core";
 interface ArrayTableProps<T> {
     tableConfig?: TableProps<any>;
     onChange?: (data: T[]) => void;
-    onRowChange?: (val: T, core: Core) => void;
+    onRowChange?: (val: T, core: Core, key: string[]) => void;
     top?: ReactNode;
     bottom?: ReactNode;
     rowFormConfig?: FormProps;

@@ -14,7 +14,7 @@ import { CoreProps } from "../../../yimi-form/src/core/core";
 interface ArrayTableProps<T> {
   tableConfig?: TableProps<any>;
   onChange?: (data: T[]) => void;
-  onRowChange?: (val: T, core: Core) => void;
+  onRowChange?: (val: T, core: Core, key: string[]) => void;
   top?: ReactNode;
   bottom?: ReactNode;
   rowFormConfig?: FormProps;
@@ -109,7 +109,7 @@ class ArrayTable extends React.Component<
       this.forceUpdate();
     }
   };
-  private onRowChange = (val: any, core: Core) => {
+  private onRowChange = (val: any, core: Core, key: string[]) => {
     const { rowCoreConfig } = this.props;
     this.dataSource = this.coreList.map((item) =>
       item.id === core.id ? val : item.getValues()
@@ -119,7 +119,7 @@ class ArrayTable extends React.Component<
         new Core({ ...rowCoreConfig, values, id: values[this.rowKey] })
     );
     if (this.props.onRowChange) {
-      this.props.onRowChange(val, core);
+      this.props.onRowChange(val, core, key);
     }
     this.onChange();
   };

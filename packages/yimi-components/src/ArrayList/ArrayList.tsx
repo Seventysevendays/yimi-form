@@ -13,7 +13,7 @@ interface ArrayListProps<T> {
   value?: T[];
   onChange?: (data: T[]) => void;
   rowKey?: string;
-  onRowChange?: (val: any, core: Core) => void;
+  onRowChange?: (val: any, core: Core, key: string[]) => void;
   bottom?: ReactNode;
   top?: ReactNode;
   rowFormConfig?: FormProps;
@@ -72,7 +72,7 @@ class ArrayList extends React.Component<Props> {
       this.updateCoreList();
     }
   };
-  private onRowChange = (val: any, core: Core) => {
+  private onRowChange = (val: any, core: Core, key: string[]) => {
     const { rowCoreConfig } = this.props;
     this.dataSource = this.dataSource.map((item) =>
       item[this.rowKey] === val[this.rowKey] ? { ...val } : item
@@ -82,7 +82,7 @@ class ArrayList extends React.Component<Props> {
         new Core({ ...rowCoreConfig, values, id: values[this.rowKey] })
     );
     if (this.props.onRowChange) {
-      this.props.onRowChange(val, core);
+      this.props.onRowChange(val, core, key);
     }
     this.onChange();
   };
