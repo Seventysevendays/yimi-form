@@ -10,7 +10,9 @@ import "antd/lib/table/style/index.css";
 import "antd/lib/pagination/style/index.css";
 import { Status } from "../types";
 import { CoreProps } from "../../../yimi-form/src/core/core";
-
+import zhCN from "antd/lib/locale/zh_CN";
+import enUS from "antd/lib/locale/en_US";
+import ConfigProvider from "antd/lib/config-provider";
 interface ArrayTableProps<T> {
   tableConfig?: TableProps<any>;
   onChange?: (data: T[]) => void;
@@ -23,6 +25,7 @@ interface ArrayTableProps<T> {
   status?: Status;
   className?: string;
   style?: React.CSSProperties;
+  locale?: "zh" | "en";
 }
 type ArrayTableCallback = (
   core: Core,
@@ -248,7 +251,7 @@ class ArrayTable extends React.Component<
     });
   };
   public render() {
-    const { top, bottom, tableConfig, className, style } = this.props;
+    const { top, bottom, tableConfig, className, style, locale } = this.props;
     const { current, pageSize } = this.state;
     return (
       <ArrayTableContext.Provider
@@ -259,18 +262,21 @@ class ArrayTable extends React.Component<
           style={style}
         >
           {top && <div className="yimi-array-table-top">{top}</div>}
-          <Table
-            {...this.props.tableConfig}
-            pagination={{
-              ...tableConfig.pagination,
-              current,
-              pageSize,
-              onChange: this.onPageChange,
-              onShowSizeChange: this.onShowSizeChange,
-            }}
-            components={this.components}
-            dataSource={this.dataSource.map((item) => item)}
-          />
+          <ConfigProvider locale={locale === "en" ? enUS : zhCN}>
+            <Table
+              {...this.props.tableConfig}
+              pagination={{
+                ...tableConfig.pagination,
+                current,
+                pageSize,
+                onChange: this.onPageChange,
+                onShowSizeChange: this.onShowSizeChange,
+              }}
+              components={this.components}
+              dataSource={this.dataSource.map((item) => item)}
+            />
+          </ConfigProvider>
+
           {bottom && <div className="yimi-array-table-bottom">{bottom}</div>}
         </div>
       </ArrayTableContext.Provider>

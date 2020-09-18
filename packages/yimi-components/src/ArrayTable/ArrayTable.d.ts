@@ -19,6 +19,7 @@ interface ArrayTableProps<T> {
     status?: Status;
     className?: string;
     style?: React.CSSProperties;
+    locale?: "zh" | "en";
 }
 declare type ArrayTableCallback = (core: Core, dataSource: any[], coreList: Core[]) => void;
 interface ArrayTableState {
