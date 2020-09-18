@@ -14,6 +14,7 @@ import "../../yimi-form/src/index.less";
 import "./index.less";
 import "../../yimi-components-antd-v4/src/index.less";
 import "../src/index.less";
+import "antd/dist/antd.css";
 
 class FormDemo extends React.Component {
   constructor(props) {
@@ -220,7 +221,7 @@ class FormDemo extends React.Component {
                     render: (t) => (
                       <FormItem
                         name="view"
-                        view={(core, { $viewDep }) => {
+                        view={(core, { $viewDep, $view }) => {
                           if ($viewDep === "input") {
                             return (
                               <FormItem name="view">
@@ -230,7 +231,9 @@ class FormDemo extends React.Component {
                           } else if ($viewDep === "select") {
                             return (
                               <FormItem name="view">
-                                <Select />
+                                <Select
+                                  options={[{ label: "苹果", value: "apple" }]}
+                                />
                               </FormItem>
                             );
                           } else {
@@ -388,7 +391,7 @@ class FormDemo extends React.Component {
                         <Button
                           onClick={() => {
                             this.core.validate().then((err) => {
-                              console.log(err);
+                              this.core.scrollToError();
                             });
                           }}
                         >
