@@ -1,13 +1,55 @@
 import React from "react";
 import ADatePicker from "antd/lib/date-picker";
+import {
+  DatePickerProps as ADatePickerProps,
+  MonthPickerProps,
+  RangePickerProps,
+  WeekPickerProps,
+} from "antd/lib/date-picker/interface";
 import { Status } from "../types";
-import { DatePickerProps as ADatePickerProps } from "antd/lib/date-picker/interface";
 
 type DatePickerProps = ADatePickerProps & {
   status?: Status;
 };
 
+const {
+  MonthPicker: AMonthPicker,
+  RangePicker: ARangePicker,
+  WeekPicker: AWeekPicker,
+} = ADatePicker;
+
+function MonthPicker(props: MonthPickerProps & { status?: Status }) {
+  const { status, className } = props;
+  return (
+    <AMonthPicker
+      {...props}
+      className={`is-${status} ${className ? className : ""}`}
+    />
+  );
+}
+function RangePicker(props: RangePickerProps & { status?: Status }) {
+  const { status, className } = props;
+  return (
+    <ARangePicker
+      {...props}
+      className={`is-${status} ${className ? className : ""}`}
+    />
+  );
+}
+function WeekPicker(props: WeekPickerProps & { status?: Status }) {
+  const { status, className } = props;
+  return (
+    <AWeekPicker
+      {...props}
+      className={`is-${status} ${className ? className : ""}`}
+    />
+  );
+}
+
 class DatePicker extends React.Component<DatePickerProps> {
+  static MonthPicker = MonthPicker;
+  static RangePicker = RangePicker;
+  static WeekPicker = WeekPicker;
   public render() {
     const { status, placeholder, className } = this.props;
     return (
