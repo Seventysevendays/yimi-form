@@ -14,6 +14,7 @@ export declare const ACTIONS: {
     change: string;
     error: string;
     forceUpdate: string;
+    props: string;
 };
 export declare const noop: () => void;
 export interface CoreProps {
@@ -53,6 +54,9 @@ declare class Core {
     status: {
         [key: string]: Status;
     };
+    props: {
+        [key: string]: any;
+    };
     error: {
         [key: string]: string | {
             [key: string]: any;
@@ -77,6 +81,7 @@ declare class Core {
     removeAllListeners: EventEmitter["removeAllListeners"];
     private handleValueChange;
     private handleStatusChange;
+    private handlePropsChange;
     private handleErrorChange;
     addChild: (options: FormItemProps & {
         displayName?: string;
@@ -89,6 +94,9 @@ declare class Core {
     setStatus: (status: {
         [key: string]: Status;
     }) => void;
+    setProps: (props: {
+        [key: string]: any;
+    }) => void;
     setGlobalStatus: (status: Status) => void;
     setError: (error: {
         [key: string]: string;
@@ -97,6 +105,7 @@ declare class Core {
     getStatus: (key?: string) => "preview" | "disabled" | "edit" | "hidden" | {
         [x: string]: Status;
     };
+    getProps: (key?: string) => any;
     getGlobalStatus: () => Status;
     getError: (key?: string) => string | {
         [key: string]: any;

@@ -70,4 +70,12 @@ describe("core/form basic function", () => {
     expect(core.getValues()).toEqual({ x: 1, y: 2 });
     expect(core.getValues("x")).toEqual(1);
   });
+  it("core setProps", () => {
+    core.addChild({
+      name: "x",
+      form: core,
+    });
+    core.setProps({ x: { loading: true } });
+    expect(core.getProps("x")).toEqual({ loading: true });
+  });
 });

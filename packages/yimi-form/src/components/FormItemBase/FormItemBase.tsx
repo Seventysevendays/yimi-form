@@ -41,11 +41,13 @@ class FormItemBase extends React.PureComponent<FormItemBaseProps> {
     this.core.on(ACTIONS.value, this.handleValueUpdate);
     this.core.on(ACTIONS.status, this.handleStatusUpdate);
     this.core.on(ACTIONS.forceUpdate, this.handleForceUpdate);
+    this.core.on(ACTIONS.props, this.handleStatusUpdate);
   }
   public componentWillUnmount = () => {
     this.core.removeListener(ACTIONS.value, this.handleValueUpdate);
     this.core.removeListener(ACTIONS.status, this.handleStatusUpdate);
     this.core.removeListener(ACTIONS.forceUpdate, this.handleForceUpdate);
+    this.core.removeListener(ACTIONS.props, this.handleStatusUpdate);
   };
   public componentDidMount = () => {
     this.cacheValue = this.core.getValues(this.name);
@@ -103,9 +105,11 @@ class FormItemBase extends React.PureComponent<FormItemBaseProps> {
   // 处理props
   public getChildProps = () => {
     const { props } = this.props;
+    const coreProps = this.core.getProps(this.name);
     // jsx status 优先级最高
     let status = this.core.getStatus(this.name);
     let baseProps = {
+      ...coreProps,
       onChange: this.onChange,
       value: this.core.getValues(this.name),
       disabled: status === "disabled" || status === "preview",

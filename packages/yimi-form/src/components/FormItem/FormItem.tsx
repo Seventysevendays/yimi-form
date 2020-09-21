@@ -63,8 +63,8 @@ class FormItem extends React.Component<FormItemProps> {
   public name: string;
   public className: string;
   public id: string;
-  public viewListenKeys: string[];
-  public showListenKeys: string[];
+  public viewListenKeys: string[] | false;
+  public showListenKeys: string[] | false;
   public validateConfig: ItemValidateConfig;
   public errorRender: any;
   public constructor(props: FormItemProps) {
@@ -129,8 +129,7 @@ class FormItem extends React.Component<FormItemProps> {
       if (this.props.showListenKeys === false) {
         this.handleShowUpdate();
       } else if (
-        Array.isArray(this.showListenKeys) &&
-        keys.some((item) => this.showListenKeys.includes(item))
+        keys.some((item) => (this.showListenKeys || []).includes(item))
       ) {
         this.handleShowUpdate();
       }
@@ -138,8 +137,7 @@ class FormItem extends React.Component<FormItemProps> {
       if (this.props.viewListenKeys === false) {
         this.forceUpdate();
       } else if (
-        Array.isArray(this.viewListenKeys) &&
-        keys.some((item) => this.viewListenKeys.includes(item))
+        keys.some((item) => (this.viewListenKeys || []).includes(item))
       ) {
         this.forceUpdate();
       }

@@ -3,7 +3,7 @@
  * @description: description
  * @Date: 2020-07-15 16:31:58
  * @LastEditors: xuxiang
- * @LastEditTime: 2020-09-17 18:43:49
+ * @LastEditTime: 2020-09-21 16:35:38
  */
 
 import { FormItemProps } from "./../components/FormItem/FormItem";
@@ -29,6 +29,7 @@ export const ACTIONS = {
   change: "change",
   error: "error",
   forceUpdate: "forceUpdate",
+  props: "props",
 };
 
 export const noop = () => {};
@@ -54,6 +55,7 @@ class Core {
   public values: { [key: string]: any };
   public initValues: { [key: string]: any };
   public status: { [key: string]: Status };
+  public props: { [key: string]: any };
   public error: {
     [key: string]:
       | string
@@ -74,6 +76,7 @@ class Core {
     this.on(ACTIONS.value, this.handleValueChange);
     this.on(ACTIONS.status, this.handleStatusChange);
     this.on(ACTIONS.error, this.handleErrorChange);
+    this.on(ACTIONS.props, this.handlePropsChange);
     const {
       onChange,
       values,
@@ -87,6 +90,7 @@ class Core {
       id,
     } = props;
     this.disableChildForm = !!disableChildForm;
+    this.props = {};
     this.values = { ...values } || {};
     this.initValues = { ...initValues } || {};
     this.status = { ...status } || {};
@@ -153,6 +157,9 @@ class Core {
     } else if (typeof key === "string") {
       this.status[key] = value;
     }
+  };
+  private handlePropsChange = (key: string, props) => {
+    this.props[key] = { ...this.props[key], ...props };
   };
   private handleErrorChange = (
     key: string | string[],
@@ -245,6 +252,16 @@ class Core {
       }
     });
   };
+  public setProps = (props: { [key: string]: any }) => {
+    const setKeys = Object.keys(props);
+    setKeys.forEach((key) => {
+      if (this.childrenMap[key]) {
+        this.childrenMap[key].set("props", props[key]);
+      } else {
+        this.emit(ACTIONS.props, key, props[key]);
+      }
+    });
+  };
   public setGlobalStatus = (status: Status) => {
     this.globalStatus = status;
     const allStatus = Object.keys(this.childrenMap).reduce((map, name) => {
@@ -281,6 +298,13 @@ class Core {
       return this.status[key];
     } else {
       return { ...this.status };
+    }
+  };
+  public getProps = (key?: string) => {
+    if (key) {
+      return this.props[key];
+    } else {
+      return { ...this.props };
     }
   };
   public getGlobalStatus = () => {
