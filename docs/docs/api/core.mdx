@@ -28,9 +28,11 @@ title: Core
 | setGlobalStatus: (status: Status) => void                                                            | 设置全局 status                                                                          |
 | setError: (error: { [key: string]: string; }) => void                                                | 设置错误                                                                                 |
 | setValuesSilent: (values: { [key: string]: any}) => void                                             | 不触发 onChange 设置值                                                                   |
+| setProps: (props: { [key: string]: any}) => void                                                     | 设置 props                                                                               |
 | getValues: (key?: string) => any                                                                     | 获取值，不传 key 为所有的值                                                              |
 | getStatus: (key?: string) => "preview" \| "disabled" \| "edit" \| "hidden" \| { [x: string]: Status} | 获取 status，不传 key 为所有 status                                                      |
 | getGlobalStatus: () => Status                                                                        | 获取全局状态                                                                             |
+| getProps: (key?:) => any                                                                             | 获取 core 中的 prop                                                                      |
 | getError: (key?: string) => any \| { [key: string]: any}                                             | 获取错误，不传 key 为所有错误                                                            |
 | validate: (keys?: string[]) => Promise<null \| {[key: string]: any}>                                 | 校验，keys 可以指定校验的范围                                                            |
 | scrollToError: () => void                                                                            | 滚动到第一个错误的位置                                                                   |

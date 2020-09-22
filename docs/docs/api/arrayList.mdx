@@ -49,7 +49,7 @@ import "antd/dist/antd.css";
     >
       <FormItem view={(core, { $id }) => $id} />
       <FormItem
-        view={(core, $id) => (
+        view={(core, { $id }) => (
           <ArrayAction>
             {({ remove, insertAfter, insertBefore }) => (
               <div>
