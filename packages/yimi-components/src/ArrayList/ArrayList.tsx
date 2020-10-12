@@ -69,7 +69,8 @@ class ArrayList extends React.Component<Props> {
         (values) =>
           new Core({ ...rowCoreConfig, values, id: values[this.rowKey] })
       );
-      this.updateCoreList();
+      this.dataSource = (value || []).map((data) => data);
+      this.forceUpdate();
     }
   };
   private onRowChange = (val: any, core: Core, key: string[]) => {

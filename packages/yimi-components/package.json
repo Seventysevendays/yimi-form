@@ -1,6 +1,6 @@
 {
   "name": "yimi-components-beta",
-  "version": "1.0.18",
+  "version": "1.0.19",
   "description": "yimi components",
   "main": "lib/index.js",
   "scripts": {
