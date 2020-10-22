@@ -35,7 +35,7 @@ function Group(props: GroupProps & { status?: Status }) {
   );
 }
 
-function Search(props: PasswordProps & { status?: Status }) {
+function Search(props: SearchProps & { status?: Status }) {
   const { status, className } = props;
   return (
     <ASearch
@@ -45,7 +45,7 @@ function Search(props: PasswordProps & { status?: Status }) {
   );
 }
 
-function Password(props: SearchProps & { status?: Status }) {
+function Password(props: PasswordProps & { status?: Status }) {
   const { status, className } = props;
   return (
     <APassword
