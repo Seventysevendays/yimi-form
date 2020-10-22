@@ -17,7 +17,7 @@ class Select extends React.Component<SelectProps> {
       <ASelect
         {...this.props}
         className={`is-${status} ${className ? className : ""}`}
-        value={formatValue}
+        value={formatValue || undefined}
       />
     );
   }

@@ -133,6 +133,18 @@ class FormDemo extends React.Component {
                 <Password />
               </FormItem>
             </Col>
+            <Col span={6}>
+              <FormItem name="selectLabelInValue" label="selectLabelInValue">
+                <Select
+                  labelInValue
+                  style={{ width: "100%" }}
+                  options={[
+                    { label: "opta", value: "opta" },
+                    { label: "optb", value: "optb" },
+                  ]}
+                />
+              </FormItem>
+            </Col>
           </Row>
           <Row gutter={20}>
             <Col span={6}>
