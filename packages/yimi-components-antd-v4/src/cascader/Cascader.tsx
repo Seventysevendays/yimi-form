@@ -11,8 +11,8 @@ class Cascader extends React.Component<CascaderProps> {
     const { status, placeholder, className } = this.props;
     return (
       <ACascader
-        placeholder={status === "preview" ? "" : placeholder}
         {...this.props}
+        placeholder={status === "preview" ? "" : placeholder}
         className={`is-${status} ${className ? className : ""}`}
       />
     );

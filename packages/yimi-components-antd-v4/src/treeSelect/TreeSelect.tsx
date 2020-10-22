@@ -15,8 +15,8 @@ class TreeSelect extends React.Component<TreeSelectProps> {
     const { status, className, placeholder } = this.props;
     return (
       <ATreeSelect
-        {...this.props}
         placeholder={status === "preview" ? "" : placeholder}
+        {...this.props}
         className={`is-${status} ${className ? className : ""}`}
       />
     );
