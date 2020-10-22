@@ -54,8 +54,8 @@ class DatePicker extends React.Component<DatePickerProps> {
     const { status, placeholder, className } = this.props;
     return (
       <ADatePicker
-        placeholder={status === "preview" ? "" : placeholder}
         {...this.props}
+        placeholder={status === "preview" ? "" : placeholder}
         className={`is-${status} ${className ? className : ""}`}
       />
     );
