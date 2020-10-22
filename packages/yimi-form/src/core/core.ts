@@ -3,7 +3,7 @@
  * @description: description
  * @Date: 2020-07-15 16:31:58
  * @LastEditors: xuxiang
- * @LastEditTime: 2020-09-21 16:35:38
+ * @LastEditTime: 2020-09-28 11:16:49
  */
 
 import { FormItemProps } from "./../components/FormItem/FormItem";
@@ -241,11 +241,8 @@ class Core {
   public setStatus = (status: { [key: string]: Status }) => {
     const setKeys = Object.keys(status);
     setKeys.forEach((key) => {
-      if (
-        this.childrenMap[key] &&
-        !this.childrenMap[key].propStatus &&
-        !this.childrenMap[key].funcStatus
-      ) {
+      // function status cant change
+      if (this.childrenMap[key] && !this.childrenMap[key].funcStatus) {
         this.childrenMap[key].set("status", status[key]);
       } else if (!this.childrenMap[key]) {
         this.emit("status", key, status[key]);
@@ -264,10 +261,13 @@ class Core {
   };
   public setGlobalStatus = (status: Status) => {
     this.globalStatus = status;
-    const allStatus = Object.keys(this.childrenMap).reduce((map, name) => {
-      map[name] = status;
-      return map;
-    }, {});
+    // globalStatus < propstatus
+    const allStatus = Object.keys(this.childrenMap)
+      .filter((key) => !this.childrenMap[key].propStatus)
+      .reduce((map, name) => {
+        map[name] = status;
+        return map;
+      }, {});
     this.setStatus(allStatus);
   };
   public setError = (error: { [key: string]: string | undefined }) => {
