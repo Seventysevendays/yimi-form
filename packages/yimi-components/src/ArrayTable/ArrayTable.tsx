@@ -26,6 +26,7 @@ interface ArrayTableProps<T> {
   className?: string;
   style?: React.CSSProperties;
   locale?: "zh" | "en";
+  getInst?: (table: ArrayTable) => void;
 }
 type ArrayTableCallback = (
   core: Core,
@@ -101,6 +102,14 @@ class ArrayTable extends React.Component<
       dataSource: this.dataSource,
     };
   }
+  public componentDidMount = () => {
+    if (this.props.getInst) {
+      this.props.getInst(this);
+    }
+  };
+  public getCoreList = () => {
+    return this.coreList;
+  };
   public componentDidUpdate = (prevProps: ArrayTableProps<any>) => {
     const { value, rowCoreConfig } = this.props;
     if (!isEqual(value, prevProps.value)) {

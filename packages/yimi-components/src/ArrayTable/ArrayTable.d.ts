@@ -20,6 +20,7 @@ interface ArrayTableProps<T> {
     className?: string;
     style?: React.CSSProperties;
     locale?: "zh" | "en";
+    getInst?: (table: ArrayTable) => void;
 }
 declare type ArrayTableCallback = (core: Core, dataSource: any[], coreList: Core[]) => void;
 interface ArrayTableState {
@@ -35,6 +36,8 @@ declare class ArrayTable extends React.Component<ArrayTableProps<any>, ArrayTabl
     protected actionValue: ArrayTableActionValue;
     private coreValue;
     constructor(props: ArrayTableProps<any>);
+    componentDidMount: () => void;
+    getCoreList: () => Core[];
     componentDidUpdate: (prevProps: ArrayTableProps<any>) => void;
     private onRowChange;
     private onChange;

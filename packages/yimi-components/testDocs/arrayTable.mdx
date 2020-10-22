@@ -53,6 +53,9 @@ class FormDemo extends React.Component {
         viewTable: [],
       });
     }, 2000);
+    setTimeout(() => {
+     this.table.getCoreList()[2].setError({ name: 'haah' })
+    })
   }
 
   render() {
@@ -69,6 +72,7 @@ class FormDemo extends React.Component {
             defaultValue={this.dataSource}
           >
             <ArrayTable
+              getInst={(table) => this.table = table}
               rowFormConfig={{
                 globalStatus: "preview",
               }}
