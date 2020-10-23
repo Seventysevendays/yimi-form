@@ -397,11 +397,8 @@ class FormDemo extends React.Component {
               </FormItem>
             </Col>
           </Row>
-          <FormItem name="upload" label="upload">
-            <Upload
-              name="file"
-              action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-              defaultFileList={[
+          <FormItem name="upload" label="upload" defaultValue={{ 
+            fileList:[
                 {
                   uid: "-1",
                   name: "image.png",
@@ -409,7 +406,11 @@ class FormDemo extends React.Component {
                   url:
                     "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
                 },
-              ]}
+              ] 
+            }}>
+            <Upload
+              name="file"
+              action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
             >
               <Button>Click to Upload</Button>
             </Upload>
