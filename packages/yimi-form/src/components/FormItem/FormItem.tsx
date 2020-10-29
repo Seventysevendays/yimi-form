@@ -9,6 +9,7 @@ import { getFuncArgs, mapValues } from "../../utils/dealListenkeys";
 import FormItemLabel from "../FormItemLabel/FormItemLabel";
 import FormItemError from "../FormItemError/FormItemError";
 import FormItemBase from "../FormItemBase/FormItemBase";
+import getName from "src/utils/getName";
 
 export type ItemValidateConfig =
   | RuleItem
@@ -30,6 +31,8 @@ export interface FormItemProps {
   status?: ItemStatus;
   /** insert props or deal with form inserted props */
   props?: { [key: string]: any } | ((core: Core, val: any) => any);
+  /** when not visible, value & status will be removed */
+  visible?: (core, Core, val: any) => boolean;
   /** show control: when not show, core status will be hidden and value will not be removed from core value */
   show?: (core: Core, val: any) => boolean;
   /** view control */
@@ -54,6 +57,7 @@ export interface FormItemProps {
   showListenKeys?: string[] | false;
   viewListenKeys?: string[] | false;
   propsListenKeys?: string[] | false;
+  visibleListenKeys?: string[] | false;
 }
 
 class FormItem extends React.Component<FormItemProps> {
@@ -66,6 +70,7 @@ class FormItem extends React.Component<FormItemProps> {
   public viewListenKeys: string[] | false;
   public showListenKeys: string[] | false;
   public validateConfig: ItemValidateConfig;
+  public visibleListenKeys: string[] | false;
   public errorRender: any;
   public constructor(props: FormItemProps) {
     super(props);
@@ -79,33 +84,38 @@ class FormItem extends React.Component<FormItemProps> {
       show,
       validateConfig,
       errorRender,
+      visible,
+      visibleListenKeys,
     } = props;
     this.label = label;
     this.form = form || new Core({});
-    this.name = name;
+    this.name = name || getName();
     this.showListenKeys = showListenKeys;
     this.viewListenKeys = viewListenKeys;
     this.validateConfig = validateConfig;
+    this.visibleListenKeys = visibleListenKeys;
     this.errorRender = errorRender;
     if (typeof show === "function" && !this.showListenKeys) {
       this.showListenKeys = getFuncArgs(show);
     }
-    if (typeof view === "function") {
+    if (typeof view === "function" && !this.viewListenKeys) {
       this.viewListenKeys = getFuncArgs(view);
     }
-    // 有name的才需要监听
-    if (this.name) {
-      const { type } = this.props.children || ({} as any);
-      this.itemCore = this.form.addChild({
-        ...props,
-        form: this.form,
-        showListenKeys: this.showListenKeys,
-        displayName: type ? type.displayName : "",
-      });
-      this.id = this.itemCore.id;
-      this.form.on(ACTIONS.value, this.handleUpdate);
-      this.form.on(ACTIONS.status, this.handleStatusUpdate);
+    if (typeof visible === "function" && !this.viewListenKeys) {
+      this.visibleListenKeys = getFuncArgs(visible);
     }
+    // 有name的才需要监听
+    const { type } = this.props.children || ({} as any);
+    this.itemCore = this.form.addChild({
+      ...props,
+      name: this.name,
+      form: this.form,
+      showListenKeys: this.showListenKeys,
+      displayName: type ? type.displayName : "",
+    });
+    this.id = this.itemCore.id;
+    this.form.on(ACTIONS.value, this.handleUpdate);
+    this.form.on(ACTIONS.status, this.handleStatusUpdate);
     this.form.on(ACTIONS.forceUpdate, this.handleForceUpdate);
   }
   private handleForceUpdate = (keys: string[]) => {
@@ -152,13 +162,10 @@ class FormItem extends React.Component<FormItemProps> {
     }
   };
   public componentWillUnmount = () => {
-    // 有name的才需要移除
-    if (this.name) {
-      this.form.removeListener(ACTIONS.value, this.handleUpdate);
-      this.form.removeListener(ACTIONS.status, this.handleStatusUpdate);
-      // 删除FormCore相关的所有属性
-      this.form.removeChild(this.name);
-    }
+    this.form.removeListener(ACTIONS.value, this.handleUpdate);
+    this.form.removeListener(ACTIONS.status, this.handleStatusUpdate);
+    // 删除FormCore相关的所有属性
+    this.form.removeChild(this.name);
     this.form.removeListener(ACTIONS.forceUpdate, this.handleForceUpdate);
   };
   private handleShowUpdate = () => {
@@ -239,7 +246,11 @@ class FormItem extends React.Component<FormItemProps> {
           <div className="yimi-form-item-control">
             <div className="yimi-form-item-content">
               {prefix && <div className="yimi-form-item-prefix">{prefix}</div>}
-              <FormItemBase {...this.props} itemCore={this.itemCore} />
+              <FormItemBase
+                {...this.props}
+                name={this.name}
+                itemCore={this.itemCore}
+              />
               {suffix && <div className="yimi-form-item-suffix">{suffix}</div>}
             </div>
             {status !== "preview" && (

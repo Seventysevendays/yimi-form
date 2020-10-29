@@ -1,9 +1,10 @@
+import { matchName } from "./../utils/getName";
 /*
  * @author: xuxiang
  * @description: description
  * @Date: 2020-07-15 16:31:58
  * @LastEditors: xuxiang
- * @LastEditTime: 2020-09-28 11:16:49
+ * @LastEditTime: 2020-10-29 09:57:44
  */
 
 import { FormItemProps } from "./../components/FormItem/FormItem";
@@ -289,7 +290,12 @@ class Core {
     if (key) {
       return this.values[key];
     } else {
-      return { ...this.values };
+      return Object.keys(this.values).reduce((newValues, key) => {
+        if (!matchName(key)) {
+          newValues[key] = this.values[key];
+        }
+        return newValues;
+      }, {});
     }
   };
   /** 获取单个或全部状态 */

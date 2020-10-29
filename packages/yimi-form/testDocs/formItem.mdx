@@ -122,7 +122,7 @@ class FormDemo extends React.Component {
           >
             <Input />
           </FormItem>
-          <FormItem
+          <Form
             name="view"
             label="view"
             view={(core, { $viewDep }) => {
@@ -162,6 +162,11 @@ class FormDemo extends React.Component {
           <FormItem name="colon" label="colon" colon={false}>
             <Input />
           </FormItem>
+          <h2>noname</h2>
+          <FormItem label="noname">
+            <Input />
+          </FormItem>
+          <Button onClick={() => { console.log(this.core.getValues()) }}>提交</Button>
         </Form>
       </div>
     );
