@@ -3,7 +3,7 @@ import Form from "../src/components/Form/Form";
 import FormItem from "../src/components/FormItem/FormItem";
 import Core from "../src/core/core";
 import { Button } from "antd";
-import { Input, Checkbox, Select } from "../../yimi-components-antd-v4/";
+import { Input, Checkbox, Select, Radio } from "../../yimi-components-antd-v4/";
 import "./index.less";
 
 import "antd/dist/antd.css";
@@ -96,6 +96,25 @@ class FormDemo extends React.Component {
                 placeholder: $placeholder,
               };
             }}
+          >
+            <Input />
+          </FormItem>
+          <h2>visible</h2>
+          <FormItem
+            name="visibleDep"
+            label="visibleDep"
+            bottom="FormItem 'visible' will show when the value of 'visibleDep' is 'true'"
+            defaultValue={true}
+          >
+            <Radio.Group>
+              <Radio value={true}>显示</Radio>
+              <Radio value={false}>隐藏</Radio>
+            </Radio.Group>
+          </FormItem>
+          <FormItem
+            name="visible"
+            label="visible"
+            visible={(core, { $visibleDep }) => $visibleDep}
           >
             <Input />
           </FormItem>

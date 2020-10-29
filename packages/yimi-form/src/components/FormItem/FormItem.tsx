@@ -32,7 +32,7 @@ export interface FormItemProps {
   /** insert props or deal with form inserted props */
   props?: { [key: string]: any } | ((core: Core, val: any) => any);
   /** when not visible, value & status will be removed */
-  visible?: (core, Core, val: any) => boolean;
+  visible?: (core: Core, val: any) => boolean;
   /** show control: when not show, core status will be hidden and value will not be removed from core value */
   show?: (core: Core, val: any) => boolean;
   /** view control */
@@ -72,6 +72,7 @@ class FormItem extends React.Component<FormItemProps> {
   public validateConfig: ItemValidateConfig;
   public visibleListenKeys: string[] | false;
   public errorRender: any;
+  public visible: boolean = true;
   public constructor(props: FormItemProps) {
     super(props);
     const {
@@ -131,12 +132,19 @@ class FormItem extends React.Component<FormItemProps> {
     }
   };
   private handleUpdate = (name) => {
-    const { show, view } = this.props;
+    const {
+      show,
+      view,
+      visible,
+      viewListenKeys,
+      showListenKeys,
+      visibleListenKeys,
+    } = this.props;
     const keys = Array.isArray(name) ? name : [name];
     // view 和 show 不应该同时出现
     if (typeof show === "function") {
       // 处理show的渲染时机
-      if (this.props.showListenKeys === false) {
+      if (showListenKeys === false) {
         this.handleShowUpdate();
       } else if (
         keys.some((item) => (this.showListenKeys || []).includes(item))
@@ -144,10 +152,25 @@ class FormItem extends React.Component<FormItemProps> {
         this.handleShowUpdate();
       }
     } else if (typeof view === "function") {
-      if (this.props.viewListenKeys === false) {
+      if (viewListenKeys === false) {
         this.forceUpdate();
       } else if (
         keys.some((item) => (this.viewListenKeys || []).includes(item))
+      ) {
+        this.forceUpdate();
+      }
+    } else if (typeof visible === "function") {
+      if (!visible(this.form, mapValues(this.form.getValues()))) {
+        this.visible = false;
+        // 隐藏时从core中移除
+        this.form.removeChild(this.name);
+      } else {
+        this.visible = true;
+      }
+      if (visibleListenKeys === false) {
+        this.forceUpdate();
+      } else if (
+        keys.some((item) => (this.visibleListenKeys || []).includes(item))
       ) {
         this.forceUpdate();
       }
@@ -193,9 +216,14 @@ class FormItem extends React.Component<FormItemProps> {
   };
 
   render() {
-    const { view } = this.props;
+    const { view, visible } = this.props;
     if (typeof view === "function") {
       return view(this.form, mapValues(this.form.getValues()));
+    }
+    if (typeof visible === "function") {
+      if (!this.visible) {
+        return null;
+      }
     }
     const {
       inline,
