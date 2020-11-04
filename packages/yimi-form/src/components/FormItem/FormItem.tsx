@@ -9,7 +9,7 @@ import { getFuncArgs, mapValues } from "../../utils/dealListenkeys";
 import FormItemLabel from "../FormItemLabel/FormItemLabel";
 import FormItemError from "../FormItemError/FormItemError";
 import FormItemBase from "../FormItemBase/FormItemBase";
-import getName from "src/utils/getName";
+import getName from "../../utils/getName";
 
 export type ItemValidateConfig =
   | RuleItem

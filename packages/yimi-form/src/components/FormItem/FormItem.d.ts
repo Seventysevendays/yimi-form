@@ -16,6 +16,7 @@ export interface FormItemProps {
     props?: {
         [key: string]: any;
     } | ((core: Core, val: any) => any);
+    visible?: (core: Core, val: any) => boolean;
     show?: (core: Core, val: any) => boolean;
     view?: (core: Core, val: any) => ReactNode;
     validateConfig?: ItemValidateConfig;
@@ -38,6 +39,7 @@ export interface FormItemProps {
     showListenKeys?: string[] | false;
     viewListenKeys?: string[] | false;
     propsListenKeys?: string[] | false;
+    visibleListenKeys?: string[] | false;
 }
 declare const ConnectFormItem: {
     (props: FormItemProps): JSX.Element;
