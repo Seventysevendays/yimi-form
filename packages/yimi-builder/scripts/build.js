@@ -23,7 +23,12 @@ const ES_PATTERN = /\.(js|jsx|mjs|ts|tsx)$/;
 const D_PATTERN = /\.(d.ts)$/
 const CSS_PATTERN = /\.(less)$/;
 const formName = require('../../yimi-form/package.json').name
+const componentName = require('../../yimi-components/package.json').name
 
+// ......yimi-form/src to .../lib; ......yimi-components/src to .../lib
+function replaceName(content) {
+  return content.replace(/".+yimi-form\/src/g, `"${formName}/lib`).replace(/".+yimi-components\/src/g, `"${componentName}/lib`)
+}
 async function run(basedir) {
   const srcDir = path.join(basedir, "src");
   const destDir = path.join(basedir, "lib");
@@ -69,8 +74,7 @@ async function run(basedir) {
           destFile = destFile.replace(ES_PATTERN, ".tsx");
           console.log(destFile);
           let content = fs.readFileSync(srcFile, "utf8");
-          // ......yimi-form/src to yimi-form/lib
-          content = content.replace(/".+yimi-form\/src/g, `"${formName}/lib`);
+          content = replaceName(content)
           await mkdir(path.dirname(destFile));
           fs.writeFileSync(
             destFile.replace(".tsx", ".js"),
@@ -87,8 +91,7 @@ async function run(basedir) {
         } else {
           console.log(" - %s %s", chalk.green("copy"), file);
           let content = fs.readFileSync(srcFile, "utf8");
-          // ......yimi-form/src to yimi-form/lib
-          content = content.replace(/".+yimi-form\/src/g, `"${formName}/lib`);
+          content = replaceName(content)
           await mkdir(path.dirname(destFile));
           await fs.writeFileSync(destFile, content);
         }
