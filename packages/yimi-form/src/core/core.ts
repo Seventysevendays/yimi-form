@@ -4,7 +4,7 @@ import { matchName } from "./../utils/getName";
  * @description: description
  * @Date: 2020-07-15 16:31:58
  * @LastEditors: xuxiang
- * @LastEditTime: 2020-10-29 09:57:44
+ * @LastEditTime: 2020-11-02 18:48:04
  */
 
 import { FormItemProps } from "./../components/FormItem/FormItem";
@@ -187,8 +187,15 @@ class Core {
       displayName,
     } = options;
 
-    // value > defaultValue > core value
-    this.values[name] = value || defaultValue || this.values[name] || null;
+    // core value > value > default value
+    this.values[name] =
+      this.values[name] !== undefined
+        ? this.values[name]
+        : value !== undefined
+        ? value
+        : defaultValue !== undefined
+        ? defaultValue
+        : null;
     let funcStatus;
     if (typeof status === "function") {
       funcStatus = status(this, mapValues(this.values));
@@ -337,7 +344,7 @@ class Core {
           this.childrenMap[key].set("value", values[key]);
           // 嵌套Form设置值
           const { innerFormList } = this.childrenMap[key];
-          if (innerFormList.length > 0) {
+          if (this.childrenMap[key].displayName === "yimiForm") {
             innerFormList.forEach((core) => {
               core.setValuesSilent(values[key]);
             });
