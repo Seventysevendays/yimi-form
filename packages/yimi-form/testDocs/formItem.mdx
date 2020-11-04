@@ -15,7 +15,7 @@ class FormDemo extends React.Component {
       onChange: (key, value, core) => {
         console.log(key, value, core);
       },
-      values: { validateConfig: "validate" },
+      values: { validateConfig: "validate", dprops: 'false' },
     });
   }
   componentDidMount = () => {
@@ -75,11 +75,9 @@ class FormDemo extends React.Component {
           <FormItem
             name="dprops"
             label="dprops"
-            defaultValue={true}
-            props={(props) => {
+            props={(core, value) => {
               return {
-                ...props,
-                checked: !!props.value,
+                value: JSON.parse(value.dprops)
               };
             }}
           >
