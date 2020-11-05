@@ -7,7 +7,7 @@ import "antd/lib/table/style/index.css";
 import "antd/lib/pagination/style/index.css";
 import { Status } from "../types";
 import { CoreProps } from "../../../yimi-form/src/core/core";
-interface ArrayTableProps<T> {
+export interface ArrayTableProps<T> {
     tableConfig?: TableProps<any>;
     onChange?: (data: T[]) => void;
     onRowChange?: (val: T, core: Core, key: string[]) => void;

@@ -10,10 +10,10 @@ import "antd/lib/table/style/index.css";
 import "antd/lib/pagination/style/index.css";
 import { Status } from "../types";
 import { CoreProps } from "../../../yimi-form/src/core/core";
-import zhCN from "antd/lib/locale/zh_CN";
-import enUS from "antd/lib/locale/en_US";
+import zhCN from "antd/lib/locale-provider/zh_CN";
+import enUS from "antd/lib/locale-provider/en_US";
 import ConfigProvider from "antd/lib/config-provider";
-interface ArrayTableProps<T> {
+export interface ArrayTableProps<T> {
   tableConfig?: TableProps<any>;
   onChange?: (data: T[]) => void;
   onRowChange?: (val: T, core: Core, key: string[]) => void;
@@ -64,27 +64,31 @@ class ArrayTable extends React.Component<
       current: current || 1,
       pageSize: pageSize || 10,
     };
+    const row = (props) => {
+      /** IMP: antd table data-row-key */
+      const key = props["data-row-key"];
+      const core =
+        this.coreList.find((core) => core.id === key) ||
+        new Core({ disableChildForm: true });
+      return (
+        <Form
+          {...rowFormConfig}
+          {...props}
+          Com={"tr"}
+          onChange={this.onRowChange}
+          // 没有 key 的禁止将自己上报给FormItem，如empty data
+          core={core}
+          value={core.getValues()}
+          status={this.props.status}
+        />
+      );
+    };
     this.components = {
       body: {
-        row: (props) => {
-          /** IMP: antd table data-row-key */
-          const key = props["data-row-key"];
-          const core =
-            this.coreList.find((core) => core.id === key) ||
-            new Core({ disableChildForm: true });
-          return (
-            <Form
-              {...rowFormConfig}
-              {...props}
-              Com={"tr"}
-              onChange={this.onRowChange}
-              // 没有 key 的禁止将自己上报给FormItem，如empty data
-              core={core}
-              value={core.getValues()}
-              status={this.props.status}
-            />
-          );
-        },
+        row,
+      },
+      header: {
+        row,
       },
     };
 
@@ -275,7 +279,7 @@ class ArrayTable extends React.Component<
             <Table
               {...this.props.tableConfig}
               pagination={{
-                ...tableConfig.pagination,
+                ...(tableConfig || {}).pagination,
                 current,
                 pageSize,
                 onChange: this.onPageChange,
