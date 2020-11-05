@@ -7,7 +7,7 @@ import ArrayTableContext, {
 import { FormProps } from "../../../yimi-form/src/components/Form/Form";
 import { CoreProps, Status } from "../../../yimi-form/src/core/core";
 
-interface ArrayListProps<T> {
+export interface ArrayListProps<T> {
   children?: ReactNode;
   defaultValue?: T[];
   value?: T[];
@@ -21,6 +21,7 @@ interface ArrayListProps<T> {
   status?: Status;
   className?: string;
   style?: React.CSSProperties;
+  getInst?: (table: ArrayList) => void;
 }
 type ArrayTableCallback = (
   core: Core,
@@ -62,6 +63,11 @@ class ArrayList extends React.Component<Props> {
       dataSource: this.dataSource,
     };
   }
+  public componentDidMount = () => {
+    if (this.props.getInst) {
+      this.props.getInst(this);
+    }
+  };
   public componentDidUpdate = (prevProps: Props) => {
     const { value, rowCoreConfig } = this.props;
     if (!isEqual(value, prevProps.value)) {

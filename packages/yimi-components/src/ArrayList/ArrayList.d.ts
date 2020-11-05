@@ -3,7 +3,7 @@ import { Core } from "../../../yimi-form/src";
 import { ArrayTableActionValue } from "../context/arrayTable";
 import { FormProps } from "../../../yimi-form/src/components/Form/Form";
 import { CoreProps, Status } from "../../../yimi-form/src/core/core";
-interface ArrayListProps<T> {
+export interface ArrayListProps<T> {
     children?: ReactNode;
     defaultValue?: T[];
     value?: T[];
@@ -17,6 +17,7 @@ interface ArrayListProps<T> {
     status?: Status;
     className?: string;
     style?: React.CSSProperties;
+    getInst?: (table: ArrayList) => void;
 }
 declare type ArrayTableCallback = (core: Core, dataSource: any[], coreList: Core[]) => void;
 declare type Props = ArrayListProps<any>;
@@ -28,6 +29,7 @@ declare class ArrayList extends React.Component<Props> {
     protected coreList: Core[];
     private coreValue;
     constructor(props: Props);
+    componentDidMount: () => void;
     componentDidUpdate: (prevProps: Props) => void;
     private onRowChange;
     private onChange;

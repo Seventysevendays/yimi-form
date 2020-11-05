@@ -24,7 +24,7 @@ import "antd/dist/antd.css";
 | rowKey?: string                              | 数据唯一的标识                                                        | 'id'   |
 | onRowChange?: (val: any, core: Core) => void | 每行的 onChange                                                       |        |
 | bottom?: ReactNode                           | 列表底部内容                                                          |        |
-| bottom?: ReactNode                           | 列表顶部内容                                                          |        |
+| top?: ReactNode                           | 列表顶部内容                                                          |        |
 | rowFormConfig?: FormProps                    | 每行 Form 的 props 配置                                               |        |
 | rowCoreConfig?: CoreProps                    | 每行 Core 的构建参数                                                  |        |
 | className?: string                           | 根节点类名                                                            |        |
@@ -47,9 +47,9 @@ import "antd/dist/antd.css";
         </ArrayAction>
       }
     >
-      <FormItem view={(core, { $id }) => $id} />
+      <FormItem view={(core, { id }) => id} />
       <FormItem
-        view={(core, { $id }) => (
+        view={(core, { id }) => (
           <ArrayAction>
             {({ remove, insertAfter, insertBefore }) => (
               <div>
