@@ -1,6 +1,6 @@
 {
   "name": "yimi-components-beta",
-  "version": "1.0.20",
+  "version": "1.0.22",
   "description": "yimi components",
   "main": "lib/index.js",
   "scripts": {
@@ -28,6 +28,7 @@
     "@types/enzyme": "^3.10.5",
     "@types/jest": "^26.0.10",
     "@types/react": "^16.9.45",
+    "antd": "^4.8.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.3",
     "jest": "^26.4.2",
@@ -37,9 +38,7 @@
     "sinon": "^9.0.3",
     "yimi-form-beta": "^1.0.10"
   },
-  "dependencies": {
-    "antd": "^4.5.4"
-  },
+  "dependencies": {},
   "peerDependencies": {
     "yimi-form-beta": "*"
   }
