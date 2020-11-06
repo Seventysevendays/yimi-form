@@ -350,8 +350,8 @@ class FormDemo extends React.Component {
               </FormItem>
             </Col>
             <Col span={6}>
-              <FormItem name="switch" label="switch">
-                <Switch defaultChecked />
+              <FormItem name="switch" label="switch" defaultValue={false}>
+                <Switch />
               </FormItem>
             </Col>
           </Row>
@@ -410,8 +410,7 @@ class FormDemo extends React.Component {
               </FormItem>
             </Col>
           </Row>
-          <FormItem name="upload" label="upload">
-            <Upload
+           <Upload
               name="file"
               action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
               defaultFileList={[
@@ -426,7 +425,6 @@ class FormDemo extends React.Component {
             >
               <Button>Click to Upload</Button>
             </Upload>
-          </FormItem>
           <FormItem
             name="transfer"
             label="transfer"
@@ -443,6 +441,11 @@ class FormDemo extends React.Component {
             />
           </FormItem>
         </Form>
+        <Button onClick={() => {
+          console.log(this.core.getValues())
+        }}>
+          提交
+        </Button>
         <Button
           onClick={() => {
             this.core.setGlobalStatus("edit");
@@ -475,5 +478,5 @@ class FormDemo extends React.Component {
     );
   }
 }
-ReactDOM.render(<FormDemo />, mountNode);
+ReactDOM.render(<FormDemo1 />, mountNode);
 ```

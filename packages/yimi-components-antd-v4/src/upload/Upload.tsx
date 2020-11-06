@@ -16,7 +16,7 @@ class Upload extends React.Component<UploadProps> {
     const { fileList } = value || {};
     return (
       <AUpload
-        fileList={fileList}
+        fileList={fileList || undefined}
         {...this.props}
         className={`is-${status} ${className ? className : ""}`}
       />

@@ -26,6 +26,10 @@ import "../src/index.less";
 import "antd/dist/antd.css";
 import "../../yimi-form/src/index.less";
 import "./index.less";
+import { Modal } from "antd";
+import "../../yimi-components/src/index.less";
+import ArrayList from "../../yimi-components/src/ArrayList/ArrayList";
+import { ArrayAction } from "../../yimi-components/src/";
 
 const { Option, OptGroup } = Select;
 const { TreeNode } = TreeSelect;
@@ -111,7 +115,50 @@ class FormDemo extends React.Component {
     const { selectedKeys, targetKeys } = this.state;
     return (
       <div className="wrapper">
+        <Button
+          onClick={() => {
+            this.setState({
+              visible: true,
+            });
+          }}
+        >
+          显示
+        </Button>
         <Form core={this.core} inline full>
+          <Modal
+            visible={this.state.visible}
+            onCancel={() => {
+              this.setState({ visible: false });
+            }}
+          >
+            <FormItem name="list" defaultValue={[{ id: "1" }]}>
+              <ArrayList
+                bottom={
+                  <ArrayAction>
+                    {({ addBottom }) => {
+                      return (
+                        <Button
+                          onClick={() => {
+                            addBottom();
+                          }}
+                        >
+                          添加
+                        </Button>
+                      );
+                    }}
+                  </ArrayAction>
+                }
+              >
+                <FormItem
+                  name="textarea1"
+                  label="textarea"
+                  defaultValue="哈哈哈哈哈哈哈哈哈哈啊哈哈哈哈哈哈哈哈啊哈哈"
+                >
+                  <TextArea />
+                </FormItem>
+              </ArrayList>
+            </FormItem>
+          </Modal>
           <Row gutter={20}>
             <Col span={6}>
               <FormItem
@@ -397,24 +444,17 @@ class FormDemo extends React.Component {
               </FormItem>
             </Col>
           </Row>
-          <FormItem name="upload" label="upload" defaultValue={{ 
-            fileList:[
-                {
-                  uid: "-1",
-                  name: "image.png",
-                  status: "done",
-                  url:
-                    "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
-                },
-              ] 
-            }}>
-            <Upload
-              name="file"
-              action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-            >
-              <Button>Click to Upload</Button>
-            </Upload>
-          </FormItem>
+
+          <Upload
+            name="file"
+            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+            onChange={(e) => {
+              console.log(e);
+            }}
+          >
+            <Button>Click to Upload</Button>
+          </Upload>
+
           <FormItem
             name="transfer"
             label="transfer"

@@ -3,7 +3,7 @@ import ASwitch, { SwitchProps as ASwitchProps } from "antd/lib/switch";
 import { Status } from "../types";
 
 interface SwitchProps extends ASwitchProps {
-  status: Status;
+  status?: Status;
   value?: boolean;
 }
 
