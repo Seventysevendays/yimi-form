@@ -53,9 +53,15 @@ class FormItemBase extends React.PureComponent<FormItemBaseProps> {
     this.cacheValue = this.core.getValues(this.name);
     this.forceUpdate();
   };
+  public componentDidUpdate = (prevProps: FormItemBaseProps) => {
+    const { value } = this.props;
+    if (!isEqual(value, prevProps.value)) {
+      console.log(this.cacheValue);
+      this.cacheValue = value;
+    }
+  };
   public handleValueUpdate = (name, value, opts) => {
     const { status, props } = this.props;
-    const { manual } = opts || {};
     const currentLength = this.itemCore.innerFormList.length;
     const keys = Array.isArray(name) ? name : [name];
     if (
@@ -63,7 +69,9 @@ class FormItemBase extends React.PureComponent<FormItemBaseProps> {
       // 内部Form内的FormItem触发就好了
       (currentLength === 0 ||
         // Array data 手动设置的值
-        (Array.isArray(value) && !isEqual(this.cacheValue, value) && manual))
+        (Array.isArray(value) &&
+          Array.isArray(this.cacheValue) &&
+          this.cacheValue.length !== value.length))
     ) {
       this.cacheValue = value;
       this.forceUpdate();

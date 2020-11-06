@@ -15,6 +15,7 @@ declare class FormItemBase extends React.PureComponent<FormItemBaseProps> {
     constructor(props: FormItemBaseProps);
     componentWillUnmount: () => void;
     componentDidMount: () => void;
+    componentDidUpdate: (prevProps: FormItemBaseProps) => void;
     handleValueUpdate: (name: any, value: any, opts: any) => void;
     onChange: (...args: any[]) => void;
     getChildProps: () => any;
