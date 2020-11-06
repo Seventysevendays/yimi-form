@@ -1,0 +1,208 @@
+```jsx
+import Form from "../../yimi-form/src/components/Form/Form";
+import FormItem from "../../yimi-form/src/components/FormItem/FormItem";
+import Core from "../../yimi-form/src/core/core";
+import { Button, Row, Col } from "antd";
+import moment from "moment";
+import "antd/dist/antd.css";
+import "../../yimi-form/src/index.less";
+import FormRender from "../src/FormRender/FormRender";
+import * as components from "../../yimi-components-antd-v4/src/";
+import "./index.less";
+import '../../yimi-components-antd-v4/src/index.less'
+import '../../yimi-form/src/index.less'
+
+const mockData = [];
+for (let i = 0; i < 20; i++) {
+  mockData.push({
+    key: i.toString(),
+    title: `content${i + 1}`,
+    description: `description of content${i + 1}`,
+    disabled: i % 3 < 1,
+  });
+}
+
+const oriTargetKeys = mockData
+  .filter((item) => +item.key % 3 > 1)
+  .map((item) => item.key);
+
+class FormDemo extends React.Component {
+  constructor(props) {
+    super(props);
+    this.core = new Core({
+      onChange: ([key], val, core) => {
+        console.log(key, val, core);
+      },
+    });
+  }
+
+  render() {
+    return (
+      <div className="wrapper">
+        <FormRender
+          components={components}
+          row={{ gutter: 20 }}
+          schema={[
+            {
+              row: { gutter: 40 },
+              properties: [
+                {
+                  component: "y-list",
+                  name: "list",
+                  title: "list",
+                  componentProps: {
+                    hasInsertAfter: true,
+                    hasInsertBefore: true,
+                  },
+                  properties: [
+                    {
+                      component: "y-row",
+                      properties: [
+                        {
+                          component: "input",
+                          name: "listitem",
+                          title: "item",
+                        },
+                      ],
+                    },
+                    {
+                      component: "y-row",
+                      properties: [
+                        {
+                          component: "input",
+                          name: "listitem1",
+                          title: "item1",
+                        },
+                        {
+                          component: "input",
+                          name: "listitem2",
+                          title: "item2",
+                        },
+                        {
+                          component: "input",
+                          name: "listitem3",
+                          title: "item3",
+                          componentProps: {
+                            placeholder: "请输入",
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      component: "y-row",
+                      row: { gutter: 10 },
+                      properties: [
+                        {
+                          component: "input",
+                          name: "listitem4",
+                          title: "item4",
+                        },
+                        {
+                          component: "input",
+                          name: "listitem5",
+                          title: "item5",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  component: "input",
+                  name: "input2",
+                  title: "input2",
+                },
+              ],
+            },
+            {
+              component: "input",
+              name: "input1",
+              title: "input1",
+            },
+            {
+              component: "input",
+              name: "input",
+              title: "input",
+            },
+            {
+              component: "y-form",
+              name: "form",
+              title: "form",
+              properties: [
+                {
+                  component: "y-row",
+                  properties: [
+                    {
+                      name: "input",
+                      title: "input",
+                      component: "input",
+                    },
+                    {
+                      name: "input1",
+                      title: "input1",
+                      component: "input",
+                      componentProps: {
+                        placeholder: "请输入",
+                      },
+                    },
+                  ],
+                },
+                {
+                  component: "y-row",
+                  properties: [
+                    {
+                      name: "input3",
+                      title: "input3",
+                      component: "input",
+                    },
+                    {
+                      name: "input4",
+                      title: "input4",
+                      component: "input",
+                      componentProps: {
+                        placeholder: "请输入",
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              component: "y-row",
+              properties: [
+                {
+                  component: "y-table",
+                  name: "table",
+                  title: "table",
+                  componentProps: {
+                    tableConfig: {
+                      columns: [
+                        {
+                          dataIndex: "name",
+                          title: "name",
+                        },
+                      ],
+                    },
+                    editMode: 'preview'
+                  },
+                  properties: [
+                    {
+                      name: "name",
+                      component: "input",
+                    },
+                  ],
+                },
+                {
+                  name: "table-bro",
+                  component: "input",
+                  title: "table-bro",
+                },
+              ],
+            },
+          ]}
+        />
+      </div>
+    );
+  }
+}
+ReactDOM.render(<FormDemo />, mountNode);
+```

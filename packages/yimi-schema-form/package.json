@@ -1,0 +1,36 @@
+{
+  "name": "yimi-schema-form",
+  "version": "1.0.0",
+  "description": "react schema form",
+  "main": "lib/index.js",
+  "scripts": {
+    "cov": "node ../yimi-builder/scripts/test.js",
+    "test": "node ../yimi-builder/scripts/test.js",
+    "start": "nodemon ../yimi-builder/scripts/dev.js",
+    "build": "node ../yimi-builder/scripts/build.js",
+    "prepare": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Seventysevendays/yimi-form.git"
+  },
+  "keywords": [
+    "react",
+    "schema",
+    "form"
+  ],
+  "author": "77days",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Seventysevendays/yimi-form/issues"
+  },
+  "homepage": "https://github.com/Seventysevendays/yimi-form#readme",
+  "dependencies": {
+    "react-dnd": "^11.1.3"
+  },
+  "devDependencies": {
+    "antd": "^4.7.3",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
+  }
+}
