@@ -4,7 +4,7 @@ import { matchName } from "./../utils/getName";
  * @description: description
  * @Date: 2020-07-15 16:31:58
  * @LastEditors: xuxiang
- * @LastEditTime: 2020-11-02 18:48:04
+ * @LastEditTime: 2020-11-09 20:18:04
  */
 
 import { FormItemProps } from "./../components/FormItem/FormItem";
@@ -71,6 +71,7 @@ class Core {
   public parentItemCore?: ItemCore;
   public silent: boolean;
   public id: string;
+  public reload: { [key: string]: boolean };
   constructor(props: CoreProps) {
     this.eventCenter = new EventEmitter();
     this.eventCenter.setMaxListeners(Infinity);
@@ -103,6 +104,7 @@ class Core {
     this.globalStatus = globalStatus || "edit";
     this.silent = false;
     this.id = id || getId();
+    this.reload = {};
   }
   public on: EventEmitter["on"] = (event, listener) => {
     return this.eventCenter.on(event, listener);
@@ -186,7 +188,7 @@ class Core {
       defaultValue,
       displayName,
     } = options;
-
+    this.reload[name] = true;
     // core value > value > default value
     this.values[name] =
       this.values[name] !== undefined
@@ -358,9 +360,11 @@ class Core {
   };
   /** remove unmount formItem */
   public removeChild = (name: string) => {
-    delete this.values[name];
-    delete this.status[name];
-    delete this.childrenMap[name];
+    if (!this.reload[name]) {
+      delete this.values[name];
+      delete this.status[name];
+      delete this.childrenMap[name];
+    }
   };
   public validate: (
     keys?: string[]

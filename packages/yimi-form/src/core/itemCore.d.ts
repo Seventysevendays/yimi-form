@@ -36,6 +36,7 @@ declare class ItemCore {
         manual?: boolean;
     }) => void;
     addInnerForm: (core: Core) => void;
+    removeInnerForm: (core: Core) => void;
     resetInnerFormList: () => void;
     validate: (opts?: {
         onlySelf?: boolean;

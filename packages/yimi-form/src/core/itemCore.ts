@@ -3,7 +3,7 @@
  * @description: description
  * @Date: 2020-07-22 14:55:28
  * @LastEditors: xuxiang
- * @LastEditTime: 2020-11-02 18:31:56
+ * @LastEditTime: 2020-11-06 18:46:09
  */
 
 import { ACTIONS } from "./core";
@@ -94,7 +94,7 @@ class ItemCore {
   ) => {
     if (!isEqual(this[type], value)) {
       // 如果有show的，stutus为hidden时，一切状态设置无效
-      if (type === "status" && typeof this.show === "function") {
+      if (type === ACTIONS.status && typeof this.show === "function") {
         const canshow = this.show(this.form, mapValues(this.form.getValues()));
         if (!canshow && value !== "hidden") {
           return;
@@ -110,6 +110,9 @@ class ItemCore {
   // 内部有Form时，存储内部Form的core
   public addInnerForm = (core: Core) => {
     this.innerFormList.push(core);
+  };
+  public removeInnerForm = (core: Core) => {
+    this.innerFormList = this.innerFormList.filter((c) => c.id === core.id);
   };
   // 重置innerFormList
   public resetInnerFormList = () => {
