@@ -87,9 +87,6 @@ class ArrayTable extends React.Component<
       body: {
         row,
       },
-      header: {
-        row,
-      },
     };
 
     this.dataSource = (value || []).map((data) => ({ ...values, ...data }));
