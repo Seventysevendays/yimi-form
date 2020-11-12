@@ -56,22 +56,24 @@ class FormItemBase extends React.PureComponent<FormItemBaseProps> {
   public componentDidUpdate = (prevProps: FormItemBaseProps) => {
     const { value } = this.props;
     if (!isEqual(value, prevProps.value)) {
-      console.log(this.cacheValue);
       this.cacheValue = value;
     }
   };
   public handleValueUpdate = (name, value, opts) => {
     const { status, props } = this.props;
+    const { manual } = opts || {};
     const currentLength = this.itemCore.innerFormList.length;
     const keys = Array.isArray(name) ? name : [name];
     if (
       keys.includes(this.name) &&
-      // 内部Form内的FormItem触发就好了
+      // 内部没有Form
       (currentLength === 0 ||
-        // Array data 手动设置的值
+        // Array data 数据长度发生改变时
         (Array.isArray(value) &&
           Array.isArray(this.cacheValue) &&
-          this.cacheValue.length !== value.length))
+          this.cacheValue.length !== value.length) ||
+        // 手动设置的值
+        manual)
     ) {
       this.cacheValue = value;
       this.forceUpdate();

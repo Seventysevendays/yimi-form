@@ -189,6 +189,7 @@ class FormItem extends React.Component<FormItemProps> {
     this.form.removeListener(ACTIONS.status, this.handleStatusUpdate);
     // 删除FormCore相关的所有属性
     this.form.removeChild(this.name);
+    this.form.reload[this.name] = false;
     this.form.removeListener(ACTIONS.forceUpdate, this.handleForceUpdate);
   };
   private handleShowUpdate = () => {

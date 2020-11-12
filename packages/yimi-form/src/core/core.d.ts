@@ -74,6 +74,9 @@ declare class Core {
     parentItemCore?: ItemCore;
     silent: boolean;
     id: string;
+    reload: {
+        [key: string]: boolean;
+    };
     constructor(props: CoreProps);
     on: EventEmitter["on"];
     emit: EventEmitter["emit"];

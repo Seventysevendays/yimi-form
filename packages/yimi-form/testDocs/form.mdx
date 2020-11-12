@@ -84,8 +84,8 @@ class FormDemo extends React.Component {
         </Form>
         <Form core={this.core} colon={true} inline>
           <h2>inner-status</h2>
-          <FormItem name="inner-status" label="inner-status" status="disabled">
-            <Form>
+          <FormItem name="inner-status" label="inner-status">
+            <Form globalStatus="preview">
               <FormItem name="inner-item" label="inner-item">
                 <Input />
               </FormItem>
