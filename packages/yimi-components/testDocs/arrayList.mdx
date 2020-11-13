@@ -46,350 +46,336 @@ function FormDemo() {
   }, [core]);
   return (
     <div className="wrapper">
+      <Form core={core} inline>
+        <FormItem
+          name="arrayList"
+          label="arrayList"
+          // defaultValue={this.dataSource}
+        >
+          <ArrayList
+            rowKey="id"
+            rowCoreConfig={{
+              values: { defaultValue: "init" },
+            }}
+            bottom={
+              <ArrayAction>
+                {({ addBottom, addTop }) => (
+                  <div>
+                    <Button
+                      onClick={() =>
+                        addBottom((core) => {
+                          core.setValues({
+                            name: "林俊杰",
+                          });
+                        })
+                      }
+                    >
+                      底部添加
+                    </Button>
+                    <Button
+                      onClick={() =>
+                        addTop((core) => {
+                          core.setValues({
+                            name: "林俊杰",
+                          });
+                        })
+                      }
+                    >
+                      顶部添加
+                    </Button>
+                    <Button
+                      onClick={() =>
+                        this.core.validate().then((err) => {
+                          console.log(err);
+                        })
+                      }
+                    >
+                      校验
+                    </Button>
+                  </div>
+                )}
+              </ArrayAction>
+            }
+          >
+            <h3>You can put content anywhere</h3>
+            <FormItem
+              name="name"
+              label="name"
+              validateConfig={{ required: true }}
+            >
+              <Input />
+            </FormItem>
+            <FormItem name="switch" label="switch" defaultValue={false}>
+              <Switch />
+            </FormItem>
+            <FormItem name="inner" label="inner">
+              <ArrayList
+                bottom={
+                  <ArrayAction>
+                    {({ addBottom, addTop }) => (
+                      <div>
+                        <Button
+                          onClick={() =>
+                            addBottom((core) => {
+                              core.setValues({
+                                name: "林俊杰",
+                              });
+                            })
+                          }
+                        >
+                          底部添加
+                        </Button>
+                        <Button
+                          onClick={() =>
+                            addTop((core) => {
+                              core.setValues({
+                                name: "林俊杰",
+                              });
+                            })
+                          }
+                        >
+                          顶部添加
+                        </Button>
+                        <Button
+                          onClick={() =>
+                            this.core.validate().then((err) => {
+                              console.log(err);
+                            })
+                          }
+                        >
+                          校验
+                        </Button>
+                      </div>
+                    )}
+                  </ArrayAction>
+                }
+              >
+                <FormItem name="name" label="inner-name">
+                  <Input />
+                </FormItem>
+                <FormItem
+                  view={(core, { $id }) => (
+                    <ArrayAction>
+                      {({ insertBefore, insertAfter, remove }) => {
+                        return (
+                          <div>
+                            <Button
+                              onClick={() => {
+                                insertBefore($id, (core) => {
+                                  core.setValues({
+                                    name: "吴彦祖",
+                                  });
+                                  core.forceUpdate();
+                                });
+                              }}
+                            >
+                              顶部添加
+                            </Button>
+                            <Button
+                              onClick={() => {
+                                insertAfter($id, (core) => {
+                                  core.setValues({
+                                    name: "吴彦祖",
+                                  });
+                                });
+                              }}
+                            >
+                              底部添加
+                            </Button>
+                            <Button
+                              onClick={() => {
+                                remove($id, (core) => {
+                                  console.log(core.getValues());
+                                });
+                              }}
+                            >
+                              删除
+                            </Button>
+                            <FormItem
+                              view={(core) => (
+                                <Button onClick={() => core.validate()}>
+                                  按行校验
+                                </Button>
+                              )}
+                            />
+                            <FormItem
+                              view={(core) => {
+                                return (
+                                  <Button
+                                    onClick={() => {
+                                      core.setGlobalStatus("edit");
+                                    }}
+                                  >
+                                    编辑
+                                  </Button>
+                                );
+                              }}
+                            />
+                            <FormItem
+                              view={(core) => {
+                                return (
+                                  <Button
+                                    onClick={() => {
+                                      core.setGlobalStatus("preview");
+                                    }}
+                                  >
+                                    保存
+                                  </Button>
+                                );
+                              }}
+                            />
+                            <FormItem
+                              view={(core) => {
+                                return (
+                                  <Button
+                                    onClick={() => {
+                                      core.reset(
+                                        Object.keys(core.getValues()).filter(
+                                          (key) => key !== "id"
+                                        )
+                                      );
+                                    }}
+                                  >
+                                    重置
+                                  </Button>
+                                );
+                              }}
+                            />
+                          </div>
+                        );
+                      }}
+                    </ArrayAction>
+                  )}
+                />
+              </ArrayList>
+            </FormItem>
+
+            <FormItem
+              name="defaultValue"
+              label="defaultValue"
+              validateConfig={{ required: true }}
+            >
+              <Input />
+            </FormItem>
+            <FormItem name="age" label="age">
+              <Input />
+            </FormItem>
+
+            <FormItem name="address" label="address">
+              <Input />
+            </FormItem>
+            <FormItem
+              view={(core, { $id }) => (
+                <ArrayAction>
+                  {({ insertBefore, insertAfter, remove }) => {
+                    return (
+                      <div>
+                        <Button
+                          onClick={() => {
+                            insertBefore($id, (core) => {
+                              core.setValues({
+                                name: "吴彦祖",
+                              });
+                              core.forceUpdate();
+                            });
+                          }}
+                        >
+                          顶部添加
+                        </Button>
+                        <Button
+                          onClick={() => {
+                            insertAfter($id, (core) => {
+                              core.setValues({
+                                name: "吴彦祖",
+                              });
+                            });
+                          }}
+                        >
+                          底部添加
+                        </Button>
+                        <Button
+                          onClick={() => {
+                            remove($id, (core) => {
+                              console.log(core.getValues());
+                            });
+                          }}
+                        >
+                          删除
+                        </Button>
+                        <FormItem
+                          view={(core) => (
+                            <Button onClick={() => core.validate()}>
+                              按行校验
+                            </Button>
+                          )}
+                        />
+                        <FormItem
+                          view={(core) => {
+                            return (
+                              <Button
+                                onClick={() => {
+                                  core.setGlobalStatus("edit");
+                                }}
+                              >
+                                编辑
+                              </Button>
+                            );
+                          }}
+                        />
+                        <FormItem
+                          view={(core) => {
+                            return (
+                              <Button
+                                onClick={() => {
+                                  core.setGlobalStatus("preview");
+                                }}
+                              >
+                                保存
+                              </Button>
+                            );
+                          }}
+                        />
+                        <FormItem
+                          view={(core) => {
+                            return (
+                              <Button
+                                onClick={() => {
+                                  core.reset(
+                                    Object.keys(core.getValues()).filter(
+                                      (key) => key !== "id"
+                                    )
+                                  );
+                                }}
+                              >
+                                重置
+                              </Button>
+                            );
+                          }}
+                        />
+                      </div>
+                    );
+                  }}
+                </ArrayAction>
+              )}
+            />
+            <Divider>分割线</Divider>
+          </ArrayList>
+        </FormItem>
+      </Form>
       <Button
         onClick={() => {
-          setVisible(true);
+          this.core.setGlobalStatus("preview");
         }}
       >
-        显示
+        预览
       </Button>
-      <Modal
-        visible={visible}
-        onCancel={() => {
-          setVisible(false);
+      <Button
+        onClick={() => {
+          this.core.setGlobalStatus("edit");
         }}
       >
-        <Form core={core} inline>
-          <FormItem
-            name="arrayList"
-            label="arrayList"
-            // defaultValue={this.dataSource}
-          >
-            <ArrayList
-              rowKey="id"
-              rowCoreConfig={{
-                values: { defaultValue: "init" },
-              }}
-              bottom={
-                <ArrayAction>
-                  {({ addBottom, addTop }) => (
-                    <div>
-                      <Button
-                        onClick={() =>
-                          addBottom((core) => {
-                            core.setValues({
-                              name: "林俊杰",
-                            });
-                          })
-                        }
-                      >
-                        底部添加
-                      </Button>
-                      <Button
-                        onClick={() =>
-                          addTop((core) => {
-                            core.setValues({
-                              name: "林俊杰",
-                            });
-                          })
-                        }
-                      >
-                        顶部添加
-                      </Button>
-                      <Button
-                        onClick={() =>
-                          this.core.validate().then((err) => {
-                            console.log(err);
-                          })
-                        }
-                      >
-                        校验
-                      </Button>
-                    </div>
-                  )}
-                </ArrayAction>
-              }
-            >
-              <h3>You can put content anywhere</h3>
-              <FormItem
-                name="name"
-                label="name"
-                validateConfig={{ required: true }}
-              >
-                <Input />
-              </FormItem>
-              <FormItem name="switch" label="switch" defaultValue={false}>
-                <Switch />
-              </FormItem>
-              <FormItem name="inner" label="inner">
-                <ArrayList
-                  bottom={
-                    <ArrayAction>
-                      {({ addBottom, addTop }) => (
-                        <div>
-                          <Button
-                            onClick={() =>
-                              addBottom((core) => {
-                                core.setValues({
-                                  name: "林俊杰",
-                                });
-                              })
-                            }
-                          >
-                            底部添加
-                          </Button>
-                          <Button
-                            onClick={() =>
-                              addTop((core) => {
-                                core.setValues({
-                                  name: "林俊杰",
-                                });
-                              })
-                            }
-                          >
-                            顶部添加
-                          </Button>
-                          <Button
-                            onClick={() =>
-                              this.core.validate().then((err) => {
-                                console.log(err);
-                              })
-                            }
-                          >
-                            校验
-                          </Button>
-                        </div>
-                      )}
-                    </ArrayAction>
-                  }
-                >
-                  <FormItem name="name" label="inner-name">
-                    <Input />
-                  </FormItem>
-                  <FormItem
-                    view={(core, { $id }) => (
-                      <ArrayAction>
-                        {({ insertBefore, insertAfter, remove }) => {
-                          return (
-                            <div>
-                              <Button
-                                onClick={() => {
-                                  insertBefore($id, (core) => {
-                                    core.setValues({
-                                      name: "吴彦祖",
-                                    });
-                                    core.forceUpdate();
-                                  });
-                                }}
-                              >
-                                顶部添加
-                              </Button>
-                              <Button
-                                onClick={() => {
-                                  insertAfter($id, (core) => {
-                                    core.setValues({
-                                      name: "吴彦祖",
-                                    });
-                                  });
-                                }}
-                              >
-                                底部添加
-                              </Button>
-                              <Button
-                                onClick={() => {
-                                  remove($id, (core) => {
-                                    console.log(core.getValues());
-                                  });
-                                }}
-                              >
-                                删除
-                              </Button>
-                              <FormItem
-                                view={(core) => (
-                                  <Button onClick={() => core.validate()}>
-                                    按行校验
-                                  </Button>
-                                )}
-                              />
-                              <FormItem
-                                view={(core) => {
-                                  return (
-                                    <Button
-                                      onClick={() => {
-                                        core.setGlobalStatus("edit");
-                                      }}
-                                    >
-                                      编辑
-                                    </Button>
-                                  );
-                                }}
-                              />
-                              <FormItem
-                                view={(core) => {
-                                  return (
-                                    <Button
-                                      onClick={() => {
-                                        core.setGlobalStatus("preview");
-                                      }}
-                                    >
-                                      保存
-                                    </Button>
-                                  );
-                                }}
-                              />
-                              <FormItem
-                                view={(core) => {
-                                  return (
-                                    <Button
-                                      onClick={() => {
-                                        core.reset(
-                                          Object.keys(core.getValues()).filter(
-                                            (key) => key !== "id"
-                                          )
-                                        );
-                                      }}
-                                    >
-                                      重置
-                                    </Button>
-                                  );
-                                }}
-                              />
-                            </div>
-                          );
-                        }}
-                      </ArrayAction>
-                    )}
-                  />
-                </ArrayList>
-              </FormItem>
-
-              <FormItem
-                name="defaultValue"
-                label="defaultValue"
-                validateConfig={{ required: true }}
-              >
-                <Input />
-              </FormItem>
-              <FormItem name="age" label="age">
-                <Input />
-              </FormItem>
-
-              <FormItem name="address" label="address">
-                <Input />
-              </FormItem>
-              <FormItem
-                view={(core, { $id }) => (
-                  <ArrayAction>
-                    {({ insertBefore, insertAfter, remove }) => {
-                      return (
-                        <div>
-                          <Button
-                            onClick={() => {
-                              insertBefore($id, (core) => {
-                                core.setValues({
-                                  name: "吴彦祖",
-                                });
-                                core.forceUpdate();
-                              });
-                            }}
-                          >
-                            顶部添加
-                          </Button>
-                          <Button
-                            onClick={() => {
-                              insertAfter($id, (core) => {
-                                core.setValues({
-                                  name: "吴彦祖",
-                                });
-                              });
-                            }}
-                          >
-                            底部添加
-                          </Button>
-                          <Button
-                            onClick={() => {
-                              remove($id, (core) => {
-                                console.log(core.getValues());
-                              });
-                            }}
-                          >
-                            删除
-                          </Button>
-                          <FormItem
-                            view={(core) => (
-                              <Button onClick={() => core.validate()}>
-                                按行校验
-                              </Button>
-                            )}
-                          />
-                          <FormItem
-                            view={(core) => {
-                              return (
-                                <Button
-                                  onClick={() => {
-                                    core.setGlobalStatus("edit");
-                                  }}
-                                >
-                                  编辑
-                                </Button>
-                              );
-                            }}
-                          />
-                          <FormItem
-                            view={(core) => {
-                              return (
-                                <Button
-                                  onClick={() => {
-                                    core.setGlobalStatus("preview");
-                                  }}
-                                >
-                                  保存
-                                </Button>
-                              );
-                            }}
-                          />
-                          <FormItem
-                            view={(core) => {
-                              return (
-                                <Button
-                                  onClick={() => {
-                                    core.reset(
-                                      Object.keys(core.getValues()).filter(
-                                        (key) => key !== "id"
-                                      )
-                                    );
-                                  }}
-                                >
-                                  重置
-                                </Button>
-                              );
-                            }}
-                          />
-                        </div>
-                      );
-                    }}
-                  </ArrayAction>
-                )}
-              />
-              <Divider>分割线</Divider>
-            </ArrayList>
-          </FormItem>
-        </Form>
-        <Button
-          onClick={() => {
-            this.core.setGlobalStatus("preview");
-          }}
-        >
-          预览
-        </Button>
-        <Button
-          onClick={() => {
-            this.core.setGlobalStatus("edit");
-          }}
-        >
-          编辑
-        </Button>
-      </Modal>
+        编辑
+      </Button>
     </div>
   );
 }

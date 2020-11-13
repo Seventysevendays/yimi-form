@@ -112,11 +112,8 @@ class ArrayList extends React.Component<Props> {
   };
   private handleCallback = (callback: ArrayTableCallback, id: string) => {
     if (callback) {
-      // TODO: make sure core funtions work
-      setTimeout(() => {
-        const core = this.coreList.find((core) => core.id === id);
-        callback(core, this.dataSource, this.coreList);
-      });
+      const core = this.coreList.find((core) => core.id === id);
+      callback(core, this.dataSource, this.coreList);
     }
   };
   public addBottom = (callback?: ArrayTableCallback) => {

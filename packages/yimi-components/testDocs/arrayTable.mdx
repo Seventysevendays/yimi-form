@@ -256,6 +256,20 @@ class FormDemo extends React.Component {
                     ),
                   },
                   {
+                    dataIndex: "form",
+                    title: "form",
+                    width: 200,
+                    render: (t) => (
+                      <FormItem name="form">
+                        <Form>
+                          <FormItem name="form-item" label="form-item">
+                            <Input />
+                          </FormItem>
+                        </Form>
+                      </FormItem>
+                    ),
+                  },
+                  {
                     dataIndex: "opr",
                     title: "操作",
                     width: 400,
@@ -459,6 +473,15 @@ class FormDemo extends React.Component {
               }
             />
           </FormItem>
+          <Button
+            onClick={() => {
+              this.core.setValues({
+                viewTable: [],
+              });
+            }}
+          >
+            删除
+          </Button>
         </Form>
       </div>
     );
