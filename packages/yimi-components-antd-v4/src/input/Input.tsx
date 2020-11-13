@@ -65,10 +65,11 @@ class Input extends React.Component<InputProps> {
   static TextArea = TextArea;
   static Password = Password;
   public render() {
-    const { status, className } = this.props;
+    const { status, className, placeholder } = this.props;
     return (
       <AInput
         {...this.props}
+        placeholder={status === "preview" ? "" : placeholder}
         className={`is-${status} ${className ? className : ""}`}
       />
     );
