@@ -9,8 +9,8 @@ import "../../yimi-form/src/index.less";
 import FormRender from "../src/FormRender/FormRender";
 import * as components from "../../yimi-components-antd-v4/src/";
 import "./index.less";
-import '../../yimi-components-antd-v4/src/index.less'
-import '../../yimi-form/src/index.less'
+import "../../yimi-components-antd-v4/src/index.less";
+import "../../yimi-form/src/index.less";
 
 const mockData = [];
 for (let i = 0; i < 20; i++) {
@@ -44,7 +44,7 @@ class FormDemo extends React.Component {
           row={{ gutter: 20 }}
           schema={[
             {
-              row: { gutter: 40 },
+              component: "y-row",
               properties: [
                 {
                   component: "y-list",
@@ -167,34 +167,70 @@ class FormDemo extends React.Component {
               ],
             },
             {
-              component: "y-row",
-              properties: [
-                {
-                  component: "y-table",
-                  name: "table",
-                  title: "table",
-                  componentProps: {
-                    tableConfig: {
-                      columns: [
-                        {
-                          dataIndex: "name",
-                          title: "name",
-                        },
-                      ],
-                    },
-                    editMode: 'preview'
-                  },
-                  properties: [
+              component: "y-table",
+              name: "table",
+              title: "table",
+              componentProps: {
+                tableConfig: {
+                  columns: [
                     {
-                      name: "name",
-                      component: "input",
+                      dataIndex: "name",
+                      title: "name",
+                    },
+                    {
+                      dataIndex: "form",
+                      title: "form",
                     },
                   ],
                 },
+                editMode: "preview",
+              },
+              properties: [
                 {
-                  name: "table-bro",
+                  name: "name",
                   component: "input",
-                  title: "table-bro",
+                },
+                {
+                  name: "form",
+                  component: "y-form",
+                  properties: [
+                    {
+                      component: "y-row",
+                      properties: [
+                        {
+                          name: "input",
+                          title: "input",
+                          component: "input",
+                        },
+                        {
+                          name: "input1",
+                          title: "input1",
+                          component: "input",
+                          componentProps: {
+                            placeholder: "请输入",
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      component: "y-row",
+                      properties: [
+                        {
+                          name: "input3",
+                          title: "input3",
+                          component: "input",
+                        },
+                        {
+                          name: "input4",
+                          title: "input4",
+                          component: "input",
+                          componentProps: {
+                            placeholder: "请输入",
+                          },
+                        },
+                      ],
+                    },
+                  ],
                 },
               ],
             },

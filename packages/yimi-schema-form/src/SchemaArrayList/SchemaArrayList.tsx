@@ -3,7 +3,6 @@ import ArrayList, {
   ArrayListProps,
 } from "../../../yimi-components/src/ArrayList/ArrayList";
 import { ArrayAction } from "../../../yimi-components/src";
-import Button from "antd/lib/button";
 import FormItem from "../../../yimi-form/src/components/FormItem/FormItem";
 
 export interface SchemaArrayListProps extends ArrayListProps<any> {
@@ -28,20 +27,18 @@ class SChemaArrayList extends React.Component<SchemaArrayListProps> {
           {({ addBottom, addTop }) => {
             const isAddBottom = addFrom === "bottom" || addFrom === undefined;
             return (
-              <div>
-                <Button
-                  type="primary"
-                  onClick={() => {
-                    if (isAddBottom) {
-                      addBottom();
-                    } else {
-                      addTop();
-                    }
-                  }}
-                >
-                  {(isAddBottom ? addBottomText : addTopText) || "添加"}
-                </Button>
-              </div>
+              <span
+                className="yimi-schema-action"
+                onClick={() => {
+                  if (isAddBottom) {
+                    addBottom();
+                  } else {
+                    addTop();
+                  }
+                }}
+              >
+                {(isAddBottom ? addBottomText : addTopText) || "添加"}
+              </span>
             );
           }}
         </ArrayAction>
@@ -70,13 +67,14 @@ class SChemaArrayList extends React.Component<SchemaArrayListProps> {
                       <FormItem
                         view={(core, val) => {
                           return (
-                            <Button
+                            <span
+                              className="yimi-schema-action"
                               onClick={() => {
                                 insertAfter(val[rowKey || "id"]);
                               }}
                             >
                               {insertAfterText || "下方添加"}
-                            </Button>
+                            </span>
                           );
                         }}
                       />
@@ -85,20 +83,24 @@ class SChemaArrayList extends React.Component<SchemaArrayListProps> {
                       <FormItem
                         view={(core, val) => {
                           return (
-                            <Button
+                            <span
+                              className="yimi-schema-action"
                               onClick={() => {
                                 insertBefore(val[rowKey || "id"]);
                               }}
                             >
                               {insertBeforeText || "上方添加"}
-                            </Button>
+                            </span>
                           );
                         }}
                       />
                     )}
-                    <Button onClick={() => remove(values[rowKey || "id"])}>
+                    <span
+                      className="yimi-schema-action yimi-schema-action-delete"
+                      onClick={() => remove(values[rowKey || "id"])}
+                    >
                       {removeText || "删除"}
-                    </Button>
+                    </span>
                   </div>
                 );
               }}

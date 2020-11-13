@@ -124,26 +124,26 @@ class FormRender extends React.Component<FormRenderProps> {
       const span = Math.floor(24 / (properties ? properties.length : 1));
       if (!properties) {
         return (
-          <Row {...propRow} {...row}>
+          <Row {...propRow} {...row} key={index}>
             <Col span={24}>{this.renderItem(rowItem)}</Col>
           </Row>
         );
       }
       if (component === "y-form") {
         return (
-          <Row {...propRow} {...row}>
+          <Row {...propRow} {...row} key={index}>
             <Col span={24}>{this.renderForm(rowItem)}</Col>
           </Row>
         );
       } else if (component === "y-table") {
         return (
-          <Row {...propRow} {...row}>
+          <Row {...propRow} {...row} key={index}>
             <Col span={24}>{this.renderTable(rowItem)}</Col>
           </Row>
         );
       } else if (component === "y-list") {
         return (
-          <Row {...propRow} {...row}>
+          <Row {...propRow} {...row} key={index}>
             <Col span={24}>{this.renderList(rowItem)}</Col>
           </Row>
         );
@@ -159,24 +159,22 @@ class FormRender extends React.Component<FormRenderProps> {
               col,
               componentProps,
             } = item;
-            const C = (props) => (
-              <Col span={span} {...col} {...props} key={name + title} />
-            );
+            const C = (props) => <Col span={span} {...col} {...props} />;
             if (properties && !component) {
               return this.renderSchema(properties);
             }
             if (component === "y-form") {
-              return <C>{this.renderForm(item)}</C>;
+              return <C key={name + title}>{this.renderForm(item)}</C>;
             } else if (component === "y-list") {
-              return <C>{this.renderList(item)}</C>;
+              return <C key={name + title}>{this.renderList(item)}</C>;
             } else if (component === "y-table") {
-              return <C>{this.renderTable(item)}</C>;
+              return <C key={name + title}>{this.renderTable(item)}</C>;
             } else if (component === "y-row") {
-              return <C>{this.renderRow(item)}</C>;
+              return <C key={name + title}>{this.renderRow(item)}</C>;
             } else {
               const Cp = this.renderComponent(component);
               return (
-                <C>
+                <C key={name + title}>
                   <FormItem
                     key={name + title}
                     name={name}

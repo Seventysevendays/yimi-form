@@ -3,7 +3,6 @@ import ArrayTable, {
   ArrayTableProps,
 } from "../../../yimi-components/src/ArrayTable/ArrayTable";
 import { ArrayAction } from "../../../yimi-components/src";
-import Button from "antd/lib/button";
 import FormItem from "../../../yimi-form/src/components/FormItem/FormItem";
 
 export interface SchemaArrayTableProps extends ArrayTableProps<any> {
@@ -35,8 +34,8 @@ class SchemaArrayTable extends React.Component<SchemaArrayTableProps> {
             const isAddBottom = addFrom === "bottom" || addFrom === undefined;
             return (
               <div>
-                <Button
-                  type="primary"
+                <span
+                  className="yimi-schema-action"
                   onClick={() => {
                     if (isAddBottom) {
                       addBottom();
@@ -46,7 +45,7 @@ class SchemaArrayTable extends React.Component<SchemaArrayTableProps> {
                   }}
                 >
                   {(isAddBottom ? addBottomText : addTopText) || "添加"}
-                </Button>
+                </span>
               </div>
             );
           }}
@@ -85,23 +84,25 @@ class SchemaArrayTable extends React.Component<SchemaArrayTableProps> {
                       <FormItem
                         view={(core) => {
                           return core.getGlobalStatus() === "preview" ? (
-                            <Button
+                            <span
+                              className="yimi-schema-action"
                               style={{ marginRight: 10 }}
                               onClick={() => {
                                 core.setGlobalStatus("edit");
                               }}
                             >
                               {editText || "编辑"}
-                            </Button>
+                            </span>
                           ) : (
-                            <Button
+                            <span
+                              className="yimi-schema-action"
                               style={{ marginRight: 10 }}
                               onClick={() => {
                                 core.setGlobalStatus("preview");
                               }}
                             >
                               {saveText || "保存"}
-                            </Button>
+                            </span>
                           );
                         }}
                       />
@@ -110,14 +111,15 @@ class SchemaArrayTable extends React.Component<SchemaArrayTableProps> {
                       <FormItem
                         view={(core, val) => {
                           return (
-                            <Button
+                            <span
+                              className="yimi-schema-action"
                               style={{ marginRight: 10 }}
                               onClick={() => {
                                 insertAfter(val[(rowKey as string) || "id"]);
                               }}
                             >
                               {insertAfterText || "下方添加"}
-                            </Button>
+                            </span>
                           );
                         }}
                       />
@@ -126,14 +128,15 @@ class SchemaArrayTable extends React.Component<SchemaArrayTableProps> {
                       <FormItem
                         view={(core, val) => {
                           return (
-                            <Button
+                            <span
+                              className="yimi-schema-action"
                               style={{ marginRight: 10 }}
                               onClick={() => {
                                 insertBefore(val[(rowKey as string) || "id"]);
                               }}
                             >
                               {insertBeforeText || "上方添加"}
-                            </Button>
+                            </span>
                           );
                         }}
                       />
@@ -142,13 +145,14 @@ class SchemaArrayTable extends React.Component<SchemaArrayTableProps> {
                       <FormItem
                         view={(core, val) => {
                           return (
-                            <Button
+                            <span
+                              className="yimi-schema-action yimi-schema-action-delete"
                               onClick={() => {
                                 remove(val[(rowKey as string) || "key"]);
                               }}
                             >
                               {deleteText || "删除"}
-                            </Button>
+                            </span>
                           );
                         }}
                       />
@@ -170,12 +174,14 @@ class SchemaArrayTable extends React.Component<SchemaArrayTableProps> {
     const actionProps = { [addFrom || "bottom"]: this.renderAction() };
 
     return (
-      <ArrayTable
-        {...this.props}
-        {...actionProps}
-        rowFormConfig={{ ...rowFormConfig, globalStatus: editMode }}
-        tableConfig={{ ...tableConfig, columns: this.getColumns() }}
-      />
+      <div className="yimi-schema-table">
+        <ArrayTable
+          {...this.props}
+          {...actionProps}
+          rowFormConfig={{ ...rowFormConfig, globalStatus: editMode }}
+          tableConfig={{ ...tableConfig, columns: this.getColumns() }}
+        />
+      </div>
     );
   }
 }
