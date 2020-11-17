@@ -117,11 +117,24 @@ class FormDemo extends React.Component {
               component: "input",
               name: "input1",
               title: "input1",
+              formItem: {
+                visibleOrConfig: [
+                  { name: "input", value: "1", rule: "===", visible: true },
+                ],
+                visibleAndConfig: [
+                  { name: "input2", value: "1", rule: "===", visible: true },
+                ],
+              },
             },
             {
               component: "input",
               name: "input",
               title: "input",
+            },
+            {
+              component: "input",
+              name: "input3",
+              title: "input3",
             },
             {
               component: "y-form",

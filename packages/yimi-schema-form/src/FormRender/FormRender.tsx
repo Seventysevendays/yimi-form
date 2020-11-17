@@ -2,8 +2,8 @@ import Row, { RowProps } from "antd/lib/row";
 import Col, { ColProps } from "antd/lib/col";
 import React from "react";
 import FormItem, {
-  FormItemProps,
-} from "../../../yimi-form/src/components/FormItem/FormItem";
+  SchemaFormItemProps,
+} from "../SchemaFormItem/SchemaFormItem";
 import Form, { FormProps } from "../../../yimi-form/src/components/Form/Form";
 import ArrayTable, {
   SchemaArrayTableProps,
@@ -24,7 +24,7 @@ export interface FormRenderRowSchema {
     | { [key: string]: any };
   name?: string;
   title?: string;
-  formItem?: FormItemProps;
+  formItem?: SchemaFormItemProps;
   col?: ColProps;
   properties?: Array<FormRenderRowSchema>;
 }
