@@ -4,7 +4,7 @@ import { matchName } from "./../utils/getName";
  * @description: description
  * @Date: 2020-07-15 16:31:58
  * @LastEditors: xuxiang
- * @LastEditTime: 2020-11-12 21:43:40
+ * @LastEditTime: 2020-11-18 19:53:05
  */
 
 import { FormItemProps } from "./../components/FormItem/FormItem";
@@ -206,7 +206,7 @@ class Core {
       ? funcStatus
       : status || this.status[name] || this.globalStatus;
     this.error[name] = error;
-    this.validateConfig[name] = validateConfig;
+    this.validateConfig[name] = validateConfig || this.validateConfig[name];
 
     const childCore = new ItemCore({
       ...options,

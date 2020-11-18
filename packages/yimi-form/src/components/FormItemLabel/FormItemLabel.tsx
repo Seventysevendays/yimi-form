@@ -17,7 +17,9 @@ class FormItemLabel extends React.PureComponent<FormItemLabelProps> {
     this.core = form;
     this.name = name;
     this.validateConfig =
-      validateConfig && !Array.isArray(validateConfig) ? validateConfig : {};
+      validateConfig && !Array.isArray(validateConfig)
+        ? validateConfig
+        : this.core.validateConfig[this.name] || {};
     if (typeof validateConfig === "function") {
       const rule = validateConfig(form.getValues(), form) || {};
       if (!Array.isArray(rule)) {

@@ -21,6 +21,11 @@ class FormDemo extends React.Component {
       },
       autoValidate: true,
       initValues: { set1: "init" },
+      validateConfig: {
+        set1: {
+          required: true,
+        },
+      },
     });
     this.state = {
       status: "disabled",

@@ -161,11 +161,8 @@ class FormItem extends React.Component<FormItemProps> {
       }
     } else if (typeof visible === "function") {
       if (!visible(this.form, mapValues(this.form.getValues()))) {
-        this.visible = false;
         // 隐藏时从core中移除
         this.form.removeChild(this.name);
-      } else {
-        this.visible = true;
       }
       if (visibleListenKeys === false) {
         this.forceUpdate();
@@ -222,7 +219,7 @@ class FormItem extends React.Component<FormItemProps> {
       return view(this.form, mapValues(this.form.getValues()));
     }
     if (typeof visible === "function") {
-      if (!this.visible) {
+      if (!visible(this.form, mapValues(this.form.getValues()))) {
         return null;
       }
     }
