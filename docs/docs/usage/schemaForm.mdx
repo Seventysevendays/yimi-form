@@ -1,0 +1,438 @@
+---
+id: schemaForm
+title: Schema Form
+---
+
+import { FormRender } from "yimi-schema-form-beta";
+import { Input } from "yimi-components-antd-v4-beta";
+import "yimi-schema-form-beta/lib/index.css";
+import "yimi-components-antd-v4-beta/lib/index.css";
+
+## 组件
+
+```
+npm install yimi-schema-form yimi-form --save
+```
+
+```jsx
+import { FormRender } from "yimi-schema-form";
+```
+
+## FormRender
+
+```jsx
+import * as components from "../../yimi-components-antd-v4/src/";
+class FormDemo extends React.Component {
+  render() {
+    return (
+      <FormRender
+        components={components}
+        schema={[
+          {
+            component: "y-row",
+            properties: [
+              {
+                component: "y-list",
+                name: "list",
+                title: "list",
+                componentProps: {
+                  hasInsertAfter: true,
+                  hasInsertBefore: true,
+                },
+                properties: [
+                  {
+                    component: "y-row",
+                    properties: [
+                      {
+                        component: "input",
+                        name: "listitem",
+                        title: "item",
+                      },
+                    ],
+                  },
+                  {
+                    component: "y-row",
+                    properties: [
+                      {
+                        component: "input",
+                        name: "listitem1",
+                        title: "item1",
+                      },
+                      {
+                        component: "input",
+                        name: "listitem2",
+                        title: "item2",
+                      },
+                      {
+                        component: "input",
+                        name: "listitem3",
+                        title: "item3",
+                        componentProps: {
+                          placeholder: "请输入",
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    component: "y-row",
+                    row: { gutter: 10 },
+                    properties: [
+                      {
+                        component: "input",
+                        name: "listitem4",
+                        title: "item4",
+                      },
+                      {
+                        component: "input",
+                        name: "listitem5",
+                        title: "item5",
+                      },
+                    ],
+                  },
+                ],
+              },
+              {
+                component: "input",
+                name: "input",
+                title: "input",
+              },
+            ],
+          },
+          {
+            component: "input",
+            name: "input1",
+            title: "input1",
+            formItem: {
+              visibleOrConfig: [
+                { name: "input", value: "1", rule: "===", visible: true },
+              ],
+              visibleAndConfig: [
+                { name: "input2", value: "1", rule: "===", visible: true },
+              ],
+            },
+          },
+          {
+            component: "input",
+            name: "input2",
+            title: "input2",
+          },
+          {
+            component: "input",
+            name: "input3",
+            title: "input3",
+          },
+          {
+            component: "y-form",
+            name: "form",
+            title: "form",
+            properties: [
+              {
+                component: "y-row",
+                properties: [
+                  {
+                    name: "input",
+                    title: "input",
+                    component: "input",
+                  },
+                  {
+                    name: "input1",
+                    title: "input1",
+                    component: "input",
+                    componentProps: {
+                      placeholder: "请输入",
+                    },
+                  },
+                ],
+              },
+              {
+                component: "y-row",
+                properties: [
+                  {
+                    name: "input3",
+                    title: "input3",
+                    component: "input",
+                  },
+                  {
+                    name: "input4",
+                    title: "input4",
+                    component: "input",
+                    componentProps: {
+                      placeholder: "请输入",
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            component: "y-table",
+            name: "table",
+            title: "table",
+            componentProps: {
+              editMode: "preview",
+            },
+            properties: [
+              {
+                name: "name",
+                component: "input",
+                title: "name",
+              },
+              {
+                name: "form",
+                component: "y-form",
+                title: "form",
+                label: null,
+                properties: [
+                  {
+                    component: "y-row",
+                    properties: [
+                      {
+                        name: "input",
+                        title: "input",
+                        component: "input",
+                      },
+                      {
+                        name: "input1",
+                        title: "input1",
+                        component: "input",
+                        componentProps: {
+                          placeholder: "请输入",
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    component: "y-row",
+                    properties: [
+                      {
+                        name: "input3",
+                        title: "input3",
+                        component: "input",
+                      },
+                      {
+                        name: "input4",
+                        title: "input4",
+                        component: "input",
+                        componentProps: {
+                          placeholder: "请输入",
+                        },
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ]}
+      />
+    );
+  }
+}
+```
+
+<FormRender
+  components={{ Input }}
+  coreConfig={{
+    onChange: (key, val, core) => {
+      console.log(key, val, core);
+    },
+  }}
+  schema={[
+    {
+      component: "y-row",
+      properties: [
+        {
+          component: "y-list",
+          name: "list",
+          title: "list",
+          componentProps: {
+            hasInsertAfter: true,
+            hasInsertBefore: true,
+          },
+          properties: [
+            {
+              component: "y-row",
+              properties: [
+                {
+                  component: "input",
+                  name: "listitem",
+                  title: "item",
+                },
+              ],
+            },
+            {
+              component: "y-row",
+              properties: [
+                {
+                  component: "input",
+                  name: "listitem1",
+                  title: "item1",
+                },
+                {
+                  component: "input",
+                  name: "listitem2",
+                  title: "item2",
+                },
+                {
+                  component: "input",
+                  name: "listitem3",
+                  title: "item3",
+                  componentProps: {
+                    placeholder: "请输入",
+                  },
+                },
+              ],
+            },
+            {
+              component: "y-row",
+              row: { gutter: 10 },
+              properties: [
+                {
+                  component: "input",
+                  name: "listitem4",
+                  title: "item4",
+                },
+                {
+                  component: "input",
+                  name: "listitem5",
+                  title: "item5",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          component: "input",
+          name: "input",
+          title: "input",
+        },
+      ],
+    },
+    {
+      component: "input",
+      name: "input1",
+      title: "input1",
+      formItem: {
+        visibleOrConfig: [
+          { name: "input", value: "1", rule: "===", visible: true },
+        ],
+        visibleAndConfig: [
+          { name: "input2", value: "1", rule: "===", visible: true },
+        ],
+      },
+    },
+    {
+      component: "input",
+      name: "input2",
+      title: "input2",
+    },
+    {
+      component: "input",
+      name: "input3",
+      title: "input3",
+    },
+    {
+      component: "y-form",
+      name: "form",
+      title: "form",
+      properties: [
+        {
+          component: "y-row",
+          properties: [
+            {
+              name: "input",
+              title: "input",
+              component: "input",
+            },
+            {
+              name: "input1",
+              title: "input1",
+              component: "input",
+              componentProps: {
+                placeholder: "请输入",
+              },
+            },
+          ],
+        },
+        {
+          component: "y-row",
+          properties: [
+            {
+              name: "input3",
+              title: "input3",
+              component: "input",
+            },
+            {
+              name: "input4",
+              title: "input4",
+              component: "input",
+              componentProps: {
+                placeholder: "请输入",
+              },
+            },
+          ],
+        },
+      ],
+    },
+    {
+      component: "y-table",
+      name: "table",
+      title: "table",
+      componentProps: {
+        editMode: "preview",
+      },
+      properties: [
+        {
+          name: "name",
+          component: "input",
+          label: null,
+          title: "name",
+        },
+        {
+          name: "form",
+          title: "form",
+          label: null,
+          component: "y-form",
+          properties: [
+            {
+              component: "y-row",
+              properties: [
+                {
+                  name: "input",
+                  title: "input",
+                  component: "input",
+                },
+                {
+                  name: "input1",
+                  title: "input1",
+                  component: "input",
+                  componentProps: {
+                    placeholder: "请输入",
+                  },
+                },
+              ],
+            },
+            {
+              component: "y-row",
+              properties: [
+                {
+                  name: "input3",
+                  title: "input3",
+                  component: "input",
+                },
+                {
+                  name: "input4",
+                  title: "input4",
+                  component: "input",
+                  componentProps: {
+                    placeholder: "请输入",
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ]}
+/>

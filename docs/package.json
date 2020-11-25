@@ -18,9 +18,10 @@
     "clsx": "^1.1.1",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
-    "yimi-components-antd-v4-beta": "^1.0.1",
-    "yimi-components-beta": "^1.0.5",
-    "yimi-form-beta": "^1.0.16"
+    "yimi-components-antd-v4-beta": "^1.0.10",
+    "yimi-components-beta": "^1.0.29",
+    "yimi-form-beta": "^1.0.36",
+    "yimi-schema-form-beta": "^1.0.3"
   },
   "browserslist": {
     "production": [

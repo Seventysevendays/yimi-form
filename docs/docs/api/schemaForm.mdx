@@ -1,0 +1,89 @@
+---
+id: schemaForm
+title: Schema Form
+---
+
+import Link from "@docusaurus/Link";
+
+### Schema Form Props
+
+| 属性                               | 说明                                                                                        |
+| ---------------------------------- | ------------------------------------------------------------------------------------------- |
+| schema: FormRenderRowSchema[]      | 配置，FormRenderRowSchema，具体见<Link to="#formrenderrowschema">FormRenderRowSchema</Link> |
+| components: { [key: string]: any } | 接入组件                                                                                    |
+| form?: FormProps                   | 同 yimi-form 组件 Form 的 props                                                             |
+| container?: ContainerProps         | layout Container props https://sealninja.github.io/react-grid-system/#container             |
+| coreConfig?: CoreProps             | 同 yimi-form core 的构建参数                                                                |
+
+## FormRenderRowSchema
+
+| 属性                                                               | 说明                                                                                                       |
+| ------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------- |
+| row?: RowProps                                                     | layout Row props https://sealninja.github.io/react-grid-system/#row                                        |
+| component?: "y-form" \| "y-list" \| "y-table" \| "y-row" \| string | 组件名字，不区分大小写，当为 undefined 时，生成一个空的 div，具体见 <Link to="#component">component</Link> |
+| componentProps?: {[key: string]: any}                              | 组件的 props                                                                                               |
+| name?: string                                                      | 数据属性名                                                                                                 |
+| title?: ReactNode                                                  | 字段标题                                                                                                   |
+| label?: ReactNode                                                  | 字段标题，label 优先级大于 title                                                                           |
+| formItem?: SchemaFormItemProps                                     | 同 yimi-form 组件 FormItem 的 props，增加了适合配置的 api，见下文【SchemaFormItemProps】                   |
+| col?: ColProps                                                     | layout Col props https://sealninja.github.io/react-grid-system/#col                                        |
+| properties?: FormRenderRowSchema[]                                 | 字段配置                                                                                                   |
+| componentType?: "data" \| "display"                                | 组件类型，为"data"时将被 FormItem 包裹，默认为"data"                                                       |  |
+
+## SchemaFormItemProps
+
+继承 yimi-form FormItem Props，新增如下属性
+
+| 属性                              | 说明                                                                                                                                                               |
+| --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| visibleOrConfig: VisibleConfig[]  | 满足“或”下时，组件显示。数组中的每项都是一个条件，即（条件 1、条件 2...中一项满足即为满足条件） VisibleConfig 具体见<Link to="#visibleconfig">VisibleConfig</Link> |
+| visibleAndConfig: VisibleConfig[] | 满足“与”下时，组件显示。数组中的每项都是一个条件，即（条件 1、条件 2...中所有满足才能满足条件）VisibleConfig 具体见<Link to="#visibleconfig">VisibleConfig</Link>  |
+
+## VisibleConfig
+
+| 属性                                      | 说明                                            |
+| ----------------------------------------- | ----------------------------------------------- |
+| name: string                              | 表单中对应的属性名字                            |
+| rule: "===" \| ">=" \| ">" \| "<=" \| "<" | 表单中的值和条件值之间的关系                    |
+| value: any                                | 条件值                                          |
+| visible: boolean                          | name 的值根据 rule 满足条件值时，该显示该是隐藏 |
+
+## component
+
+### 内置组件介绍
+
+| 属性    | 说明                                                                                                                                                                                                                                               |
+| ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| y-form  | 生成嵌套数据，即`<FormItem><Form>{children}</Form></FormItem>`，此时 properties 即为 children 的配置                                                                                                                                               |
+| y-list  | 生成数组数据卡片，即`<FormItem><ArrayList>{children}</ArrayList></FormItem>`，此时 properties 即为 children 的配置                                                                                                                                 |
+| y-table | 生成数组数据列表，即`<FormItem><ArrayTable>{children}</ArrayTable></FormItem>`，此时 properties 与 columns 相映射，name 与 title 属性对应 column 中的 dataIndex 和 title，component 将在 render 中 return。columns 可以被 tableConfig 中的配置覆盖 |
+| y-row   | 视图上体现为独立的一行，此时 properties 即当前行内的 Cols，即`<Row><Col>...</Col><Col>...</Col>...</Row>`                                                                                                                                          |
+
+### y-list
+
+y-list 基于 yimi-components 中的 ArrayList，新增适用于配置的属性
+
+| 属性                               | 说明               | 默认值   |
+| ---------------------------------- | ------------------ | -------- |
+| hasInsertAfter?: boolean           | 是否有下方添加按钮 | false    |
+| insertAfterText?: string           | 下方添加按钮文案   | 下方添加 |
+| hasInsertBefore?: boolean          | 是否有上方添加按钮 | false    |
+| insertBeforeText?: string          | 上方添加按钮文案   | 上方添加 |
+| hasRemove?: boolean                | 是否有删除按钮     | true     |
+| removeText?: string                | 删除按钮文案       | 删除     |
+| addBottomText?: string             | 底部添加按钮文案   | 添加     |
+| addTopText?: string                | 顶部添加按钮文案   | 添加     |
+| actionPosition?: "top" \| "bottom" | 添加按钮的位置     | "bottom" |
+| addFrom?: "top" \| "bottom"        | 添加项的位置       | "bottom" |
+| hasAdd?: boolean                   | 是否有添加按钮     | true     |
+
+### y-table
+
+y-table 基于 yimi-components 中的 ArrayTable，新增适用于配置的属性，除上述特性，还包括
+
+| 属性                           | 说明                                         | 默认值 |
+| ------------------------------ | -------------------------------------------- | ------ |
+| operationText?: string         | 操作列标题                                   | 操作   |
+| editMode?: "edit" \| "preview" | 两种模式，直接行上编辑、需要点编辑后才能编辑 | edit   |
+| editText?: string              | preview 模式下，编辑按钮的文案               | 编辑   |
+| saveText?: string              | preview 模式下，保存按钮的文案               | 保存   |
