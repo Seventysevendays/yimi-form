@@ -15,7 +15,7 @@ class FormDemo extends React.Component {
       onChange: (key, value, core) => {
         console.log(key, value, core);
       },
-      values: { validateConfig: "validate", dprops: 'false' },
+      values: { validateConfig: "validate", dprops: "false" },
     });
   }
   componentDidMount = () => {
@@ -77,7 +77,7 @@ class FormDemo extends React.Component {
             label="dprops"
             props={(core, value) => {
               return {
-                value: JSON.parse(value.dprops)
+                value: JSON.parse(value.dprops),
               };
             }}
           >
@@ -183,7 +183,13 @@ class FormDemo extends React.Component {
           <FormItem label="noname">
             <Input />
           </FormItem>
-          <Button onClick={() => { console.log(this.core.getValues()) }}>提交</Button>
+          <Button
+            onClick={() => {
+              console.log(this.core.getValues());
+            }}
+          >
+            提交
+          </Button>
         </Form>
       </div>
     );

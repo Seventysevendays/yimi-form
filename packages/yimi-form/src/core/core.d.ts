@@ -1,4 +1,3 @@
-/// <reference types="node" />
 import { FormItemProps } from "./../components/FormItem/FormItem";
 import { EventEmitter } from "events";
 import ItemCore from "./itemCore";

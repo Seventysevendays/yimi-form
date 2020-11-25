@@ -61,7 +61,7 @@ class FormItemLabel extends React.PureComponent<FormItemLabelProps> {
     this.core.removeListener(ACTIONS.forceUpdate, this.handleForceUpdate);
   };
   public render() {
-    const { colon } = this.props;
+    const { colon, required } = this.props;
     const { colon: parentColon } = this.core.jsx
       ? this.core.jsx.props
       : ({} as any);
@@ -70,7 +70,13 @@ class FormItemLabel extends React.PureComponent<FormItemLabelProps> {
       this.label && (
         <div
           className={`yimi-form-item-label ${itemColon ? "colon" : ""} ${
-            !!this.required ? "required" : ""
+            typeof required === "boolean"
+              ? required
+                ? "required"
+                : ""
+              : !!this.required
+              ? "required"
+              : ""
           }`}
         >
           {this.label}

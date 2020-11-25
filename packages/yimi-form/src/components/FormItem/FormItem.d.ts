@@ -40,6 +40,7 @@ export interface FormItemProps {
     viewListenKeys?: string[] | false;
     propsListenKeys?: string[] | false;
     visibleListenKeys?: string[] | false;
+    required?: boolean;
 }
 declare const ConnectFormItem: {
     (props: FormItemProps): JSX.Element;

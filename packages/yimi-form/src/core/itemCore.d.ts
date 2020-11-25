@@ -1,4 +1,3 @@
-/// <reference types="node" />
 import { ACTIONS } from "./core";
 import Core from "../core/core";
 import { FormItemProps } from "./../components/FormItem/FormItem";

@@ -58,6 +58,8 @@ export interface FormItemProps {
   viewListenKeys?: string[] | false;
   propsListenKeys?: string[] | false;
   visibleListenKeys?: string[] | false;
+  /** if show * */
+  required?: boolean;
 }
 
 class FormItem extends React.Component<FormItemProps> {
@@ -234,6 +236,7 @@ class FormItem extends React.Component<FormItemProps> {
       style,
       full,
       colon,
+      required,
     } = this.props;
     const {
       inline: parentInline,
@@ -268,6 +271,7 @@ class FormItem extends React.Component<FormItemProps> {
             validateConfig={this.validateConfig}
             name={this.name}
             colon={colon}
+            required={required}
           />
           <div className="yimi-form-item-control">
             <div className="yimi-form-item-content">
