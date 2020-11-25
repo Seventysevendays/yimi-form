@@ -6,6 +6,7 @@ import { ArrayAction } from "../../../yimi-components/src";
 import FormItem from "../../../yimi-form/src/components/FormItem/FormItem";
 
 export interface SchemaArrayTableProps extends ArrayTableProps<any> {
+  hasAdd?: boolean;
   deleteText?: string;
   operationText?: string;
   hasInsertAfter?: boolean;
@@ -26,9 +27,9 @@ export interface SchemaArrayTableProps extends ArrayTableProps<any> {
 
 class SchemaArrayTable extends React.Component<SchemaArrayTableProps> {
   public renderAction = () => {
-    const { addBottomText, addTopText, addFrom, status } = this.props;
+    const { addBottomText, addTopText, addFrom, status, hasAdd } = this.props;
     return (
-      status === "edit" && (
+      (typeof hasAdd === "boolean" ? hasAdd : status === "edit") && (
         <ArrayAction>
           {({ addBottom, addTop }) => {
             const isAddBottom = addFrom === "bottom" || addFrom === undefined;

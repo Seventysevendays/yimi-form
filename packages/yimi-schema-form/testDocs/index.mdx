@@ -1,9 +1,4 @@
 ```jsx
-import Form from "../../yimi-form/src/components/Form/Form";
-import FormItem from "../../yimi-form/src/components/FormItem/FormItem";
-import Core from "../../yimi-form/src/core/core";
-import { Button, Row, Col } from "antd";
-import moment from "moment";
 import "antd/dist/antd.css";
 import "../../yimi-form/src/index.less";
 import FormRender from "../src/FormRender/FormRender";
@@ -12,39 +7,26 @@ import "./index.less";
 import "../../yimi-components-antd-v4/src/index.less";
 import "../../yimi-form/src/index.less";
 
-const mockData = [];
-for (let i = 0; i < 20; i++) {
-  mockData.push({
-    key: i.toString(),
-    title: `content${i + 1}`,
-    description: `description of content${i + 1}`,
-    disabled: i % 3 < 1,
-  });
-}
-
-const oriTargetKeys = mockData
-  .filter((item) => +item.key % 3 > 1)
-  .map((item) => item.key);
-
 class FormDemo extends React.Component {
-  constructor(props) {
-    super(props);
-    this.core = new Core({
-      onChange: ([key], val, core) => {
-        console.log(key, val, core);
-      },
-    });
-  }
-
   render() {
     return (
       <div className="wrapper">
         <FormRender
           components={components}
           row={{ gutter: 20 }}
+          coreConfig={{
+            onChange: (key, val, core) => {
+              console.log(key, val, core);
+            },
+          }}
+          theme={{
+            outerMargin: 100,
+            gutterWidth: 3,
+          }}
           schema={[
             {
               component: "y-row",
+              row: { around: "lg" },
               properties: [
                 {
                   component: "y-list",
@@ -119,10 +101,8 @@ class FormDemo extends React.Component {
               title: "input1",
               formItem: {
                 visibleOrConfig: [
-                  { name: "input", value: "1", rule: "===", visible: true },
-                ],
-                visibleAndConfig: [
                   { name: "input2", value: "1", rule: "===", visible: true },
+                  { name: "input", value: "1", rule: "===", visible: true },
                 ],
               },
             },
@@ -157,6 +137,14 @@ class FormDemo extends React.Component {
                         placeholder: "请输入",
                       },
                     },
+                    {
+                      name: "input2",
+                      title: "input2",
+                      component: "input",
+                      componentProps: {
+                        placeholder: "请输入",
+                      },
+                    },
                   ],
                 },
                 {
@@ -184,27 +172,18 @@ class FormDemo extends React.Component {
               name: "table",
               title: "table",
               componentProps: {
-                tableConfig: {
-                  columns: [
-                    {
-                      dataIndex: "name",
-                      title: "name",
-                    },
-                    {
-                      dataIndex: "form",
-                      title: "form",
-                    },
-                  ],
-                },
                 editMode: "preview",
               },
               properties: [
                 {
                   name: "name",
                   component: "input",
+                  title: "name",
                 },
                 {
                   name: "form",
+                  title: "form",
+                  label: null,
                   component: "y-form",
                   properties: [
                     {

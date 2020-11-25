@@ -48,8 +48,10 @@ class SchemaFormItem extends React.Component<SchemaFormItemProps> {
     this.itemProps.visible =
       orString !== "false " || andString !== "true "
         ? (core, values) => {
-            console.log(eval(orString), eval(andString));
-            return eval(orString) && eval(andString);
+            return (
+              (orString !== "false " ? eval(orString) : true) &&
+              (andString !== "true " ? eval(andString) : true)
+            );
           }
         : undefined;
   }

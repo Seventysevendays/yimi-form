@@ -1,6 +1,4 @@
-import Row, { RowProps } from "antd/lib/row";
-import Col, { ColProps } from "antd/lib/col";
-import React from "react";
+import React, { ReactNode } from "react";
 import FormItem, {
   SchemaFormItemProps,
 } from "../SchemaFormItem/SchemaFormItem";
@@ -12,9 +10,17 @@ import ArrayList, {
   SchemaArrayListProps,
 } from "../SchemaArrayList/SchemaArrayList";
 import { Core } from "../../../yimi-form/src";
+import {
+  Col,
+  Row,
+  Container,
+  RowProps,
+  ColProps,
+  ContainerProps,
+} from "react-grid-system";
+import { CoreProps } from "../../../yimi-form/src/core/core";
 
 export interface FormRenderRowSchema {
-  id?: string;
   row?: RowProps;
   component?: "y-form" | "y-list" | "y-table" | "y-row" | string;
   componentProps?:
@@ -23,19 +29,22 @@ export interface FormRenderRowSchema {
     | SchemaArrayTableProps
     | { [key: string]: any };
   name?: string;
-  title?: string;
+  title?: ReactNode;
+  label?: ReactNode;
   formItem?: SchemaFormItemProps;
   col?: ColProps;
   properties?: Array<FormRenderRowSchema>;
+  componentType?: "data" | "display";
 }
 type FormRenderSchema = Array<FormRenderRowSchema>;
 type FormRenderSchemaComponent = { [key: string]: any };
 
 export interface FormRenderProps {
   schema: FormRenderSchema;
-  row?: RowProps;
+  container?: ContainerProps;
   components: FormRenderSchemaComponent;
   form?: FormProps;
+  coreConfig?: CoreProps;
 }
 
 class FormRender extends React.Component<FormRenderProps> {
@@ -43,36 +52,42 @@ class FormRender extends React.Component<FormRenderProps> {
   public core: Core;
   constructor(props: FormRenderProps) {
     super(props);
-    const { components } = this.props;
+    const { components, coreConfig } = this.props;
     this.components = Object.keys(components).reduce((map, key) => {
       map[key] = components[key];
       map[key.toLowerCase()] = components[key];
       return map;
     }, {});
-    this.core = new Core({
-      onChange: ([key], value, core) => {
-        console.log(key, value);
-      },
-    });
+    this.core = new Core({ ...coreConfig });
   }
   public renderComponent = (cpName: string) => {
     if (!this.components[cpName]) {
       console.error(`yimi-shema-form: can not find component ${cpName}!`);
     }
-    return this.components[cpName] || null;
+    return (
+      this.components[cpName] || <div className="yimi-schema-form-empty" />
+    );
   };
   public renderForm = (item: FormRenderRowSchema) => {
-    const { properties, name, title, formItem } = item;
+    const { properties, name, title, formItem, label } = item;
     return (
-      <FormItem name={name} label={title} {...formItem}>
+      <FormItem
+        name={name}
+        label={label !== undefined ? label : title}
+        {...formItem}
+      >
         <Form>{this.renderSchema(properties)}</Form>
       </FormItem>
     );
   };
   public renderList = (item: FormRenderRowSchema) => {
-    const { name, title, properties, componentProps } = item;
+    const { name, title, properties, componentProps, label } = item;
     return (
-      <FormItem name={name} label={title} key={name}>
+      <FormItem
+        name={name}
+        label={label !== undefined ? label : title}
+        key={name}
+      >
         <ArrayList {...(componentProps as any)}>
           {this.renderSchema(properties)}
         </ArrayList>
@@ -80,31 +95,28 @@ class FormRender extends React.Component<FormRenderProps> {
     );
   };
   public renderTable = (item: FormRenderRowSchema) => {
-    const { componentProps, properties, name, title, formItem } = item;
+    const { componentProps, properties, name, title, formItem, label } = item;
     const { tableConfig } = componentProps || {};
-    const { columns } = tableConfig || {};
-    if (Array.isArray(properties) && Array.isArray(columns)) {
-      const columnsWithRender = columns.map((col) => {
-        const { dataIndex } = col;
-        const curRender = properties.find((p) => p.name === dataIndex);
-        if (curRender) {
-          return {
-            ...col,
-            render: () => {
-              return this.renderItem(curRender);
-            },
-          };
-        } else {
-          return col;
-        }
+    if (Array.isArray(properties)) {
+      const columnsWithRender = properties.map((col) => {
+        return {
+          ...col,
+          render: () => {
+            return this.renderItem(col);
+          },
+        };
       });
       return (
-        <FormItem name={name} label={title} {...formItem}>
+        <FormItem
+          name={name}
+          label={label !== undefined ? label : title}
+          {...formItem}
+        >
           <ArrayTable
             {...(componentProps as any)}
             tableConfig={{
-              ...tableConfig,
               columns: columnsWithRender,
+              ...tableConfig,
             }}
           />
         </FormItem>
@@ -117,49 +129,63 @@ class FormRender extends React.Component<FormRenderProps> {
     return this.renderSchema(properties);
   };
   public renderSchema = (schema: FormRenderSchema) => {
-    const { row: propRow } = this.props;
     return schema.map((rowItem, index) => {
-      const { properties, row, component } = rowItem;
-      // 没有properties，直接渲染组件
-      const span = Math.floor(24 / (properties ? properties.length : 1));
+      const { properties, row, component, col } = rowItem;
+      const R = (props) => (
+        <Row
+          {...(row as any)}
+          className={`yimi-schema-form-row ${
+            row && row.className ? row.className : ""
+          }`}
+        >
+          <Col
+            {...(col as any)}
+            className={`yimi-schema-form-col ${
+              col && col.className ? col.className : ""
+            }`}
+          >
+            {props.children}
+          </Col>
+        </Row>
+      );
       if (!properties) {
-        return (
-          <Row {...propRow} {...row} key={index}>
-            <Col span={24}>{this.renderItem(rowItem)}</Col>
-          </Row>
-        );
+        return <R key={index}>{this.renderItem(rowItem)}</R>;
       }
       if (component === "y-form") {
-        return (
-          <Row {...propRow} {...row} key={index}>
-            <Col span={24}>{this.renderForm(rowItem)}</Col>
-          </Row>
-        );
+        return <R key={index}>{this.renderForm(rowItem)}</R>;
       } else if (component === "y-table") {
-        return (
-          <Row {...propRow} {...row} key={index}>
-            <Col span={24}>{this.renderTable(rowItem)}</Col>
-          </Row>
-        );
+        return <R key={index}>{this.renderTable(rowItem)}</R>;
       } else if (component === "y-list") {
-        return (
-          <Row {...propRow} {...row} key={index}>
-            <Col span={24}>{this.renderList(rowItem)}</Col>
-          </Row>
-        );
+        return <R key={index}>{this.renderList(rowItem)}</R>;
       }
       return (
-        <Row {...propRow} {...row} key={index}>
+        <Row
+          {...(row as any)}
+          className={`yimi-schema-form-row ${
+            row && row.className ? row.className : ""
+          }`}
+          key={index}
+        >
           {properties.map((item) => {
             const {
               component,
               name,
               title,
+              label,
               formItem,
               col,
               componentProps,
+              componentType,
             } = item;
-            const C = (props) => <Col span={span} {...col} {...props} />;
+            const C = (props) => (
+              <Col
+                {...col}
+                {...props}
+                className={`yimi-schema-form-col ${
+                  col && col.className ? col.className : ""
+                }`}
+              />
+            );
             if (properties && !component) {
               return this.renderSchema(properties);
             }
@@ -175,14 +201,18 @@ class FormRender extends React.Component<FormRenderProps> {
               const Cp = this.renderComponent(component);
               return (
                 <C key={name + title}>
-                  <FormItem
-                    key={name + title}
-                    name={name}
-                    label={title || null}
-                    {...formItem}
-                  >
+                  {componentType === "display" ? (
                     <Cp {...componentProps} />
-                  </FormItem>
+                  ) : (
+                    <FormItem
+                      key={name + title}
+                      name={name}
+                      label={label !== undefined ? label : title}
+                      {...formItem}
+                    >
+                      <Cp {...componentProps} />
+                    </FormItem>
+                  )}
                 </C>
               );
             }
@@ -192,7 +222,15 @@ class FormRender extends React.Component<FormRenderProps> {
     });
   };
   public renderItem = (item: FormRenderRowSchema) => {
-    const { component, title, formItem, name } = item;
+    const {
+      component,
+      title,
+      formItem,
+      name,
+      componentType,
+      componentProps,
+      label,
+    } = item;
     if (component === "y-form") {
       return this.renderForm(item);
     } else if (component === "y-list") {
@@ -203,19 +241,29 @@ class FormRender extends React.Component<FormRenderProps> {
       return this.renderRow(item);
     } else {
       const Cp = this.renderComponent(component);
-      return (
-        <FormItem name={name} label={title || null} {...formItem}>
-          <Cp />
+      return componentType === "display" ? (
+        <Cp {...componentProps} />
+      ) : (
+        <FormItem
+          name={name}
+          label={label !== undefined ? label : title}
+          {...formItem}
+        >
+          <Cp {...componentProps} />
         </FormItem>
       );
     }
   };
   public render() {
-    const { schema, form } = this.props;
+    const { schema, form, container } = this.props;
     return (
-      <Form core={this.core} colon {...form}>
-        {this.renderSchema(schema)}
-      </Form>
+      <div className="yimi-schema-form">
+        <Container fluid {...(container as any)}>
+          <Form core={this.core} colon {...form}>
+            {this.renderSchema(schema)}
+          </Form>
+        </Container>
+      </div>
     );
   }
 }

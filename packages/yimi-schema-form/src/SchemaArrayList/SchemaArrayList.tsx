@@ -6,6 +6,7 @@ import { ArrayAction } from "../../../yimi-components/src";
 import FormItem from "../../../yimi-form/src/components/FormItem/FormItem";
 
 export interface SchemaArrayListProps extends ArrayListProps<any> {
+  hasAdd?: boolean;
   hasInsertAfter?: boolean;
   hasInsertBefore?: boolean;
   hasRemove?: boolean;
@@ -20,9 +21,9 @@ export interface SchemaArrayListProps extends ArrayListProps<any> {
 
 class SChemaArrayList extends React.Component<SchemaArrayListProps> {
   public renderAction = () => {
-    const { addBottomText, addTopText, addFrom, status } = this.props;
+    const { addBottomText, addTopText, addFrom, status, hasAdd } = this.props;
     return (
-      status === "edit" && (
+      (typeof hasAdd === "boolean" ? hasAdd : status === "edit") && (
         <ArrayAction>
           {({ addBottom, addTop }) => {
             const isAddBottom = addFrom === "bottom" || addFrom === undefined;

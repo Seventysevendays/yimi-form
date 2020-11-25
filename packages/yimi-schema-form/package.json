@@ -1,6 +1,6 @@
 {
-  "name": "yimi-schema-form",
-  "version": "1.0.0",
+  "name": "yimi-schema-form-beta",
+  "version": "1.0.2",
   "description": "react schema form",
   "main": "lib/index.js",
   "scripts": {
@@ -25,10 +25,18 @@
     "url": "https://github.com/Seventysevendays/yimi-form/issues"
   },
   "homepage": "https://github.com/Seventysevendays/yimi-form#readme",
-  "dependencies": {},
+  "dependencies": {
+    "react-grid-system": "^7.1.1"
+  },
   "devDependencies": {
-    "antd": "^4.7.3",
+    "@babel/runtime": "^7.12.5",
+    "@types/react": "^16.9.56",
+    "antd": "^4.8.5",
     "react": "^17.0.1",
-    "react-dom": "^17.0.1"
+    "react-dom": "^17.0.1",
+    "typescript": "^3.9.7"
+  },
+  "peerDependencies": {
+    "yimi-form": "*"
   }
 }
