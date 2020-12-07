@@ -4,8 +4,6 @@ test
 
 testDocs
 
-dist
-
 .vscode
 
 node_modules

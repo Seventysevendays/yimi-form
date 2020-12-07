@@ -8,6 +8,7 @@
     "test": "node ../yimi-builder/scripts/test.js",
     "start": "nodemon ../yimi-builder/scripts/dev.js",
     "build": "node ../yimi-builder/scripts/build.js",
+    "umd": "cross-env NODE_ENV=production rollup --config ../yimi-builder/scripts/lib/rollup.config.js",
     "prepare": "npm run build"
   },
   "repository": {

@@ -8,14 +8,14 @@ import {
   Table,
   Select,
   Switch,
-} from "../../yimi-components-antd-v3/src/";
+} from "../../yimi-components-antd-v4/src/";
 import { Button, Divider } from "antd";
 import { useState, useEffect } from "react";
 import { ArrayList, ArrayAction } from "../src/";
 import "../../yimi-form/src/index.less";
 import "./index.less";
 import "antd/dist/antd.css";
-import "../../yimi-components-antd-v3/src/index.less";
+import "../../yimi-components-antd-v4/src/index.less";
 import "../src/index.less";
 import Modal from "antd/lib/modal";
 
@@ -75,6 +75,7 @@ function FormDemo() {
                     <Button
                       onClick={() =>
                         addTop((core) => {
+                          console.log(1);
                           core.setValues({
                             name: "林俊杰",
                           });

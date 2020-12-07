@@ -1,0 +1,30 @@
+{
+  "name": "yimi-form",
+  "version": "1.0.0",
+  "description": "react form",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "dependencies": {
+    "typescript": "^4.1.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Seventysevendays/yimi-form.git"
+  },
+  "keywords": [
+    "react",
+    "form"
+  ],
+  "author": "77days",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Seventysevendays/yimi-form/issues"
+  },
+  "homepage": "https://github.com/Seventysevendays/yimi-form#readme"
+}

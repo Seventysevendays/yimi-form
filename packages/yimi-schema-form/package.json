@@ -1,6 +1,6 @@
 {
   "name": "yimi-schema-form-beta",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "react schema form",
   "main": "lib/index.js",
   "scripts": {
@@ -8,6 +8,7 @@
     "test": "node ../yimi-builder/scripts/test.js",
     "start": "nodemon ../yimi-builder/scripts/dev.js",
     "build": "node ../yimi-builder/scripts/build.js",
+    "umd": "cross-env NODE_ENV=production rollup --config ../yimi-builder/scripts/lib/rollup.config.js",
     "prepare": "npm run build"
   },
   "repository": {
@@ -33,8 +34,7 @@
     "@types/react": "^16.9.56",
     "antd": "^4.8.5",
     "react": "^17.0.1",
-    "react-dom": "^17.0.1",
-    "typescript": "^3.9.7"
+    "react-dom": "^17.0.1"
   },
   "peerDependencies": {
     "yimi-form": "*"

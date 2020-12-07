@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { Core } from "../../../yimi-form/src";
 declare type ArrayTableCallback = (core: Core, dataSource: any[], coreList: Core[]) => void;
 export interface ArrayTableActionValue {
