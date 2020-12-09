@@ -1,4 +1,3 @@
-import "./index.less";
 import FormRender from "./FormRender";
 import SchemaArrayList from "./SchemaArrayList";
 declare const _default: {
