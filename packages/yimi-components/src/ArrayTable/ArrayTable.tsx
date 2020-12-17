@@ -80,6 +80,7 @@ class ArrayTable extends React.Component<
           core={core}
           value={core.getValues()}
           status={this.props.status}
+          overWrite
         />
       );
     };

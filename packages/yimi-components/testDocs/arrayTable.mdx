@@ -46,14 +46,14 @@ class FormDemo extends React.Component {
     });
     setTimeout(() => {
       this.core.setValues({
-        viewTable: [{ key: "1", input: "hoho" }],
+        viewTable: [{ key: "1" }],
       });
     }, 1000);
-    setTimeout(() => {
-      this.core.setValues({
-        viewTable: [],
-      });
-    }, 2000);
+    // setTimeout(() => {
+    //   this.core.setValues({
+    //     viewTable: [],
+    //   });
+    // }, 2000);
     setTimeout(() => {
       this.table.getCoreList()[2].setError({ name: "haah" });
     });
