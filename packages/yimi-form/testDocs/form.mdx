@@ -5,7 +5,6 @@ import Core from "../src/core/core";
 import { Button, DatePicker } from "antd";
 import { Input, Checkbox } from "../../yimi-components-antd-v4/src/";
 import "./index.less";
-
 import "antd/dist/antd.css";
 
 class FormDemo extends React.Component {
@@ -151,6 +150,24 @@ class FormDemo extends React.Component {
                         <Input />
                       </FormItem>
                     </Form>
+                  </FormItem>
+                </Form>
+              </FormItem>
+            </Form>
+          </FormItem>
+          <FormItem name="innerlalalal">
+            <Form>
+              <FormItem name="inner-item">
+                <Input />
+              </FormItem>
+              <FormItem name="inner-inner">
+                <Form className="innerInner">
+                  <FormItem
+                    name="inner-inner-item"
+                    className="innerInnerItem"
+                    validateConfig={{ required: true }}
+                  >
+                    <Input />
                   </FormItem>
                 </Form>
               </FormItem>

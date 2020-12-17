@@ -4,7 +4,7 @@ import { matchName } from "./../utils/getName";
  * @description: description
  * @Date: 2020-07-15 16:31:58
  * @LastEditors: xuxiang
- * @LastEditTime: 2020-11-18 19:53:05
+ * @LastEditTime: 2020-12-16 09:49:44
  */
 
 import { FormItemProps } from "./../components/FormItem/FormItem";
@@ -220,14 +220,18 @@ class Core {
   /** 设置值；可选同时批量触发或依次触发 */
   public setValues = (
     values: { [key: string]: any },
-    opts?: { multiple: boolean }
+    opts?: { multiple: boolean; overWrite?: boolean }
   ) => {
-    const { multiple } = opts || {};
-    this.values = {
-      ...this.values,
-      ...values,
-    };
-    const setKeys = Object.keys(values);
+    const { multiple, overWrite } = opts || {};
+    this.values = overWrite
+      ? { ...values }
+      : {
+          ...this.values,
+          ...values,
+        };
+    const setKeys = overWrite
+      ? Object.keys(values).concat(Object.keys(this.childrenMap))
+      : Object.keys(values);
     if (multiple) {
       this.emit(ACTIONS.value, setKeys);
       setKeys.forEach((key) => {
@@ -333,29 +337,56 @@ class Core {
     }
   };
   /** 静默设置值 */
-  public setValuesSilent = (values: { [key: string]: any }) => {
+  public setValuesSilent = (
+    values: { [key: string]: any },
+    opts?: { overWrite?: boolean }
+  ) => {
+    const { overWrite } = opts || {};
     if (values) {
-      this.values = {
-        ...this.values,
-        ...values,
-      };
-      const setKeys = Object.keys(values);
-      setKeys.forEach((key) => {
-        if (this.childrenMap[key]) {
-          this.silent = true;
-          this.childrenMap[key].set("value", values[key]);
-          // 嵌套Form设置值
-          const { innerFormList } = this.childrenMap[key];
-          if (this.childrenMap[key].displayName === "yimiForm") {
-            innerFormList.forEach((core) => {
-              core.setValuesSilent(values[key]);
-            });
+      if (!overWrite) {
+        this.values = {
+          ...this.values,
+          ...values,
+        };
+        const setKeys = Object.keys(values);
+        setKeys.forEach((key) => {
+          if (this.childrenMap[key]) {
+            this.silent = true;
+            this.childrenMap[key].set("value", values[key]);
+            // 嵌套Form设置值
+            const { innerFormList } = this.childrenMap[key];
+            if (this.childrenMap[key].displayName === "yimiForm") {
+              innerFormList.forEach((core) => {
+                core.setValuesSilent(values[key]);
+              });
+            }
+            this.silent = false;
+          } else {
+            this.values[key] = values[key];
           }
-          this.silent = false;
-        } else {
-          this.values[key] = values[key];
-        }
-      });
+        });
+      } else {
+        this.values = { ...values };
+        const setKeys = Object.keys(values).concat(
+          Object.keys(this.childrenMap)
+        );
+        setKeys.forEach((key) => {
+          if (this.childrenMap[key]) {
+            this.silent = true;
+            this.childrenMap[key].set("value", values[key]);
+            // 嵌套Form设置值
+            const { innerFormList } = this.childrenMap[key];
+            if (this.childrenMap[key].displayName === "yimiForm") {
+              innerFormList.forEach((core) => {
+                core.setValuesSilent(values[key]);
+              });
+            }
+            this.silent = false;
+          } else {
+            this.values[key] = values[key];
+          }
+        });
+      }
     }
   };
   /** remove unmount formItem */

@@ -172,10 +172,12 @@ describe("Basic component Form", () => {
     // 内部Form校验
     core.validate();
     form.update();
-    expect(
-      form.find(".innerInnerItem").hostNodes().find(".yimi-form-item-error")
-        .length
-    ).toBe(1);
+    setTimeout(() => {
+      expect(
+        form.find(".innerInnerItem").hostNodes().find(".yimi-form-item-error")
+          .length
+      ).toBe(1);
+    });
     // 外部重置，内部清空
     core.reset();
     expect(innerInnerCore.getValues("inner-inner-item")).toEqual(null);

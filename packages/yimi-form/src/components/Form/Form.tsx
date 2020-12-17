@@ -3,7 +3,7 @@
  * @description: description
  * @Date: 2020-07-15 16:39:01
  * @LastEditors: xuxiang
- * @LastEditTime: 2020-11-13 09:38:24
+ * @LastEditTime: 2020-12-16 09:44:28
  */
 
 import React from "react";
@@ -29,6 +29,7 @@ export interface FormProps {
   onMount?: (core: Core) => void;
   globalStatus?: Status;
   style?: React.CSSProperties;
+  overWrite?: boolean;
 }
 
 export class Form extends React.Component<FormProps> {
@@ -84,9 +85,9 @@ export class Form extends React.Component<FormProps> {
     }
   };
   public componentDidUpdate = (prevProps: FormProps) => {
-    const { value, status } = this.props;
+    const { value, status, overWrite } = this.props;
     if (!isEqual(value, prevProps.value)) {
-      this.core.setValuesSilent(value);
+      this.core.setValuesSilent(value, { overWrite });
       this.forceUpdate();
     }
     if (!isEqual(status, prevProps.status)) {

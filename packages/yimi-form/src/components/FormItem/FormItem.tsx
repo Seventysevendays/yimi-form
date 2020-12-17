@@ -177,6 +177,7 @@ class FormItem extends React.Component<FormItemProps> {
   };
 
   public componentDidMount = () => {
+    this.form.reload[this.name] = false;
     const { show } = this.props;
     // show 的控制是基于form core 内部的status，可能会有延后，强制渲染一次
     if (typeof show === "function") {
@@ -188,7 +189,6 @@ class FormItem extends React.Component<FormItemProps> {
     this.form.removeListener(ACTIONS.status, this.handleStatusUpdate);
     // 删除FormCore相关的所有属性
     this.form.removeChild(this.name);
-    this.form.reload[this.name] = false;
     this.form.removeListener(ACTIONS.forceUpdate, this.handleForceUpdate);
   };
   private handleShowUpdate = () => {
