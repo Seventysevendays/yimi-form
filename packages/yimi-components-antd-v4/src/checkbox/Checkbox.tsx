@@ -3,7 +3,7 @@ import ACheckbox, { CheckboxProps as ACheckboxProps } from "antd/lib/checkbox";
 import { Status } from "../types";
 
 interface CheckboxProps extends ACheckboxProps {
-  status: Status;
+  status?: Status;
 }
 
 class Checkbox extends React.Component<CheckboxProps> {
