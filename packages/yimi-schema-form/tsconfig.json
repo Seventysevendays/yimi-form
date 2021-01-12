@@ -12,10 +12,7 @@
     "sourceMap": false,
     "declaration": true,
     "experimentalDecorators": true,
-    "baseUrl": ".",
+    "baseUrl": "."
   },
-  "include": [
-    "./src/**/*.ts",
-    "./src/**/*.tsx"
-  ]
+  "include": ["./src/**/*.ts", "./src/**/*.tsx", "./testDocs/**.mdx"]
 }

@@ -1,7 +1,4 @@
-import FormRender from "./FormRender";
-import SchemaArrayList from "./SchemaArrayList";
-declare const _default: {
-    FormRender: typeof FormRender;
-    SchemaArrayList: typeof SchemaArrayList;
-};
-export default _default;
+export { default as FormRender } from "./FormRender/FormRender";
+export { default as SchemaArrayList } from "./SchemaArrayList/SchemaArrayList";
+export { default as SchemaArrayTable } from "./SchemaArrayTable/SchemaArrayTable";
+export { default as SchemaFormItem } from "./SchemaFormItem/SchemaFormItem";

@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import { SchemaFormItemProps } from "../SchemaFormItem";
+import { SchemaFormItemProps } from "../SchemaFormItem/SchemaFormItem";
 import { FormProps } from "../../../yimi-form/src/components/Form/Form";
 import { SchemaArrayTableProps } from "../SchemaArrayTable/SchemaArrayTable";
 import { SchemaArrayListProps } from "../SchemaArrayList/SchemaArrayList";
@@ -30,11 +30,13 @@ export interface FormRenderProps {
     components: FormRenderSchemaComponent;
     form?: FormProps;
     coreConfig?: CoreProps;
+    getForm?: (form: FormRender) => void;
 }
 export default class FormRender extends React.Component<FormRenderProps> {
     components: FormRenderSchemaComponent;
     core: Core;
     constructor(props: FormRenderProps);
+    componentDidMount: () => void;
     renderComponent: (cpName: string) => any;
     renderForm: (item: FormRenderRowSchema) => JSX.Element;
     renderList: (item: FormRenderRowSchema) => JSX.Element;

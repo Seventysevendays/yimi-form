@@ -1,5 +1,7 @@
 import React, { ReactNode } from "react";
-import FormItem, { SchemaFormItemProps } from "../SchemaFormItem";
+import FormItem, {
+  SchemaFormItemProps,
+} from "../SchemaFormItem/SchemaFormItem";
 import Form, { FormProps } from "../../../yimi-form/src/components/Form/Form";
 import ArrayTable, {
   SchemaArrayTableProps,
@@ -43,6 +45,7 @@ export interface FormRenderProps {
   components: FormRenderSchemaComponent;
   form?: FormProps;
   coreConfig?: CoreProps;
+  getForm?: (form: FormRender) => void;
 }
 
 export default class FormRender extends React.Component<FormRenderProps> {
@@ -58,6 +61,11 @@ export default class FormRender extends React.Component<FormRenderProps> {
     }, {});
     this.core = new Core({ ...coreConfig });
   }
+  public componentDidMount = () => {
+    if (this.props.getForm) {
+      this.props.getForm(this);
+    }
+  };
   public renderComponent = (cpName: string) => {
     if (!this.components[cpName]) {
       console.error(`yimi-shema-form: can not find component ${cpName}!`);
