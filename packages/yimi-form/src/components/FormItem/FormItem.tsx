@@ -102,7 +102,7 @@ class FormItem extends React.Component<FormItemProps> {
       this.showListenKeys = getFuncArgs(show);
     }
     if (typeof view === "function" && !this.viewListenKeys) {
-      this.viewListenKeys = getFuncArgs(view);
+      this.viewListenKeys = getFuncArgs(view).concat(this.name);
     }
     if (typeof visible === "function" && !this.viewListenKeys) {
       this.visibleListenKeys = getFuncArgs(visible);
@@ -163,8 +163,18 @@ class FormItem extends React.Component<FormItemProps> {
       }
     } else if (typeof visible === "function") {
       if (!visible(this.form, mapValues(this.form.getValues()))) {
+        this.form.reload[this.name] = false;
         // 隐藏时从core中移除
         this.form.removeChild(this.name);
+      } else {
+        const { type } = this.props.children || ({} as any);
+        this.form.addChild({
+          ...this.props,
+          name: this.name,
+          form: this.form,
+          showListenKeys: this.showListenKeys,
+          displayName: type ? type.displayName : "",
+        });
       }
       if (visibleListenKeys === false) {
         this.forceUpdate();
