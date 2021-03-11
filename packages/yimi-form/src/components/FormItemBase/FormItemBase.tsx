@@ -54,9 +54,14 @@ class FormItemBase extends React.PureComponent<FormItemBaseProps> {
     this.forceUpdate();
   };
   public componentDidUpdate = (prevProps: FormItemBaseProps) => {
-    const { value } = this.props;
+    const { value, status } = this.props;
     if (!isEqual(value, prevProps.value)) {
       this.cacheValue = value;
+    }
+    if (typeof status !== "function" && status !== prevProps.status) {
+      this.core.setStatus({
+        [this.name]: status || "edit",
+      });
     }
   };
   public handleValueUpdate = (name, value, opts) => {
