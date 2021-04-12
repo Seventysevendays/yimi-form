@@ -452,6 +452,21 @@ class FormDemo extends React.Component {
               </FormItem>
             </Col>
           </Row>
+          <Row>
+            <FormItem name="checkboxGroup" label="checkboxGroup">
+              <Checkbox.Group
+                options={[
+                  { label: "Apple", value: "Apple" },
+                  { label: "Pear", value: "Pear" },
+                  { label: "Orange", value: "Orange" },
+                ]}
+                defaultValue={["Apple"]}
+                onChange={(a, b) => {
+                  console.log(a, b);
+                }}
+              />
+            </FormItem>
+          </Row>
 
           <Upload
             name="file"

@@ -7,10 +7,10 @@ declare function TextArea(props: TextAreaProps & {
 declare function Group(props: GroupProps & {
     status?: Status;
 }): JSX.Element;
-declare function Search(props: PasswordProps & {
+declare function Search(props: SearchProps & {
     status?: Status;
 }): JSX.Element;
-declare function Password(props: SearchProps & {
+declare function Password(props: PasswordProps & {
     status?: Status;
 }): JSX.Element;
 interface InputProps extends AInputProps {
