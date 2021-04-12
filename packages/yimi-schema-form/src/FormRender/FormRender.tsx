@@ -36,8 +36,8 @@ export interface FormRenderRowSchema {
   properties?: Array<FormRenderRowSchema>;
   componentType?: "data" | "display";
 }
-type FormRenderSchema = Array<FormRenderRowSchema>;
-type FormRenderSchemaComponent = { [key: string]: any };
+export type FormRenderSchema = Array<FormRenderRowSchema>;
+export type FormRenderSchemaComponent = { [key: string]: any };
 
 export interface FormRenderProps {
   schema: FormRenderSchema;
