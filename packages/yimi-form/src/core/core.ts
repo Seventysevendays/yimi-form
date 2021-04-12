@@ -1,15 +1,7 @@
 import { matchName } from "./../utils/getName";
-/*
- * @author: xuxiang
- * @description: description
- * @Date: 2020-07-15 16:31:58
- * @LastEditors: xuxiang
- * @LastEditTime: 2020-12-16 09:49:44
- */
-
 import { FormItemProps } from "./../components/FormItem/FormItem";
 import { EventEmitter } from "events";
-import ItemCore from "./itemCore";
+import ItemCore, { ItemCoreSetOptions } from "./itemCore";
 import { Form } from "../components/Form/Form";
 import { ItemValidateConfig } from "./../components/FormItem/FormItem";
 import getId from "../utils/getId";
@@ -53,6 +45,7 @@ class Core {
   public onChange?: CoreOnChange;
   public eventCenter: EventEmitter;
   public childrenMap: { [key: string]: ItemCore };
+  public visibleChildrenMap: { [key: string]: ItemCore };
   public values: { [key: string]: any };
   public initValues: { [key: string]: any };
   public status: { [key: string]: Status };
@@ -98,6 +91,7 @@ class Core {
     this.status = { ...status } || {};
     this.error = { ...error } || {};
     this.childrenMap = {};
+    this.visibleChildrenMap = {};
     this.onChange = onChange || noop;
     this.autoValidate = !!autoValidate;
     this.validateConfig = validateConfig || {};
@@ -118,8 +112,13 @@ class Core {
   public removeAllListeners: EventEmitter["removeAllListeners"] = () => {
     return this.eventCenter.removeAllListeners();
   };
-  private handleValueChange = (key: string | string[], value: any) => {
+  private handleValueChange = (
+    key: string | string[],
+    value: any,
+    opts: ItemCoreSetOptions
+  ) => {
     let validateKeys: string[];
+    const { validate } = opts || {};
     if (Array.isArray(key)) {
       if (!this.silent) {
         this.onChange(key, { ...this.values }, this);
@@ -138,7 +137,7 @@ class Core {
         { ...this.values },
         Array.isArray(key) ? key : [key]
       );
-      if (this.autoValidate) {
+      if (this.autoValidate && validate !== false) {
         validateKeys.forEach((key) => {
           if (this.childrenMap[key]) {
             // onChange 不触发内部Form的校验
@@ -220,9 +219,9 @@ class Core {
   /** 设置值；可选同时批量触发或依次触发 */
   public setValues = (
     values: { [key: string]: any },
-    opts?: { multiple: boolean; overWrite?: boolean }
+    opts?: { multiple: boolean; overWrite?: boolean; validate?: boolean }
   ) => {
-    const { multiple, overWrite } = opts || {};
+    const { multiple, overWrite, validate } = opts || {};
     this.values = overWrite
       ? { ...values }
       : {
@@ -239,13 +238,17 @@ class Core {
           this.childrenMap[key].set("value", values[key], {
             silent: true,
             manual: true,
+            validate,
           });
         }
       });
     } else {
       setKeys.forEach((key) => {
         if (this.childrenMap[key]) {
-          this.childrenMap[key].set("value", values[key], { manual: true });
+          this.childrenMap[key].set("value", values[key], {
+            manual: true,
+            validate,
+          });
         } else {
           this.emit("value", key, values[key]);
         }
@@ -391,9 +394,11 @@ class Core {
   };
   /** remove unmount formItem */
   public removeChild = (name: string) => {
-    if (!this.reload[name]) {
+    if (!this.reload[name] && this.childrenMap[name]) {
+      this.childrenMap[name].resetInnerFormList();
       delete this.values[name];
       delete this.status[name];
+      this.visibleChildrenMap[name] = this.childrenMap[name];
       delete this.childrenMap[name];
     }
   };
@@ -427,17 +432,17 @@ class Core {
       }
     });
   };
-  public scrollToError = () => {
+  public scrollToError = (params?: ScrollIntoViewOptions) => {
     const firstDom = document.querySelector(".yimi-form-item-error");
     if (firstDom && firstDom.parentElement) {
-      firstDom.parentElement.scrollIntoView({ behavior: "smooth" });
+      firstDom.parentElement.scrollIntoView({ behavior: "smooth", ...params });
     }
   };
   // 控制子元素的更新
   public forceUpdate = (keys?: string[]) => {
     this.emit(ACTIONS.forceUpdate, keys);
   };
-  public reset = (keys?: string[]) => {
+  public reset = (keys?: string[] | undefined, validate?: boolean) => {
     const resetKeys = Array.isArray(keys) ? keys : Object.keys(this.values);
     resetKeys.forEach((key) => {
       const value = key in this.initValues ? this.initValues[key] : null;
@@ -454,7 +459,7 @@ class Core {
         }
         // 不触发onChange
         this.silent = true;
-        this.childrenMap[key].set("value", value);
+        this.childrenMap[key].set("value", value, { validate });
         this.silent = false;
       } else {
         this.values[key] = value;

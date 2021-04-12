@@ -1,3 +1,4 @@
+/// <reference types="node" />
 import { FormItemProps } from "./../components/FormItem/FormItem";
 import { EventEmitter } from "events";
 import ItemCore from "./itemCore";
@@ -42,6 +43,9 @@ declare class Core {
     onChange?: CoreOnChange;
     eventCenter: EventEmitter;
     childrenMap: {
+        [key: string]: ItemCore;
+    };
+    visibleChildrenMap: {
         [key: string]: ItemCore;
     };
     values: {
@@ -92,6 +96,8 @@ declare class Core {
         [key: string]: any;
     }, opts?: {
         multiple: boolean;
+        overWrite?: boolean;
+        validate?: boolean;
     }) => void;
     setStatus: (status: {
         [key: string]: Status;
@@ -114,13 +120,15 @@ declare class Core {
     };
     setValuesSilent: (values: {
         [key: string]: any;
+    }, opts?: {
+        overWrite?: boolean;
     }) => void;
     removeChild: (name: string) => void;
     validate: (keys?: string[]) => Promise<null | {
         [key: string]: any;
     }>;
-    scrollToError: () => void;
+    scrollToError: (params?: ScrollIntoViewOptions) => void;
     forceUpdate: (keys?: string[]) => void;
-    reset: (keys?: string[]) => void;
+    reset: (keys?: string[] | undefined, validate?: boolean) => void;
 }
 export default Core;

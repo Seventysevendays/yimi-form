@@ -1,3 +1,4 @@
+/// <reference types="node" />
 import { ACTIONS } from "./core";
 import Core from "../core/core";
 import { FormItemProps } from "./../components/FormItem/FormItem";
@@ -10,6 +11,11 @@ interface ItemCoreProps extends FormItemProps {
     on: EventEmitter["on"];
     emit: EventEmitter["emit"];
     displayName: string;
+}
+export interface ItemCoreSetOptions {
+    silent?: boolean;
+    manual?: boolean;
+    validate?: boolean;
 }
 declare class ItemCore {
     name: string;
@@ -30,10 +36,7 @@ declare class ItemCore {
     propStatus: Status;
     displayName: string;
     constructor(props: ItemCoreProps);
-    set: (type: keyof typeof ACTIONS, value: any, opts?: {
-        silent?: boolean;
-        manual?: boolean;
-    }) => void;
+    set: (type: keyof typeof ACTIONS, value: any, opts?: ItemCoreSetOptions) => void;
     addInnerForm: (core: Core) => void;
     removeInnerForm: (core: Core) => void;
     resetInnerFormList: () => void;

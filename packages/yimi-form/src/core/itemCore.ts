@@ -3,7 +3,7 @@
  * @description: description
  * @Date: 2020-07-22 14:55:28
  * @LastEditors: xuxiang
- * @LastEditTime: 2020-11-18 19:59:19
+ * @LastEditTime: 2021-04-01 11:31:11
  */
 
 import { ACTIONS } from "./core";
@@ -25,6 +25,14 @@ interface ItemCoreProps extends FormItemProps {
   displayName: string;
 }
 
+export interface ItemCoreSetOptions {
+  /** 是否触发 onChange  */
+  silent?: boolean;
+  /** 是否手动设置 */
+  manual?: boolean;
+  /** 是否触发validate */
+  validate?: boolean;
+}
 class ItemCore {
   public name: string;
   public on: EventEmitter["on"];
@@ -85,12 +93,7 @@ class ItemCore {
   public set = (
     type: keyof typeof ACTIONS,
     value: any,
-    opts?: {
-      /** 是否触发 onChange  */
-      silent?: boolean;
-      /** 是否手动设置 */
-      manual?: boolean;
-    }
+    opts?: ItemCoreSetOptions
   ) => {
     if (!isEqual(this[type], value)) {
       // 如果有show的，stutus为hidden时，一切状态设置无效
@@ -112,7 +115,7 @@ class ItemCore {
     this.innerFormList.push(core);
   };
   public removeInnerForm = (core: Core) => {
-    this.innerFormList = this.innerFormList.filter((c) => c.id === core.id);
+    this.innerFormList = this.innerFormList.filter((c) => c.id !== core.id);
   };
   // 重置innerFormList
   public resetInnerFormList = () => {

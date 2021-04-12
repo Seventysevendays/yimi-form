@@ -19,6 +19,7 @@ export interface FormProps {
     onMount?: (core: Core) => void;
     globalStatus?: Status;
     style?: React.CSSProperties;
+    overWrite?: boolean;
 }
 export declare class Form extends React.Component<FormProps> {
     core?: Core;

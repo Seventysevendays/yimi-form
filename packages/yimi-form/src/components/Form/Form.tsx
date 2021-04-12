@@ -3,7 +3,7 @@
  * @description: description
  * @Date: 2020-07-15 16:39:01
  * @LastEditors: xuxiang
- * @LastEditTime: 2020-12-16 09:44:28
+ * @LastEditTime: 2021-03-23 17:31:25
  */
 
 import React from "react";
@@ -56,7 +56,7 @@ export class Form extends React.Component<FormProps> {
     }
   }
   public componentDidMount = () => {
-    const { itemCore, value, status, onMount, globalStatus } = this.props;
+    const { value, status, onMount, globalStatus, itemCore } = this.props;
     // 内层有Form
     if (itemCore && !this.core.disableChildForm) {
       itemCore.addInnerForm(this.core);

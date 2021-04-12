@@ -6,6 +6,7 @@ import { Button } from "antd";
 import { Input, Checkbox, Select, Radio } from "../../yimi-components-antd-v4/";
 import "./index.less";
 
+import ArrayTable from "../../yimi-components/src/ArrayTable/ArrayTable";
 import "antd/dist/antd.css";
 
 class FormDemo extends React.Component {
@@ -25,84 +26,19 @@ class FormDemo extends React.Component {
     return (
       <div className="wrapper">
         <Form core={this.core} colon={true} inline>
-          <h2>value</h2>
-          <FormItem name="value" label="value" value="value">
-            <Input />
-          </FormItem>
-          <h2>status</h2>
-          <FormItem name="edit" label="edit">
-            <Input />
-          </FormItem>
-          <FormItem name="disabled" label="disabled" status="disabled">
-            <Input />
-          </FormItem>
-          <FormItem name="preview" label="preview" status="preview">
-            <Input />
-          </FormItem>
-          <FormItem name="hidden" label="hidden" status="hidden">
-            <Input />
-          </FormItem>
-          <h2>dynamic status</h2>
-          <FormItem name="statusDep" label="statusDep" defaultValue="disabled">
-            <Input />
-          </FormItem>
-          <FormItem
-            name="dynamicStatus"
-            label="dynamicStatus"
-            status={(core, { $statusDep }) => {
-              console.log($statusDep);
-              return $statusDep;
-            }}
-          >
-            <Input />
-          </FormItem>
-          <h2>around element</h2>
-          <FormItem
-            name="around"
-            label="around"
-            top="top"
-            bottom="bottom"
-            prefix="prefix"
-            suffix="suffix"
-          >
-            <Input />
-          </FormItem>
-          <h2>props</h2>
-          <FormItem name="props" label="props" props={{ placeholder: "props" }}>
-            <Input />
-          </FormItem>
-          <h2>dynamic props & defaultValue</h2>
-          <FormItem
-            name="dprops"
-            label="dprops"
-            props={(core, value) => {
-              return {
-                value: JSON.parse(value.dprops),
-              };
-            }}
-          >
-            <Checkbox />
-          </FormItem>
-          <FormItem name="placeholder" label="placeholder" value="input">
-            <Input />
-          </FormItem>
-          <FormItem
-            name="dprops1"
-            label="dprops1"
-            props={(core, { $placeholder }) => {
-              return {
-                placeholder: $placeholder,
-              };
-            }}
-          >
-            <Input />
-          </FormItem>
           <h2>visible</h2>
           <FormItem
             name="visibleDep"
             label="visibleDep"
             bottom="FormItem 'visible' will show when the value of 'visibleDep' is 'true'"
             defaultValue={true}
+            onChange={(core, val) => {
+              if (val) {
+                core.setValues({
+                  visible: [{ key: "1" }],
+                });
+              }
+            }}
           >
             <Radio.Group>
               <Radio value={true}>显示</Radio>
@@ -113,79 +49,35 @@ class FormDemo extends React.Component {
             name="visible"
             label="visible"
             visible={(core, { $visibleDep }) => $visibleDep}
+            defaultValue={[{ key: "1" }]}
           >
-            <Input />
-          </FormItem>
-          <h2>show</h2>
-          <FormItem
-            name="showDep"
-            label="showDep"
-            bottom="FormItem 'show' will show when the value of 'showDep' is 'show'"
-          >
-            <Input />
-          </FormItem>
-          <FormItem
-            name="show"
-            label="show"
-            show={(core, { $showDep }) => $showDep === "show"}
-          >
-            <Input />
-          </FormItem>
-          <h2>view</h2>
-          <FormItem
-            name="viewDep"
-            label="viewDep"
-            bottom="FormItem 'input' will show when the value of 'viewDep' is 'show'"
-          >
-            <Input />
-          </FormItem>
-          <Form
-            name="view"
-            label="view"
-            view={(core, { $viewDep }) => {
-              if ($viewDep === "input") {
-                return (
-                  <FormItem name="view" label="view">
-                    <Select
-                      allowClear
-                      options={[{ label: "苹果", value: "apple" }]}
-                    />
-                  </FormItem>
-                );
-              } else {
-                return null;
-              }
-            }}
-          />
-          <h2>validateConfig</h2>
-          <FormItem
-            name="validateConfig"
-            label="validateConfig"
-            validateConfig={{ required: true }}
-          >
-            <Input />
-          </FormItem>
-          <h2>dynamic validateConfig</h2>
-          <FormItem
-            name="dValidateConfig"
-            label="dValidateConfig"
-            validateConfig={(val, core) =>
-              val.validateConfig === "validate" ? { required: true } : {}
-            }
-          >
-            <Input />
-          </FormItem>
-          <h2>colon</h2>
-          <FormItem name="colon" label="colon" colon={false}>
-            <Input />
-          </FormItem>
-          <h2>noname</h2>
-          <FormItem label="noname">
-            <Input />
+            <ArrayTable
+              tableConfig={{
+                columns: [
+                  {
+                    dataIndex: "input",
+                    title: "input",
+                    render: () => {
+                      return (
+                        <FormItem
+                          name="input"
+                          validateConfig={{ required: true }}
+                        >
+                          <Input />
+                        </FormItem>
+                      );
+                    },
+                  },
+                ],
+              }}
+            />
           </FormItem>
           <Button
             onClick={() => {
               console.log(this.core.getValues());
+              this.core.validate().then((err) => {
+                console.log(err);
+              });
             }}
           >
             提交
