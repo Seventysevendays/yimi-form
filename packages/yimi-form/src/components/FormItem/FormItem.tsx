@@ -163,17 +163,23 @@ class FormItem extends React.Component<FormItemProps> {
       }
     } else if (typeof visible === "function") {
       if (!visible(this.form, mapValues(this.form.getValues()))) {
-        this.form.reload[this.name] = false;
         // 隐藏时从core中移除
         this.form.removeChild(this.name);
       } else {
-        const { type } = this.props.children || ({} as any);
-        this.form.addChild({
-          ...this.props,
-          name: this.name,
-          form: this.form,
-          showListenKeys: this.showListenKeys,
-          displayName: type ? type.displayName : "",
+        this.form.childrenMap[this.name] =
+          this.form.visibleChildrenMap[this.name] ||
+          this.form.childrenMap[this.name];
+        this.form.setValuesSilent({
+          [this.name]:
+            this.form.getValues(this.name) ||
+            this.props.value ||
+            this.props.defaultValue,
+        });
+        this.form.setStatus({
+          [this.name]:
+            this.props.status ||
+            (this.form.getStatus(this.name) as any) ||
+            this.form.getGlobalStatus(),
         });
       }
       if (visibleListenKeys === false) {
@@ -188,10 +194,13 @@ class FormItem extends React.Component<FormItemProps> {
 
   public componentDidMount = () => {
     this.form.reload[this.name] = false;
-    const { show } = this.props;
+    const { show, visible } = this.props;
     // show 的控制是基于form core 内部的status，可能会有延后，强制渲染一次
     if (typeof show === "function") {
       this.handleShowUpdate();
+    }
+    if (typeof visible === "function") {
+      this.handleUpdate(this.name);
     }
   };
   public componentWillUnmount = () => {
