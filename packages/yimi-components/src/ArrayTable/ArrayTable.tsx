@@ -153,7 +153,10 @@ class ArrayTable extends React.Component<
   private handleCallback = (callback: ArrayTableCallback, id: string) => {
     if (callback) {
       const core = this.coreList.find((core) => core.id === id);
-      callback(core, this.dataSource, this.coreList);
+      // 更新行时，行并没有挂载，所以childMap为{}，需要等到行挂载后，所有core的功能才可以正常使用
+      setTimeout(() => {
+        callback(core, this.dataSource, this.coreList);
+      });
     }
   };
   public changeAndUpdate = () => {
@@ -261,6 +264,7 @@ class ArrayTable extends React.Component<
   public render() {
     const { top, bottom, tableConfig, className, style, locale } = this.props;
     const { current, pageSize } = this.state;
+    const pagination = (tableConfig || {}).pagination;
     return (
       <ArrayTableContext.Provider
         value={{ ...this.actionValue, dataSource: this.dataSource }}
@@ -272,16 +276,20 @@ class ArrayTable extends React.Component<
           {top && <div className="yimi-array-table-top">{top}</div>}
           <ConfigProvider locale={locale === "en" ? enUS : zhCN}>
             <Table
-              {...this.props.tableConfig}
-              pagination={{
-                ...(tableConfig || {}).pagination,
-                current,
-                pageSize,
-                onChange: this.onPageChange,
-                onShowSizeChange: this.onShowSizeChange,
-              }}
+              {...tableConfig}
+              pagination={
+                pagination !== false
+                  ? {
+                      ...pagination,
+                      current,
+                      pageSize,
+                      onChange: this.onPageChange,
+                      onShowSizeChange: this.onShowSizeChange,
+                    }
+                  : false
+              }
               components={this.components}
-              dataSource={this.dataSource.map((item) => item)}
+              dataSource={this.dataSource}
             />
           </ConfigProvider>
 

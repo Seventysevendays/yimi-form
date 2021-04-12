@@ -26,7 +26,7 @@ class FormDemo extends React.Component {
       autoValidate: true,
     });
     this.dataSource = [];
-    for (let i = 0; i < 200; i++) {
+    for (let i = 0; i < 2; i++) {
       this.dataSource.push({
         id: "haha" + i,
         name: "胡彦斌" + i,
@@ -398,6 +398,7 @@ class FormDemo extends React.Component {
                           onClick={() => {
                             addBottom((core) => {
                               core.setValues({ name: "吴彦祖" });
+                              console.log(core);
                               core.setGlobalStatus("edit");
                             });
                           }}
@@ -407,6 +408,7 @@ class FormDemo extends React.Component {
                         <Button
                           onClick={() => {
                             addTop((core) => {
+                              console.log("addTop", core);
                               core.setValues({ name: "吴彦祖" });
                               core.setGlobalStatus("edit");
                             });

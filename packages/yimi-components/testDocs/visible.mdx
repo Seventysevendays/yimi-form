@@ -1,0 +1,147 @@
+```jsx
+import Form from "../../yimi-form/src/components/Form/Form";
+import FormItem from "../../yimi-form/src/components/FormItem/FormItem";
+import Core from "../../yimi-form/src/core/core";
+import {
+  Input,
+  Checkbox,
+  Table,
+  Select,
+} from "../../yimi-components-antd-v4/src/";
+import { Button } from "antd";
+import { ArrayTable, ArrayAction } from "../src/";
+import "../../yimi-form/src/index.less";
+import "./index.less";
+import "../../yimi-components-antd-v4/src/index.less";
+import "../src/index.less";
+import "antd/dist/antd.css";
+
+class FormDemo extends React.Component {
+  constructor(props) {
+    super(props);
+    this.core = new Core({
+      onChange: ([key], val, core) => {
+        // console.log(key, val, core);
+        if (key === "visible" && val[key]) {
+          core.setValues({
+            table: [{ key: "1" }],
+          });
+        }
+      },
+      autoValidate: true,
+    });
+  }
+  componentDidMount() {
+    // setTimeout(() => {
+    // this.core.setValues(
+    //   {
+    //     table: [{ key: "1", input: "2" }],
+    //     visible: true,
+    //   },
+    //   { multiple: true }
+    // );
+    // }, 1000);
+    // this.core.setStatus({
+    //   table: "edit",
+    // });
+    // this.core.setGlobalStatus("disabled");
+  }
+
+  renderTable(core) {
+    return (
+      <FormItem
+        name="table"
+        label="table"
+        visible={(core, { $visible }) => $visible}
+        validateConfig={{ required: true }}
+      >
+        <ArrayTable
+          tableConfig={{
+            columns: [
+              {
+                dataIndex: "input",
+                title: "input",
+                render: () => {
+                  return (
+                    <FormItem name="input" validateConfig={{ required: true }}>
+                      <Input />
+                    </FormItem>
+                  );
+                },
+              },
+              {
+                dataIndex: "opr",
+                title: "操作",
+                render: () => {
+                  return (
+                    <FormItem
+                      view={(core, { key }) => {
+                        return (
+                          <ArrayAction>
+                            {({ remove }) => {
+                              return (
+                                <Button
+                                  onClick={() => {
+                                    remove(key);
+                                  }}
+                                >
+                                  删除
+                                </Button>
+                              );
+                            }}
+                          </ArrayAction>
+                        );
+                      }}
+                    />
+                  );
+                },
+              },
+            ],
+            pagination: false,
+          }}
+          rowCoreConfig={{
+            autoValidate: true,
+          }}
+          bottom={
+            <ArrayAction>
+              {({ addBottom }) => {
+                return (
+                  <Button
+                    onClick={() => {
+                      addBottom();
+                    }}
+                  >
+                    添加
+                  </Button>
+                );
+              }}
+            </ArrayAction>
+          }
+        />
+      </FormItem>
+    );
+  }
+  render() {
+    return (
+      <div className="wrapper">
+        <Form core={this.core}>
+          <FormItem name="visible" label="显示隐藏" defaultValue={false}>
+            <Checkbox />
+          </FormItem>
+          {this.renderTable(this.core)}
+        </Form>
+        <Button
+          onClick={() => {
+            this.core.validate().then((err) => {
+              console.log(err);
+            });
+          }}
+        >
+          校验
+        </Button>
+      </div>
+    );
+  }
+}
+ReactDOM.render(<FormDemo />, mountNode);
+```

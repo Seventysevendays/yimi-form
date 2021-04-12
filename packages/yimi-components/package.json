@@ -1,6 +1,6 @@
 {
   "name": "yimi-components-beta",
-  "version": "1.0.30",
+  "version": "1.0.37",
   "description": "yimi components",
   "main": "lib/index.js",
   "scripts": {
@@ -38,7 +38,7 @@
     "yimi-form-beta": "^1.0.10"
   },
   "dependencies": {
-    "antd": "^4.8.0"
+    "antd": "4.8.0"
   },
   "peerDependencies": {
     "yimi-form-beta": "*"
