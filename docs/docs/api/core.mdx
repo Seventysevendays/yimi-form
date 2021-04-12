@@ -35,6 +35,6 @@ title: Core
 | getProps: (key?:) => any                                                                             | 获取 core 中的 prop                                                                      |
 | getError: (key?: string) => any \| { [key: string]: any}                                             | 获取错误，不传 key 为所有错误                                                            |
 | validate: (keys?: string[]) => Promise<null \| {[key: string]: any}>                                 | 校验，keys 可以指定校验的范围                                                            |
-| scrollToError: () => void                                                                            | 滚动到第一个错误的位置                                                                   |
-| reset : (keys?: string[]) => void                                                                    | 重置值，keys 可以指定重置的范围                                                          |
+| scrollToError: (opts?: ScrollIntoViewOptions) => void                                                | 滚动到第一个错误的位置                                                                   |
+| reset : (keys?: string[]\|undefined, validate?: boolean) => void                                     | 重置值，keys 可以指定重置的范围                                                          |
 | forceUpdate : (keys?: string[]) => void                                                              | 手动刷新视图，指定 keys 可以设置触发渲染的范围                                           |
