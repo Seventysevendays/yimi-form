@@ -204,7 +204,7 @@ class Core {
     this.status[name] = funcStatus
       ? funcStatus
       : status || this.status[name] || this.globalStatus;
-    this.error[name] = error;
+    this.error[name] = error || this.error[name];
     this.validateConfig[name] = validateConfig || this.validateConfig[name];
 
     const childCore = new ItemCore({
@@ -400,6 +400,7 @@ class Core {
       delete this.status[name];
       this.visibleChildrenMap[name] = this.childrenMap[name];
       delete this.childrenMap[name];
+      this.reload[name] = false;
     }
   };
   public validate: (

@@ -3,7 +3,7 @@
  * @description: description
  * @Date: 2020-07-22 14:55:28
  * @LastEditors: xuxiang
- * @LastEditTime: 2021-04-01 11:31:11
+ * @LastEditTime: 2021-04-21 11:56:06
  */
 
 import { ACTIONS } from "./core";
@@ -169,6 +169,9 @@ class ItemCore {
   };
   public removeListener = () => {
     this.form.removeListener(ACTIONS.value, this.selfConsist);
+  };
+  public updateFuncStatus = (funcStatus) => {
+    this.funcStatus = funcStatus;
   };
   public consistStatus = () => {
     if (this.funcStatus) {

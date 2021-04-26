@@ -21,6 +21,8 @@ class FormDemo extends React.Component {
   }
   componentDidMount = () => {
     // this.core.setValues({ validateConfig: "validate" });
+    this.core.setValues({ visibleDep: false });
+    console.log(this.core.getValues());
   };
   render() {
     return (
@@ -32,13 +34,6 @@ class FormDemo extends React.Component {
             label="visibleDep"
             bottom="FormItem 'visible' will show when the value of 'visibleDep' is 'true'"
             defaultValue={true}
-            onChange={(core, val) => {
-              if (val) {
-                core.setValues({
-                  visible: [{ key: "1" }],
-                });
-              }
-            }}
           >
             <Radio.Group>
               <Radio value={true}>显示</Radio>
@@ -49,28 +44,8 @@ class FormDemo extends React.Component {
             name="visible"
             label="visible"
             visible={(core, { $visibleDep }) => $visibleDep}
-            defaultValue={[{ key: "1" }]}
           >
-            <ArrayTable
-              tableConfig={{
-                columns: [
-                  {
-                    dataIndex: "input",
-                    title: "input",
-                    render: () => {
-                      return (
-                        <FormItem
-                          name="input"
-                          validateConfig={{ required: true }}
-                        >
-                          <Input />
-                        </FormItem>
-                      );
-                    },
-                  },
-                ],
-              }}
-            />
+            <Input />
           </FormItem>
           <Button
             onClick={() => {

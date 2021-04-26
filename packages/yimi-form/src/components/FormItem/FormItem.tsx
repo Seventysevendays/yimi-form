@@ -227,10 +227,13 @@ class FormItem extends React.Component<FormItemProps> {
   };
 
   public componentDidUpdate = (prevProps: FormItemProps) => {
-    const { value } = this.props;
+    const { value, status } = this.props;
     if (!isEqual(value, prevProps.value)) {
       this.itemCore.set("value", value);
       this.forceUpdate();
+    }
+    if (typeof status === "function" && !isEqual(status, prevProps.status)) {
+      this.itemCore.updateFuncStatus(status);
     }
   };
 

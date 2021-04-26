@@ -44,6 +44,7 @@ declare class ItemCore {
         onlySelf?: boolean;
     }) => Promise<unknown>;
     removeListener: () => void;
+    updateFuncStatus: (funcStatus: any) => void;
     consistStatus: () => void;
     selfConsist: (name: any) => void;
 }
