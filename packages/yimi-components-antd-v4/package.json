@@ -1,6 +1,6 @@
 {
-  "name": "yimi-components-antd-v4-beta",
-  "version": "1.0.14",
+  "name": "yimi-components-antd-v4",
+  "version": "1.0.0",
   "description": "yimi components based on antd",
   "main": "lib/index.js",
   "scripts": {

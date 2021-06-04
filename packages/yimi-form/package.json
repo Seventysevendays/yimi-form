@@ -1,6 +1,6 @@
 {
   "name": "yimi-form",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "beautiful react form",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -9,7 +9,7 @@
     "test": "node ../yimi-builder/scripts/test.js",
     "start": "nodemon ../yimi-builder/scripts/dev.js",
     "build": "node ../yimi-builder/scripts/build.js",
-    "prepare": "npm run build"
+    "prepare": "npm run test; npm run build"
   },
   "repository": {
     "type": "git",

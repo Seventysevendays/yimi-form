@@ -3,7 +3,7 @@
  * @description: description
  * @Date: 2020-07-15 16:39:01
  * @LastEditors: xuxiang
- * @LastEditTime: 2021-03-23 17:31:25
+ * @LastEditTime: 2021-05-19 17:12:19
  */
 
 import React from "react";
@@ -13,7 +13,8 @@ import FormItemContext from "../../context/formItem";
 import ItemCore from "../../core/itemCore";
 import isEqual from "lodash/isEqual";
 
-export interface FormProps {
+export interface FormProps
+  extends Omit<React.DOMAttributes<HTMLDivElement>, "onChange"> {
   core?: Core;
   colon?: boolean;
   onChange?: (val: any, core: Core, key: string[]) => void;
@@ -108,10 +109,22 @@ export class Form extends React.Component<FormProps> {
       className,
       style,
       full,
+      core,
+      colon,
+      onChange,
+      itemCore,
+      value,
+      children,
+      status,
+      onMount,
+      globalStatus,
+      overWrite,
+      ...others
     } = this.props;
     return (
       <FormContext.Provider value={{ core: this.core }}>
         <Com
+          {...others}
           className={`yimi-form ${inline ? "inline" : ""} ${
             direction ? direction : ""
           } ${className ? className : ""} ${full ? "full" : ""}`}

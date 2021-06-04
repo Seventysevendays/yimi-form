@@ -90,6 +90,13 @@ class FormDemo extends React.Component {
                 },
                 rowKey: "id",
                 scroll: { x: 1400 },
+                onRow: (r) => {
+                  return {
+                    onClick: () => {
+                      console.log(r);
+                    },
+                  };
+                },
                 columns: [
                   {
                     dataIndex: "id",

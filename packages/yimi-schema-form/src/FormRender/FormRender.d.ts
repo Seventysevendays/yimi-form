@@ -20,8 +20,8 @@ export interface FormRenderRowSchema {
     properties?: Array<FormRenderRowSchema>;
     componentType?: "data" | "display";
 }
-declare type FormRenderSchema = Array<FormRenderRowSchema>;
-declare type FormRenderSchemaComponent = {
+export declare type FormRenderSchema = Array<FormRenderRowSchema>;
+export declare type FormRenderSchemaComponent = {
     [key: string]: any;
 };
 export interface FormRenderProps {
@@ -46,4 +46,3 @@ export default class FormRender extends React.Component<FormRenderProps> {
     renderItem: (item: FormRenderRowSchema) => JSX.Element | JSX.Element[];
     render(): JSX.Element;
 }
-export {};

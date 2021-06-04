@@ -1,6 +1,6 @@
 {
-  "name": "yimi-components-beta",
-  "version": "1.0.37",
+  "name": "yimi-form-components",
+  "version": "1.0.0",
   "description": "yimi components",
   "main": "lib/index.js",
   "scripts": {
