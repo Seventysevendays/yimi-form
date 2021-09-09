@@ -165,6 +165,7 @@ class FormItem extends React.Component<FormItemProps> {
       if (!visible(this.form, mapValues(this.form.getValues()))) {
         // 隐藏时从core中移除
         this.form.removeChild(this.name);
+        this.itemCore.reset();
       } else {
         this.form.childrenMap[this.name] =
           this.form.visibleChildrenMap[this.name] ||

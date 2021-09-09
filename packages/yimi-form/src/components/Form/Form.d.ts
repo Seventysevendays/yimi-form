@@ -1,7 +1,7 @@
 import React from "react";
 import Core, { Status } from "../../core/core";
 import ItemCore from "../../core/itemCore";
-export interface FormProps {
+export interface FormProps extends Omit<React.DOMAttributes<HTMLDivElement>, "onChange"> {
     core?: Core;
     colon?: boolean;
     onChange?: (val: any, core: Core, key: string[]) => void;

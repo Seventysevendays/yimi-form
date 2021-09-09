@@ -40,6 +40,7 @@ declare class ItemCore {
     addInnerForm: (core: Core) => void;
     removeInnerForm: (core: Core) => void;
     resetInnerFormList: () => void;
+    reset: () => void;
     validate: (opts?: {
         onlySelf?: boolean;
     }) => Promise<unknown>;
