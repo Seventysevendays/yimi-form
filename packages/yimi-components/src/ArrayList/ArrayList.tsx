@@ -6,6 +6,7 @@ import ArrayTableContext, {
 } from "../context/arrayTable";
 import { FormProps } from "../../../yimi-form/src/components/Form/Form";
 import { CoreProps, Status } from "../../../yimi-form/src/core/core";
+import ArrayIndexContext from '../context/arrayIndex'
 
 export interface ArrayListProps<T> {
   children?: ReactNode;
@@ -188,7 +189,7 @@ class ArrayList extends React.Component<Props> {
           className={`yimi-array-list ${className ? className : ""}`}
           style={style}
         >
-          {this.dataSource.map((row) => {
+          {this.dataSource.map((row, index) => {
             const core = this.coreList.find(
               (core) => core.id === row[this.rowKey]
             );
@@ -200,7 +201,10 @@ class ArrayList extends React.Component<Props> {
                   onChange={this.onRowChange}
                   status={status}
                 >
-                  {this.props.children}
+                  <ArrayIndexContext.Provider value={{ index: index + 1}}>
+                    {this.props.children}
+                  </ArrayIndexContext.Provider>
+                    
                 </Form>
               </div>
             );
