@@ -1,7 +1,6 @@
 module.exports = {
   title: 'Yimi Form',
   tagline: 'Graceful and High Performance React Form',
-  url: 'https://ks-ep-docs-test.test.gifshow.com/yimiform/',
   baseUrl: '/yimiform/',
   onBrokenLinks: 'throw',
   favicon: 'img/favicon.ico',
