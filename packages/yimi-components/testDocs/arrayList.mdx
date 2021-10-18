@@ -1,49 +1,49 @@
 ```jsx
-import Form from "../../yimi-form/src/components/Form/Form";
-import FormItem from "../../yimi-form/src/components/FormItem/FormItem";
-import Core from "../../yimi-form/src/core/core";
+import Form from '../../yimi-form/src/components/Form/Form'
+import FormItem from '../../yimi-form/src/components/FormItem/FormItem'
+import Core from '../../yimi-form/src/core/core'
 import {
   Input,
   Checkbox,
   Table,
   Select,
   Switch,
-} from "../../yimi-components-antd-v4/src/";
-import { Button, Divider } from "antd";
-import { useState, useEffect } from "react";
-import { ArrayList, ArrayAction } from "../src/";
-import "../../yimi-form/src/index.less";
-import "./index.less";
-import "antd/dist/antd.css";
-import "../../yimi-components-antd-v4/src/index.less";
-import "../src/index.less";
-import Modal from "antd/lib/modal";
+} from '../../yimi-components-antd-v4/src/'
+import { Button, Divider } from 'antd'
+import { useState, useEffect } from 'react'
+import { ArrayList, ArrayAction, ArrayIndex } from '../src/'
+import '../../yimi-form/src/index.less'
+import './index.less'
+import 'antd/dist/antd.css'
+import '../../yimi-components-antd-v4/src/index.less'
+import '../src/index.less'
+import Modal from 'antd/lib/modal'
 
 function FormDemo() {
   const [core] = useState(
     new Core({
       onChange: ([key], value, core) => {
-        console.log(value);
+        console.log(value)
       },
     })
-  );
-  const [visible, setVisible] = useState(false);
-  const dataSource = [];
+  )
+  const [visible, setVisible] = useState(false)
+  const dataSource = []
   for (let i = 0; i < 5; i++) {
     dataSource.push({
-      id: "haha" + i,
-      name: "胡彦斌" + i,
+      id: 'haha' + i,
+      name: '胡彦斌' + i,
       age: 32 + i,
-      address: "西湖区湖底公园1号",
-      normalItem: "正常数据",
+      address: '西湖区湖底公园1号',
+      normalItem: '正常数据',
       switch: true,
-    });
+    })
   }
   useEffect(() => {
     core.setValues({
       arrayList: dataSource,
-    });
-  }, [core]);
+    })
+  }, [core])
   return (
     <div className="wrapper">
       <Form core={core} inline>
@@ -55,7 +55,7 @@ function FormDemo() {
           <ArrayList
             rowKey="id"
             rowCoreConfig={{
-              values: { defaultValue: "init" },
+              values: { defaultValue: 'init' },
             }}
             bottom={
               <ArrayAction>
@@ -65,8 +65,8 @@ function FormDemo() {
                       onClick={() =>
                         addBottom((core) => {
                           core.setValues({
-                            name: "林俊杰",
-                          });
+                            name: '林俊杰',
+                          })
                         })
                       }
                     >
@@ -75,10 +75,10 @@ function FormDemo() {
                     <Button
                       onClick={() =>
                         addTop((core) => {
-                          console.log(1);
+                          console.log(1)
                           core.setValues({
-                            name: "林俊杰",
-                          });
+                            name: '林俊杰',
+                          })
                         })
                       }
                     >
@@ -87,7 +87,7 @@ function FormDemo() {
                     <Button
                       onClick={() =>
                         this.core.validate().then((err) => {
-                          console.log(err);
+                          console.log(err)
                         })
                       }
                     >
@@ -98,6 +98,10 @@ function FormDemo() {
               </ArrayAction>
             }
           >
+            <h3>
+              序号
+              <ArrayIndex>{({ index }) => index}</ArrayIndex>
+            </h3>
             <h3>You can put content anywhere</h3>
             <FormItem
               name="name"
@@ -119,8 +123,8 @@ function FormDemo() {
                           onClick={() =>
                             addBottom((core) => {
                               core.setValues({
-                                name: "林俊杰",
-                              });
+                                name: '林俊杰',
+                              })
                             })
                           }
                         >
@@ -130,8 +134,8 @@ function FormDemo() {
                           onClick={() =>
                             addTop((core) => {
                               core.setValues({
-                                name: "林俊杰",
-                              });
+                                name: '林俊杰',
+                              })
                             })
                           }
                         >
@@ -140,7 +144,7 @@ function FormDemo() {
                         <Button
                           onClick={() =>
                             this.core.validate().then((err) => {
-                              console.log(err);
+                              console.log(err)
                             })
                           }
                         >
@@ -164,10 +168,10 @@ function FormDemo() {
                               onClick={() => {
                                 insertBefore($id, (core) => {
                                   core.setValues({
-                                    name: "吴彦祖",
-                                  });
-                                  core.forceUpdate();
-                                });
+                                    name: '吴彦祖',
+                                  })
+                                  core.forceUpdate()
+                                })
                               }}
                             >
                               顶部添加
@@ -176,9 +180,9 @@ function FormDemo() {
                               onClick={() => {
                                 insertAfter($id, (core) => {
                                   core.setValues({
-                                    name: "吴彦祖",
-                                  });
-                                });
+                                    name: '吴彦祖',
+                                  })
+                                })
                               }}
                             >
                               底部添加
@@ -186,8 +190,8 @@ function FormDemo() {
                             <Button
                               onClick={() => {
                                 remove($id, (core) => {
-                                  console.log(core.getValues());
-                                });
+                                  console.log(core.getValues())
+                                })
                               }}
                             >
                               删除
@@ -204,12 +208,12 @@ function FormDemo() {
                                 return (
                                   <Button
                                     onClick={() => {
-                                      core.setGlobalStatus("edit");
+                                      core.setGlobalStatus('edit')
                                     }}
                                   >
                                     编辑
                                   </Button>
-                                );
+                                )
                               }}
                             />
                             <FormItem
@@ -217,12 +221,12 @@ function FormDemo() {
                                 return (
                                   <Button
                                     onClick={() => {
-                                      core.setGlobalStatus("preview");
+                                      core.setGlobalStatus('preview')
                                     }}
                                   >
                                     保存
                                   </Button>
-                                );
+                                )
                               }}
                             />
                             <FormItem
@@ -232,18 +236,18 @@ function FormDemo() {
                                     onClick={() => {
                                       core.reset(
                                         Object.keys(core.getValues()).filter(
-                                          (key) => key !== "id"
+                                          (key) => key !== 'id'
                                         )
-                                      );
+                                      )
                                     }}
                                   >
                                     重置
                                   </Button>
-                                );
+                                )
                               }}
                             />
                           </div>
-                        );
+                        )
                       }}
                     </ArrayAction>
                   )}
@@ -275,10 +279,10 @@ function FormDemo() {
                           onClick={() => {
                             insertBefore($id, (core) => {
                               core.setValues({
-                                name: "吴彦祖",
-                              });
-                              core.forceUpdate();
-                            });
+                                name: '吴彦祖',
+                              })
+                              core.forceUpdate()
+                            })
                           }}
                         >
                           顶部添加
@@ -287,9 +291,9 @@ function FormDemo() {
                           onClick={() => {
                             insertAfter($id, (core) => {
                               core.setValues({
-                                name: "吴彦祖",
-                              });
-                            });
+                                name: '吴彦祖',
+                              })
+                            })
                           }}
                         >
                           底部添加
@@ -297,8 +301,8 @@ function FormDemo() {
                         <Button
                           onClick={() => {
                             remove($id, (core) => {
-                              console.log(core.getValues());
-                            });
+                              console.log(core.getValues())
+                            })
                           }}
                         >
                           删除
@@ -315,12 +319,12 @@ function FormDemo() {
                             return (
                               <Button
                                 onClick={() => {
-                                  core.setGlobalStatus("edit");
+                                  core.setGlobalStatus('edit')
                                 }}
                               >
                                 编辑
                               </Button>
-                            );
+                            )
                           }}
                         />
                         <FormItem
@@ -328,12 +332,12 @@ function FormDemo() {
                             return (
                               <Button
                                 onClick={() => {
-                                  core.setGlobalStatus("preview");
+                                  core.setGlobalStatus('preview')
                                 }}
                               >
                                 保存
                               </Button>
-                            );
+                            )
                           }}
                         />
                         <FormItem
@@ -343,18 +347,18 @@ function FormDemo() {
                                 onClick={() => {
                                   core.reset(
                                     Object.keys(core.getValues()).filter(
-                                      (key) => key !== "id"
+                                      (key) => key !== 'id'
                                     )
-                                  );
+                                  )
                                 }}
                               >
                                 重置
                               </Button>
-                            );
+                            )
                           }}
                         />
                       </div>
-                    );
+                    )
                   }}
                 </ArrayAction>
               )}
@@ -365,46 +369,46 @@ function FormDemo() {
       </Form>
       <Button
         onClick={() => {
-          this.core.setGlobalStatus("preview");
+          this.core.setGlobalStatus('preview')
         }}
       >
         预览
       </Button>
       <Button
         onClick={() => {
-          this.core.setGlobalStatus("edit");
+          this.core.setGlobalStatus('edit')
         }}
       >
         编辑
       </Button>
     </div>
-  );
+  )
 }
 
 class FormDemo1 extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       visible: true,
-    };
+    }
     this.core = new Core({
       onChange: ([key], val, core) => {
-        console.log(key, val, core);
+        console.log(key, val, core)
       },
-    });
-    this.dataSource = [];
+    })
+    this.dataSource = []
     for (let i = 0; i < 5; i++) {
       this.dataSource.push({
-        id: "haha" + i,
-        name: "胡彦斌" + i,
+        id: 'haha' + i,
+        name: '胡彦斌' + i,
         age: 32 + i,
-        address: "西湖区湖底公园1号",
-        normalItem: "正常数据",
-      });
+        address: '西湖区湖底公园1号',
+        normalItem: '正常数据',
+      })
     }
     this.core.setValues({
       arrayList: this.dataSource,
-    });
+    })
   }
   render() {
     return (
@@ -418,10 +422,10 @@ class FormDemo1 extends React.Component {
             <ArrayList
               rowKey="id"
               rowCoreConfig={{
-                values: { defaultValue: "init" },
+                values: { defaultValue: 'init' },
               }}
               rowFormConfig={{
-                globalStatus: "preview",
+                globalStatus: 'preview',
               }}
               bottom={
                 <ArrayAction>
@@ -431,8 +435,8 @@ class FormDemo1 extends React.Component {
                         onClick={() =>
                           addBottom((core) => {
                             core.setValues({
-                              name: "林俊杰",
-                            });
+                              name: '林俊杰',
+                            })
                           })
                         }
                       >
@@ -442,8 +446,8 @@ class FormDemo1 extends React.Component {
                         onClick={() =>
                           addTop((core) => {
                             core.setValues({
-                              name: "林俊杰",
-                            });
+                              name: '林俊杰',
+                            })
                           })
                         }
                       >
@@ -452,7 +456,7 @@ class FormDemo1 extends React.Component {
                       <Button
                         onClick={() =>
                           this.core.validate().then((err) => {
-                            console.log(err);
+                            console.log(err)
                           })
                         }
                       >
@@ -476,10 +480,10 @@ class FormDemo1 extends React.Component {
                   return (
                     <div
                       onMouseOver={() => {
-                        core.setGlobalStatus("edit");
+                        core.setGlobalStatus('edit')
                       }}
                       onMouseOut={() => {
-                        core.setGlobalStatus("preview");
+                        core.setGlobalStatus('preview')
                       }}
                     >
                       <FormItem
@@ -493,7 +497,7 @@ class FormDemo1 extends React.Component {
                         <Input />
                       </FormItem>
                     </div>
-                  );
+                  )
                 }}
               />
 
@@ -510,10 +514,10 @@ class FormDemo1 extends React.Component {
                             onClick={() => {
                               insertBefore($id, (core) => {
                                 core.setValues({
-                                  name: "吴彦祖",
-                                });
-                                core.forceUpdate();
-                              });
+                                  name: '吴彦祖',
+                                })
+                                core.forceUpdate()
+                              })
                             }}
                           >
                             顶部添加
@@ -522,9 +526,9 @@ class FormDemo1 extends React.Component {
                             onClick={() => {
                               insertAfter($id, (core) => {
                                 core.setValues({
-                                  name: "吴彦祖",
-                                });
-                              });
+                                  name: '吴彦祖',
+                                })
+                              })
                             }}
                           >
                             底部添加
@@ -532,8 +536,8 @@ class FormDemo1 extends React.Component {
                           <Button
                             onClick={() => {
                               remove($id, (core) => {
-                                console.log(core.getValues());
-                              });
+                                console.log(core.getValues())
+                              })
                             }}
                           >
                             删除
@@ -550,12 +554,12 @@ class FormDemo1 extends React.Component {
                               return (
                                 <Button
                                   onClick={() => {
-                                    core.setGlobalStatus("edit");
+                                    core.setGlobalStatus('edit')
                                   }}
                                 >
                                   编辑
                                 </Button>
-                              );
+                              )
                             }}
                           />
                           <FormItem
@@ -563,12 +567,12 @@ class FormDemo1 extends React.Component {
                               return (
                                 <Button
                                   onClick={() => {
-                                    core.setGlobalStatus("preview");
+                                    core.setGlobalStatus('preview')
                                   }}
                                 >
                                   保存
                                 </Button>
-                              );
+                              )
                             }}
                           />
                           <FormItem
@@ -578,18 +582,18 @@ class FormDemo1 extends React.Component {
                                   onClick={() => {
                                     core.reset(
                                       Object.keys(core.getValues()).filter(
-                                        (key) => key !== "id"
+                                        (key) => key !== 'id'
                                       )
-                                    );
+                                    )
                                   }}
                                 >
                                   重置
                                 </Button>
-                              );
+                              )
                             }}
                           />
                         </div>
-                      );
+                      )
                     }}
                   </ArrayAction>
                 )}
@@ -600,21 +604,21 @@ class FormDemo1 extends React.Component {
         </Form>
         <Button
           onClick={() => {
-            this.core.setGlobalStatus("preview");
+            this.core.setGlobalStatus('preview')
           }}
         >
           预览
         </Button>
         <Button
           onClick={() => {
-            this.core.setGlobalStatus("edit");
+            this.core.setGlobalStatus('edit')
           }}
         >
           编辑
         </Button>
       </div>
-    );
+    )
   }
 }
-ReactDOM.render(<FormDemo />, mountNode);
+ReactDOM.render(<FormDemo />, mountNode)
 ```
