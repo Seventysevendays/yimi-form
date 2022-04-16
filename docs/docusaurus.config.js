@@ -1,7 +1,7 @@
 module.exports = {
   title: "Yimi Form",
   tagline: "Graceful and High Performance React Form",
-  url: "https://docusaurus.io",
+  url: "https://seventysevendays.github.io",
   baseUrl: "/yimiform/",
   onBrokenLinks: "throw",
   favicon: "img/favicon.ico",
