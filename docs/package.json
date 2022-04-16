@@ -16,12 +16,12 @@
     "@mdx-js/react": "^1.5.8",
     "antd": "^4.6.2",
     "clsx": "^1.1.1",
-    "react": "^16.8.4",
-    "react-dom": "^16.8.4",
-    "yimi-components-antd-v4-beta": "^1.0.10",
-    "yimi-components-beta": "^1.0.29",
-    "yimi-form-beta": "^1.0.36",
-    "yimi-schema-form-beta": "^1.0.3"
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "yimi-components-antd-v4": "*",
+    "yimi-form": "*",
+    "yimi-form-components": "*",
+    "yimi-schema-form": "^1.0.1"
   },
   "browserslist": {
     "production": [

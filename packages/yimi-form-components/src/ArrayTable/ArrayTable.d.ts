@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { CSSProperties, ReactNode } from "react";
 import { Core } from "../../../yimi-form/src";
 import { TableProps } from "antd/lib/table";
 import { ArrayTableActionValue } from "../context/arrayTable";
@@ -18,7 +18,7 @@ export interface ArrayTableProps<T> {
     value?: T[];
     status?: Status;
     className?: string;
-    style?: React.CSSProperties;
+    style?: CSSProperties;
     locale?: "zh" | "en";
     getInst?: (table: ArrayTable) => void;
 }

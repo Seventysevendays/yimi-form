@@ -6,7 +6,7 @@
   "scripts": {
     "cov": "node ../yimi-builder/scripts/test.js",
     "test": "node ../yimi-builder/scripts/test.js",
-    "start": "nodemon ../yimi-builder/scripts/dev.js",
+    "start": "node ../yimi-builder/scripts/dev.js",
     "build": "node ../yimi-builder/scripts/build.js",
     "prepare": "npm run build"
   },

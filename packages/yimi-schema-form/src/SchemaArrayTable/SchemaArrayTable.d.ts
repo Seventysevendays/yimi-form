@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import { ArrayTableProps } from "../../../yimi-components/src/ArrayTable/ArrayTable";
+import { ArrayTableProps } from "../../../yimi-form-components/src/ArrayTable/ArrayTable";
 export interface SchemaArrayTableProps extends ArrayTableProps<any> {
     hasAdd?: boolean;
     deleteText?: string;

@@ -124,7 +124,7 @@ class ItemCore {
   public reset = () => {
     this.value = null;
     this.status = null;
-  }
+  };
   public validate = async (opts?: { onlySelf?: boolean }) => {
     const { onlySelf } = opts || {};
     // 内部有多个Form的校验
@@ -161,12 +161,12 @@ class ItemCore {
               } else {
                 this.error = undefined;
                 this.emit(ACTIONS.error, this.name, undefined);
-                resolve();
+                resolve(undefined);
               }
             }
           );
         } else {
-          resolve();
+          resolve(undefined);
         }
       });
     }

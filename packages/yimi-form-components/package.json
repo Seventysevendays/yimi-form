@@ -1,12 +1,12 @@
 {
   "name": "yimi-form-components",
-  "version": "1.0.2",
-  "description": "yimi components",
+  "version": "1.0.0",
+  "description": "yimi form components",
   "main": "lib/index.js",
   "scripts": {
     "cov": "node ../yimi-builder/scripts/test.js",
     "test": "node ../yimi-builder/scripts/test.js",
-    "start": "nodemon ../yimi-builder/scripts/dev.js",
+    "start": "node ../yimi-builder/scripts/dev.js",
     "build": "node ../yimi-builder/scripts/build.js",
     "prepare": "npm run build"
   },
@@ -34,13 +34,12 @@
     "lodash": "^4.17.19",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "sinon": "^9.0.3",
-    "yimi-form-beta": "^1.0.10"
+    "sinon": "^9.0.3"
   },
   "dependencies": {
     "antd": "4.8.0"
   },
   "peerDependencies": {
-    "yimi-form-beta": "*"
+    "yimi-form": "*"
   }
 }

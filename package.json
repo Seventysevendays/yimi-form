@@ -7,11 +7,14 @@
     "doc": "docs"
   },
   "dependencies": {
+    "lerna": "^4.0.0",
     "typescript": "^4.1.2"
   },
-  "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "bootstrap": "lerna link && lerna bootstrap --hoist --force-local",
+    "clean": "lerna clean",
+    "test:yimi-form": "cd ./packages/yimi-form && npm start",
+    "test:yimi-form-components": "cd ./packages/yimi-form-components && npm start"
   },
   "repository": {
     "type": "git",

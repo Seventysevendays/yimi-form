@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { CSSProperties, ReactNode } from "react";
 import { Form, Core } from "../../../yimi-form/src";
 import Table, { TableProps } from "antd/lib/table";
 import isEqual from "lodash/isEqual";
@@ -24,7 +24,7 @@ export interface ArrayTableProps<T> {
   value?: T[];
   status?: Status;
   className?: string;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
   locale?: "zh" | "en";
   getInst?: (table: ArrayTable) => void;
 }

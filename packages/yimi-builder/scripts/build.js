@@ -23,13 +23,13 @@ const ES_PATTERN = /\.(js|jsx|mjs|ts|tsx)$/;
 const D_PATTERN = /\.(d.ts)$/;
 const CSS_PATTERN = /\.(less)$/;
 const formName = require("../../yimi-form/package.json").name;
-const componentName = require("../../yimi-components/package.json").name;
+const componentName = require("../../yimi-form-components/package.json").name;
 
 // ......yimi-form/src to .../lib; ......yimi-components/src to .../lib
 function replaceName(content) {
   return content
     .replace(/".+yimi-form\/src/g, `"${formName}/lib`)
-    .replace(/".+yimi-components\/src/g, `"${componentName}/lib`)
+    .replace(/".+yimi-form-components\/src/g, `"${componentName}/lib`)
     .replace(/require("\.\/index\.less");'/g, "");
 }
 async function run(basedir) {

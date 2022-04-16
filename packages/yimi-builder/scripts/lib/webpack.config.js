@@ -51,7 +51,7 @@ module.exports = (options) => {
       ],
       alias: {
         // resolve hooks problem
-        react: path.resolve("./node_modules/react"),
+        // react: path.resolve("./node_modules/react"),
       },
     },
     // devtool: "source-map",

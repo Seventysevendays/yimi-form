@@ -3,12 +3,12 @@ id: arrayList
 title: ArrayList
 ---
 
-import { Form, FormItem, Core } from "yimi-form-beta";
-import { ArrayTable, ArrayList, ArrayAction } from "yimi-components-beta";
-import { Input, Radio, Select } from "yimi-components-antd-v4-beta";
+import { Form, FormItem, Core } from "yimi-form";
+import { ArrayTable, ArrayList, ArrayAction } from "yimi-form-components";
+import { Input, Radio, Select } from "yimi-components-antd-v4";
 import { Button } from "antd";
-import "yimi-components-antd-v4-beta/lib/index.css";
-import "yimi-form-beta/lib/index.css";
+import "yimi-components-antd-v4/lib/index.css";
+import "yimi-form/lib/index.css";
 import "antd/dist/antd.css";
 
 ## ArrayList 介绍：优雅实现自增任意内容等功能的列表组件
@@ -24,7 +24,7 @@ import "antd/dist/antd.css";
 | rowKey?: string                              | 数据唯一的标识                                                        | 'id'   |
 | onRowChange?: (val: any, core: Core) => void | 每行的 onChange                                                       |        |
 | bottom?: ReactNode                           | 列表底部内容                                                          |        |
-| top?: ReactNode                           | 列表顶部内容                                                          |        |
+| top?: ReactNode                              | 列表顶部内容                                                          |        |
 | rowFormConfig?: FormProps                    | 每行 Form 的 props 配置                                               |        |
 | rowCoreConfig?: CoreProps                    | 每行 Core 的构建参数                                                  |        |
 | className?: string                           | 根节点类名                                                            |        |

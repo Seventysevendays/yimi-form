@@ -1,28 +1,29 @@
 module.exports = {
-  title: 'Yimi Form',
-  tagline: 'Graceful and High Performance React Form',
-  baseUrl: '/yimiform/',
-  onBrokenLinks: 'throw',
-  favicon: 'img/favicon.ico',
-  projectName: 'yimiform', // Usually your repo name.
+  title: "Yimi Form",
+  tagline: "Graceful and High Performance React Form",
+  url: "https://docusaurus.io",
+  baseUrl: "/yimiform/",
+  onBrokenLinks: "throw",
+  favicon: "img/favicon.ico",
+  projectName: "yimiform", // Usually your repo name.
   themeConfig: {
     colorMode: {
-      defaultMode: 'light',
+      defaultMode: "light",
       disableSwitch: true,
     },
     sidebarCollapsible: false,
     navbar: {
-      title: 'Yimi Form',
+      title: "Yimi Form",
       // logo: {
       //   alt: 'My Site Logo',
       //   src: 'img/logo.svg',
       // },
       items: [
         {
-          to: 'docs/home/home',
-          activeBasePath: 'docs',
-          label: 'Docs',
-          position: 'left',
+          to: "docs/home/home",
+          activeBasePath: "docs",
+          label: "Docs",
+          position: "left",
         },
         // {to: 'blog', label: 'Blog', position: 'left'},
         // {
@@ -84,10 +85,10 @@ module.exports = {
   },
   presets: [
     [
-      '@docusaurus/preset-classic',
+      "@docusaurus/preset-classic",
       {
         docs: {
-          sidebarPath: require.resolve('./sidebars.js'),
+          sidebarPath: require.resolve("./sidebars.js"),
           // Please change this to your repo.
           // editUrl:
           //   'https://github.com/facebook/docusaurus/edit/master/website/',
@@ -99,7 +100,7 @@ module.exports = {
         //     'https://github.com/facebook/docusaurus/edit/master/website/blog/',
         // },
         theme: {
-          customCss: require.resolve('./src/css/custom.css'),
+          customCss: require.resolve("./src/css/custom.css"),
         },
       },
     ],

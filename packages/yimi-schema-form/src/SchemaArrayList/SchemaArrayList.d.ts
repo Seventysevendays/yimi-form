@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import { ArrayListProps } from "../../../yimi-components/src/ArrayList/ArrayList";
+import { ArrayListProps } from "../../../yimi-form-components/src/ArrayList/ArrayList";
 export interface SchemaArrayListProps extends ArrayListProps<any> {
     hasAdd?: boolean;
     hasInsertAfter?: boolean;

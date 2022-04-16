@@ -1,8 +1,8 @@
 import React, { ReactNode } from "react";
 import ArrayList, {
   ArrayListProps,
-} from "../../../yimi-components/src/ArrayList/ArrayList";
-import { ArrayAction } from "../../../yimi-components/src";
+} from "../../../yimi-form-components/src/ArrayList/ArrayList";
+import { ArrayAction } from "../../../yimi-form-components/src";
 import FormItem from "../../../yimi-form/src/components/FormItem/FormItem";
 
 export interface SchemaArrayListProps extends ArrayListProps<any> {

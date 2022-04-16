@@ -1,8 +1,8 @@
 import React, { ReactNode } from "react";
 import ArrayTable, {
   ArrayTableProps,
-} from "../../../yimi-components/src/ArrayTable/ArrayTable";
-import { ArrayAction } from "../../../yimi-components/src";
+} from "../../../yimi-form-components/src/ArrayTable/ArrayTable";
+import { ArrayAction } from "../../../yimi-form-components/src";
 import FormItem from "../../../yimi-form/src/components/FormItem/FormItem";
 
 export interface SchemaArrayTableProps extends ArrayTableProps<any> {

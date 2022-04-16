@@ -10,6 +10,7 @@ import FormItemLabel from "../FormItemLabel/FormItemLabel";
 import FormItemError from "../FormItemError/FormItemError";
 import FormItemBase from "../FormItemBase/FormItemBase";
 import getName from "../../utils/getName";
+import type { CSSProperties } from "react";
 
 export type ItemValidateConfig =
   | RuleItem
@@ -22,7 +23,7 @@ export interface FormItemProps {
   name?: string;
   label?: ReactNode;
   children?: ReactNode;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
   form?: Core;
   /** insert core to original onChange */
   onChange?: (core: Core, ...args: any[]) => void;
@@ -285,7 +286,7 @@ class FormItem extends React.Component<FormItemProps> {
             error ? "hasError" : ""
           } ${className ? className : ""} ${itemFull ? "full" : ""}`}
           id={this.id}
-          style={style}
+          style={style as any}
         >
           {top && <div className="yimi-form-item-top">{top}</div>}
           <FormItemLabel

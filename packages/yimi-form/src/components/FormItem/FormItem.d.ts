@@ -1,13 +1,14 @@
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 import Core, { Status } from "../../core/core";
 import { RuleItem } from "async-validator";
+import type { CSSProperties } from "react";
 export declare type ItemValidateConfig = RuleItem | RuleItem[] | ((val: any, core: Core) => RuleItem | RuleItem[]);
 export declare type ItemStatus = Status | ((core: Core, val: any) => Status);
 export interface FormItemProps {
     name?: string;
     label?: ReactNode;
     children?: ReactNode;
-    style?: React.CSSProperties;
+    style?: CSSProperties;
     form?: Core;
     onChange?: (core: Core, ...args: any[]) => void;
     defaultValue?: any;
