@@ -1,11 +1,12 @@
 module.exports = {
   title: "Yimi Form",
   tagline: "Graceful and High Performance React Form",
-  url: "https://seventysevendays.github.io",
-  baseUrl: "/yimiform/",
+  url: "https://seventysevendays.github.io/",
+  baseUrl: "/yimi-form/",
   onBrokenLinks: "throw",
   favicon: "img/favicon.ico",
-  projectName: "yimiform", // Usually your repo name.
+  projectName: "yimi-form", // Usually your repo name.
+  organizationName: "Seventysevendays",
   themeConfig: {
     colorMode: {
       defaultMode: "light",
