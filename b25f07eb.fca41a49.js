@@ -1,0 +1,1 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[28],{86:function(o){o.exports=JSON.parse('{"allTagsPath":"/yimiform/blog/tags","slug":"hello","name":"hello","count":2,"permalink":"/yimiform/blog/tags/hello"}')}}]);
